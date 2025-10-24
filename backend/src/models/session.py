@@ -1,16 +1,13 @@
 class Session:
     session_id: str
-    username: str
-    created_at: str
+    display_name: str
 
-    def __init__(self, session_id: str, username: str, created_at: str):
+    def __init__(self, session_id: str, display_name: str):
         self.session_id = session_id
-        self.username = username
-        self.created_at = created_at
+        self.username = display_name
 
     def to_dict(self):
         return {
             "session_id": self.session_id,
-            "username": self.username,
-            "created_at": self.created_at,
+            "display_name": self.username,
         }
