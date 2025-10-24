@@ -73,3 +73,10 @@ button:focus-visible {
   margin: 0;
   text-align: center;
 }
+
+/* -- Fonts -- */
+
+@font-face {
+  font-family: "Yourmate";
+  src: url('./assets/fonts/Yourmate/Yourmate.ttf');
+}
