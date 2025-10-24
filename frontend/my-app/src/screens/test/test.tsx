@@ -1,6 +1,10 @@
-function Test () {
+import ButtonWide from "../../components/Buttons/ButtonWide"
+
+
+function Test() {
     return (
         <>
+            <ButtonWide />
         </>
     )
 }
