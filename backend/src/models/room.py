@@ -7,7 +7,7 @@ class Room:
         self,
         uuid: str,
         title: str,
-        sessions: List[Session] = [],
+        sessions: dict[str, Session] = {},
         meta_history: list = [],
         video_history: list = [],
     ):
@@ -18,7 +18,7 @@ class Room:
         self.video_history = video_history
 
     def add_sessions(self, session: Session):
-        self.sessions.append(session)
+        self.sessions[session.session_id] = session
 
     def to_dict(self):
         return {
