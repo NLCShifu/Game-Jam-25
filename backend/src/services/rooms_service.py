@@ -1,6 +1,7 @@
 from datetime import datetime
+from models.room import Room
 
-rooms = {}
+rooms: dict[str, Room] = {}
 sessions = {}
 
 

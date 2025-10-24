@@ -3,6 +3,7 @@ from pydantic import BaseModel
 import uuid
 from datetime import datetime, timedelta
 from services.rooms_service import rooms, sessions
+from models.room import Room
 
 router = APIRouter(prefix="/rooms", tags=["rooms"])
 
@@ -14,13 +15,18 @@ class JoinRequest(BaseModel):
 @router.post("")
 def create_room(title: str):
     room_id = str(uuid.uuid4())
-    rooms[room_id] = {
-        "title": title,
-        "participants": {},
-        "meta_history": [],
-        "video_history": [],
-    }
+    room = Room(room_id, title)
+    rooms[room_id] = room
     return {"room_id": room_id}
+
+
+@router.get("/{room_id}")
+def get_room(room_id: str):
+    return (
+        rooms.get(room_id).to_dict()
+        if room_id in rooms
+        else HTTPException(404, "Room not found")
+    )
 
 
 @router.post("/{room_id}/join")
