@@ -26,7 +26,7 @@ const Cursor: React.FC<CursorProps> = ({ rippleOffset = { x: 0, y: 0 } }) => {
     useEffect(() => {
         const click = new Howl({
             src: [clickSound],
-            volume: 0.5,
+            volume: 0.1,
         });
 
         const moveCursor = (e: MouseEvent) => {

@@ -1,0 +1,175 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" aria-label="Deux silhouettes face à face - respiration + rires animés">
+  <defs>
+    <linearGradient id="soft" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#000" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.95"/>
+    </linearGradient>
+
+    <filter id="fshadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feOffset dx="0" dy="6" result="o"/>
+      <feMerge>
+        <feMergeNode in="o" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="100%" height="100%" fill="transparent" />
+
+  <!-- LEFT silhouette -->
+  <g id="leftPerson" transform="translate(210,200)">
+    <g id="leftTorso" transform-origin="0px 0px">
+      <path d="M-90 60 C -90 10 -30 -20 0 -20 C 30 -20 90 10 90 60 L 90 120 L -90 120 Z"
+            fill="url(#soft)" filter="url(#fshadow)"/>
+    </g>
+    <g id="leftHead">
+      <ellipse cx="-10" cy="-60" rx="48" ry="60" fill="url(#soft)"/>
+      <path d="M8 -15 C 25 -5 40 10 58 32"
+            stroke="#000" stroke-width="8" stroke-linecap="round"
+            fill="none" opacity="0.95"/>
+    </g>
+  </g>
+
+  <!-- RIGHT silhouette -->
+  <g id="rightPerson" transform="scale(-1,1) translate(-590,200)">
+    <g id="rightTorso" transform-origin="0px 0px">
+      <path d="M-90 60 C -90 10 -30 -20 0 -20 C 30 -20 90 10 90 60 L 90 120 L -90 120 Z"
+            fill="url(#soft)" filter="url(#fshadow)"/>
+    </g>
+    <g id="rightHead">
+      <ellipse cx="-10" cy="-60" rx="48" ry="60" fill="url(#soft)"/>
+      <path d="M8 -15 C 25 -5 40 10 58 32"
+            stroke="#000" stroke-width="8" stroke-linecap="round"
+            fill="none" opacity="0.95"/>
+    </g>
+  </g>
+  
+
+  <!-- LAUGH STREAM TOP LEFT -->
+  <!-- We place 4 syllables in a row near above-left head. Each has its own animation delay. -->
+  <g id="leftLaughRow" transform="translate(200,80)">
+    <text class="laughChunk a1" x="0"   y="0">Ah</text>
+    <text class="laughChunk a2" x="40"  y="0">ha</text>
+    <text class="laughChunk a3" x="80"  y="0">Ha</text>
+    <text class="laughChunk a4" x="120" y="0">AH</text>
+  </g>
+
+  <!-- LAUGH STREAM TOP RIGHT -->
+  <!-- mirrored vibe but slight y offset + different delays so it's not perfectly synced -->
+  <g id="rightLaughRow" transform="translate(460,70)">
+    <text class="laughChunk b1" x="0"   y="0">ha</text>
+    <text class="laughChunk b2" x="40"  y="0">Ha</text>
+    <text class="laughChunk b3" x="80"  y="0">AH</text>
+    <text class="laughChunk b4" x="120" y="0">ah</text>
+  </g>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bangers&amp;display=swap');
+    /* Cartoon-ish font. If user has Comic Sans/Marker Felt/etc. locally it will take it.
+       Otherwise falls back to a generic playful cursive. */
+    .laughChunk {
+      font-family: 'Bangers', cursive;
+      font-size: 28px;
+      font-weight: 700;
+      fill: #000;
+      fill-opacity: 0.7; /* start invisible; animation will pulse it in */
+      paint-order: stroke;
+      stroke: rgba(0,0,0,0.4);
+      stroke-width: 1px;
+    }
+
+    /* Breathing animations for bodies */
+    @keyframes breathe {
+      0%   { transform: translateY(0) scaleY(1); }
+      50%  { transform: translateY(-2px) scaleY(1.035); }
+      100% { transform: translateY(0) scaleY(1); }
+    }
+    @keyframes headBob {
+      0%   { transform: translateX(0)   translateY(0)     rotate(0deg); }
+      25%  { transform: translateX(-2px) translateY(-1.2px) rotate(-1deg); }
+      50%  { transform: translateX(0)   translateY(0.8px)  rotate(0.6deg); }
+      75%  { transform: translateX(2px)  translateY(-0.8px) rotate(1deg); }
+      100% { transform: translateX(0)   translateY(0)     rotate(0deg); }
+    }
+
+    #leftTorso {
+      animation: breathe 3.6s ease-in-out infinite;
+      transform-origin: 0px 0px;
+    }
+    #leftHead {
+      animation: headBob 3.6s ease-in-out infinite;
+      transform-origin: center;
+    }
+
+    #rightTorso {
+      animation: breathe 3.6s ease-in-out infinite;
+      animation-delay: 0.9s;
+      transform-origin: 0px 0px;
+    }
+    #rightHead {
+      animation: headBob 3.6s ease-in-out infinite;
+      animation-delay: 0.9s;
+      transform-origin: center;
+    }
+
+    /*
+      Laugh animation logic:
+      - each chunk fades/pops in,
+      - slides very slightly to the right,
+      - scales up a touch (cartoon pop),
+      - then fades out.
+      We stagger delays so it looks like it's traveling left -> right.
+    */
+    @keyframes syllablePop {
+      0%   { opacity: 0;   transform: translateX(-6px) translateY(0px) scale(0.9); }
+      20%  { opacity: 0.5; transform: translateX(0px)  translateY(-2px) scale(1.05); }
+      40%  { opacity: 0.4; transform: translateX(4px)  translateY(-4px) scale(1.1); }
+      60%  { opacity: 0.25;transform: translateX(8px)  translateY(-6px) scale(1.15); }
+      80%  { opacity: 0.12;transform: translateX(12px) translateY(-8px) scale(1.2); }
+      100% { opacity: 0;   transform: translateX(16px) translateY(-10px) scale(1.25); }
+    }
+
+    /* Left stream timings (wave goes Ah -> ha -> Ha -> AH and loops) */
+    .a1 {
+      animation: syllablePop 2s linear infinite;
+      animation-delay: 0s;
+    }
+    .a2 {
+      animation: syllablePop 2s linear infinite;
+      animation-delay: 0.2s;
+    }
+    .a3 {
+      animation: syllablePop 2s linear infinite;
+      animation-delay: 0.4s;
+    }
+    .a4 {
+      animation: syllablePop 2s linear infinite;
+      animation-delay: 0.6s;
+    }
+
+    /* Right stream timings, slightly offset total phase so it doesn't mirror perfectly */
+    .b1 {
+      animation: syllablePop 2s linear infinite;
+      animation-delay: 0.7s;
+    }
+    .b2 {
+      animation: syllablePop 2s linear infinite;
+      animation-delay: 1.0s;
+    }
+    .b3 {
+      animation: syllablePop 2s linear infinite;
+      animation-delay: 1.3s;
+    }
+    .b4 {
+      animation: syllablePop 2s linear infinite;
+      animation-delay: 1.7s;
+    }
+
+    /* Optional hover: speed up laughing, looks more chaotic if you want debug mode */
+    svg:hover .laughChunk {
+      animation-duration: 2.5s;
+    }
+  </style>
+</svg>
+
