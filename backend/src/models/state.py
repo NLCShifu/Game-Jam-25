@@ -1,4 +1,4 @@
-from backend.src.models.emotion import Emotion
+from .emotion import Emotion
 
 
 class State:

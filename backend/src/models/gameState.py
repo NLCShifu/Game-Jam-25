@@ -1,7 +1,7 @@
 from typing import Dict, List
 from unittest.mock import DEFAULT
 
-from backend.src.models.gamePhase import GamePhase
+from .gamePhase import GamePhase
 from .session import Session
 from .round import Round
 
