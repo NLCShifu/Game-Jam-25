@@ -33,7 +33,7 @@ def join_room(room_id: str):
         raise HTTPException(404, "Room not found")
     session_id = str(uuid.uuid4())
 
-    with open("../../../res/usernames.txt", "r") as file:
+    with open("res/usernames.txt", "r") as file:
         lines = file.readlines()
     usernames = [line.strip() for line in lines]
 

@@ -7,7 +7,7 @@ import json
 import os
 import time
 
-MODEL_PATH = os.path.join("backend/res", "face_landmarker.task")
+MODEL_PATH = os.path.join("res", "face_landmarker.task")
 
 router = APIRouter()
 
