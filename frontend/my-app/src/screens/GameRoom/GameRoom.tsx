@@ -10,6 +10,7 @@ import ImagePopup from "../../components/ImagePopup";
 import Ribbon from "../../components/Ribbon";
 import ButtonSquare from "../../components/Buttons/ButtonSquare";
 import { useNavigate } from "react-router";
+import Confetti from "../../components/Confetti";
 
 function GameRoom() {
     const navigate = useNavigate();
@@ -47,53 +48,69 @@ function GameRoom() {
     };
 
     return (
-        <div className="layoutGap gameRoom gradientBackground">
-            <ImagePopup
-                imageSrc={imgSrc}
-                visible={popupVisible}
-                duration={3000}
-                soundSrc="/whoosh-sounds-effects-no-copyright_2vZLPrmm.mp3"
-                onClose={() => setPopupVisible(false)}
-            />
-
-            {/* Left half */}
-            <div className="layoutGap half left">
-                <PopupWindow color="basic pink" animated={false} className="container otherCameraContainer">
-                    <div className="placeholder">other camera</div>
-                </PopupWindow>
-                <div className="container livesContainer">
-                    <div className="livesDisplay otherLives">
-                        <Hearts color="basic red" ref={otherLivesRef} size={80} />
-                        <span>Their lives</span>
-                    </div>
-                    <div className="livesDisplay ownLives">
-                        <span>Your lives</span>
-                        <Hearts color="basic red" ref={ownLivesRef} size={80} />
-                    </div>
-                </div>
-            </div>
-
-            {/* Right half */}
-            <div className="layoutGap half right">
-                <div className="effectsContainer">
-                    <EffectsList />
-                </div>
-                <PopupWindow color="basic pink" animated={false} className="container ownCameraContainer">
-                    <div className="placeholder">your camera</div>
-                </PopupWindow>
-            </div>
-
-            {/* Game End Popup */}
+        <>
             {gameEnded && gameResult && (
-                <PopupWindow color="basic blue" className="gameEndPopup">
-                    <Ribbon text={gameResult === "won" ? "You Won!" : "You Lost!"} color={gameResult === "won" ? "green" : "red"} />
-                    <div style={{ marginTop: "20px", textAlign: "center" }}>
-                        <ButtonSquare color="basic green" iconName="icons restart.png" onClick={handlePlayAgain} />
-                        <ButtonSquare color="basic green" iconName="icons home.png" onClick={handleGoHome} />
-                    </div>
-                </PopupWindow>
+                <>
+                    {/* Dark overlay */}
+                    <div className="overlay" />
+
+                    <Confetti />
+                    <PopupWindow color="basic blue" className="gameEndPopup" animated={true}>
+                        <div style={{ display: "flex", justifyContent: "center" }}>
+                            <Ribbon
+                                scale={0.52}
+                                text={gameResult === "won" ? "You Won!" : "You Lost!"}
+                                color="basic red"
+                            />
+                        </div>
+                        <div style={{ marginTop: "60px", textAlign: "center", display: "flex", gap: "100px", justifyContent: "center" }}>
+                            <ButtonSquare color="basic green" iconName="icons restart.png" onClick={handlePlayAgain} size={60} />
+                            <ButtonSquare color="basic green" iconName="icons home.png" onClick={handleGoHome} size={60} />
+                        </div>
+                    </PopupWindow>
+                </>
             )}
-        </div>
+
+            <div className="layoutGap gameRoom gradientBackground">
+                <ImagePopup
+                    imageSrc={imgSrc}
+                    visible={popupVisible}
+                    duration={3000}
+                    soundSrc="/whoosh-sounds-effects-no-copyright_2vZLPrmm.mp3"
+                    onClose={() => setPopupVisible(false)}
+                />
+
+                {/* Left half */}
+                <div className="layoutGap half left">
+                    <PopupWindow color="basic pink" animated={false} className="container otherCameraContainer">
+                        <div className="placeholder">other camera</div>
+                    </PopupWindow>
+                    <div className="container livesContainer">
+                        <div className="livesDisplay otherLives">
+                            <Hearts color="basic red" ref={otherLivesRef} size={80} />
+                            <span>Their lives</span>
+                        </div>
+                        <div className="livesDisplay ownLives">
+                            <span>Your lives</span>
+                            <Hearts color="basic red" ref={ownLivesRef} size={80} />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Right half */}
+                <div className="layoutGap half right">
+                    <div className="effectsContainer">
+                        <EffectsList />
+                    </div>
+                    <PopupWindow color="basic pink" animated={false} className="container ownCameraContainer">
+                        <div className="placeholder">your camera</div>
+                    </PopupWindow>
+                </div>
+
+                {/* Game End Popup */}
+
+            </div>
+        </>
     );
 }
 

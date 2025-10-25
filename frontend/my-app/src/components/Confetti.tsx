@@ -120,7 +120,7 @@ const Confetti: React.FC = () => {
     return (
         <canvas
             ref={canvasRef}
-            style={{ position: "absolute", top: 0, left: 0, zIndex: 1, pointerEvents: "none" }}
+            style={{ position: "absolute", top: 0, left: 0, zIndex: 11, pointerEvents: "none" }}
         />
     );
 };

@@ -67,6 +67,7 @@
 .livesDisplay.otherLives {
     align-items: flex-start;
 }
+
 .livesDisplay.ownLives {
     align-items: flex-end;
 }
@@ -92,4 +93,30 @@
     width: min-content;
     height: min-content;
     font-size: 100px;
+}
+
+
+.gameEndPopup {
+    position: fixed;
+    top: calc(50% - 150px);
+    /* 150px = half of height if height is 300px */
+    left: calc(50% - 150px);
+    /* 150px = half of width */
+    width: 300px;
+    height: 300px;
+    /* optional: set a fixed height */
+    z-index: 10;
+}
+
+.overlay {
+    position: fixed;
+    /* stay fixed relative to viewport */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* semi-transparent black */
+    z-index: 5;
+    /* behind the popup but above everything else */
 }
