@@ -1,3 +1,4 @@
+import random
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 import uuid
@@ -9,14 +10,10 @@ from models.session import Session
 router = APIRouter(prefix="/rooms", tags=["rooms"])
 
 
-class JoinRequest(BaseModel):
-    display_name: str
-
-
 @router.post("")
 def create_room():
     room_id = str(uuid.uuid4())
-    room = Room(room_id, "title")
+    room = Room(room_id)
     rooms[room_id] = room
     return {"room_id": room_id}
 
@@ -31,14 +28,25 @@ def get_room(room_id: str):
 
 
 @router.post("/{room_id}/join")
-def join_room(room_id: str, body: JoinRequest):
+def join_room(room_id: str):
     if room_id not in rooms:
         raise HTTPException(404, "Room not found")
     session_id = str(uuid.uuid4())
-    session = Session(session_id, body.display_name)
+
+    with open("../../../res/usernames.txt", "r") as file:
+        lines = file.readlines()
+    usernames = [line.strip() for line in lines]
+
+    username = random.choice(usernames)
+    if len(rooms[room_id].sessions) > 1:
+        while username == rooms[room_id].sessions[0].username:
+            username = random.choice(usernames)
+    print(username)
+
+    session = Session(session_id, username)
     sessions[session_id] = {
         "room_id": room_id,
-        "user_name": body.display_name,
+        "user_name": username,
         "expires": datetime.utcnow() + timedelta(minutes=10),
     }
     rooms[room_id].add_sessions(session)

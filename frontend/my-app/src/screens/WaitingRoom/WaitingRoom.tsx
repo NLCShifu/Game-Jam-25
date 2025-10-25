@@ -1,8 +1,10 @@
+// ...existing code...
 import { useNavigate, useParams } from "react-router"
+import axios from "axios"
 
 import "./WaitingRoom.css"
 import WaitingRoomPlayerInfo, { type PlayerData } from "./WaitingRoomPlayerInfo"
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import ButtonSquare from "../../components/Buttons/ButtonSquare";
 import ButtonWide from "../../components/Buttons/ButtonWide";
 import PopupWindow from "../../components/PopupWindow";
@@ -34,7 +36,10 @@ function WaitingRoom() {
     const [playerOneData, playerOneDispatch] = useReducer(reducer, { playerNumber: 1, hasJoined: false, displayName: "" })
     const [playerTwoData, playerTwoDispatch] = useReducer(reducer, { playerNumber: 2, hasJoined: false, displayName: "" })
 
+    const [participants, setParticipants] = useState<ParticipantInfo[]>([])
     const [canStart, setCanStart] = useState(false);
+    const [isStreaming, setIsStreaming] = useState(false);
+    const autoStartRef = useRef(false);
 
     useEffect(() => {
         // test participants
@@ -53,15 +58,46 @@ function WaitingRoom() {
             ]
         };
 
-        playerOneDispatch(participants.participants);
-        playerTwoDispatch(participants.participants);
+        let mounted = true;
 
-        setCanStart(participants.participants.length === 2);
-    }, [])
+        const fetchParticipants = async () => {
+            try {
+                const resp = await axios.get(`http://localhost:8000/rooms/${room_id}`, {
+                    headers: { "Accept": "application/json" }
+                })
+                console.log(resp.data);
+                if (!mounted) return;
+                const list: ParticipantInfo[] = resp.data.participants || []
+                setParticipants(list)
+                setCanStart(list.length === 2)
+            } catch (e) {
+                console.error("Failed to fetch participants", e)
+            }
+        }
+
+        fetchParticipants()
+        const interval = setInterval(fetchParticipants, 2000)
+
+        return () => {
+            mounted = false
+            clearInterval(interval)
+        }
+    }, [room_id, navigate])
+
+    useEffect(() => {
+        if (!canStart) {
+            setIsStreaming(false)
+            autoStartRef.current = false
+            return
+        }
+        if (!autoStartRef.current) {
+            setIsStreaming(true)
+            autoStartRef.current = true
+        }
+    }, [canStart])
 
     const exitRoom = () => {
-        // POST leaving the room using room id and session id
-
+        // TODO: appeler un endpoint pour quitter proprement si existant
         navigate("/");
     }
 

@@ -14,7 +14,9 @@ function JoinMenu({ showPopup, closePopup }: Readonly<PropTypes>) {
     const navigate = useNavigate();
 
     const [code, setCode] = useState("");
+    const [displayName, setDisplayName] = useState("");
     const updateCode = (e: ChangeEvent<HTMLInputElement>) => setCode(e.target.value)
+    const updateName = (e: ChangeEvent<HTMLInputElement>) => setDisplayName(e.target.value)
 
     const handleJoin = async () => {
       let sessionId: string;
