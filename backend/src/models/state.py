@@ -2,10 +2,9 @@ from .emotion import Emotion
 
 
 class State:
-    emotion : Emotion = Emotion.DEFAULT
-    score : int = 0  # only increment, number of games (of multiple phases) won in one session
-    lives : int = 3
-    has_lost : bool = False
+    emotion: Emotion = Emotion.DEFAULT
+    lives: int = 3
+    has_lost: bool = False
 
     def reset(self):
         self.emotion = Emotion.DEFAULT
@@ -26,9 +25,6 @@ class State:
     def to_dict(self):
         return {
             "emotion": self.emotion.value,
-            "score": self.score,
             "lives": self.lives,
-            "has_lost": self.has_lost
+            "has_lost": self.has_lost,
         }
-
-

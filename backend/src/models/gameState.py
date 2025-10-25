@@ -4,6 +4,7 @@ from unittest.mock import DEFAULT
 from .gamePhase import GamePhase
 from .session import Session
 from .round import Round
+from services.room_service import rooms
 
 
 class GameState:
@@ -13,12 +14,11 @@ class GameState:
         self.current_winner: Session | None
         self.final_winner: Session | None
         self.round: Round = Round.DEFAULT
-
+        self.lives_left: List[int] = [3, 3]
 
     def _alive_players(self, sessions: Dict[str, Session]) -> List[Session]:
         return [
-            s for s in sessions.values()
-            if not s.state.has_lost and s.state.lives > 0
+            s for s in sessions.values() if not s.state.has_lost and s.state.lives > 0
         ]
 
     def _enough_players(self, sessions: Dict[str, Session]) -> bool:
@@ -65,4 +65,5 @@ class GameState:
         self.round = Round.DEFAULT
         self.phase = GamePhase.WAITING
 
-
+    def network_update(self, player_index: int, message: dict[str, int | str]) -> None:
+        rooms[self.room_id].sessions[player_index].ws_meta.send_json(message)
