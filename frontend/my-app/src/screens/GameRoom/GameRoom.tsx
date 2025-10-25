@@ -8,11 +8,10 @@ import PopupWindow from "../../components/PopupWindow";
 import Hearts, { type HeartsHandle } from "../../components/Hearts";
 
 function GameRoom() {
-    // const [ownLives, setOwnLives] = useState(3);
-    // const [otherLives, setOtherLives] = useState(3);
-
     const ownLivesRef = useRef<HeartsHandle>(null);
     const otherLivesRef = useRef<HeartsHandle>(null);
+
+    
 
     return (
         <div className="layoutGap gameRoom gradientBackground">

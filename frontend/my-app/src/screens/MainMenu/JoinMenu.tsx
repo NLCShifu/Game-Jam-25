@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import PopupWindow from "../../components/PopupWindow";
 import ButtonSquare from "../../components/Buttons/ButtonSquare";
 import ButtonWide from "../../components/Buttons/ButtonWide";
+import axios from "axios";
 
 type PropTypes = {
     showPopup: boolean,
@@ -15,6 +16,19 @@ function JoinMenu({ showPopup, closePopup }: Readonly<PropTypes>) {
     const [code, setCode] = useState("");
     const updateCode = (e: ChangeEvent<HTMLInputElement>) => setCode(e.target.value)
 
+    const handleJoin = async () => {
+      let sessionId: string;
+      try {
+        let response = await axios.post(`http://localhost:8000/rooms/${code}/join`);
+        sessionId = response.data.session_id;
+      } catch (error) {
+        console.error("Error joining the room", error);
+        return;
+      }
+
+      navigate(`/${code}/${sessionId}/waiting`);
+    };
+
     if (!showPopup) return null;
 
     return (
@@ -26,7 +40,7 @@ function JoinMenu({ showPopup, closePopup }: Readonly<PropTypes>) {
     
             <input type="text" maxLength={6} onChange={updateCode} />
             {/* <button onClick={() => navigate(`/${code}/waiting`)}>JOIN</button> */}
-            <ButtonWide color="basic yellow" text="JOIN" size={0.4} />
+            <ButtonWide color="basic yellow" text="JOIN" size={0.4} onClick={handleJoin} />
 
             <div className="exitbutton">
                 <ButtonSquare iconName="icons cross.png" color="basic red" size={40} onClick={closePopup} />

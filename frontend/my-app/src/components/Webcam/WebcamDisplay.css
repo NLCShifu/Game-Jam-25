@@ -1,5 +1,19 @@
 .webcamDisplay {
     position: relative;
 
-    
+    width: 100%;
+    height: 100%;
+}
+
+.webcamDisplay > video {
+    position: absolute;
+    width: 20%;
+    height: 10%;
+    left: 0;
+    background-color: antiquewhite;
+}
+.webcamDisplay > canvas {
+    position: absolute;
+    bottom: 0;
+    background-color: blueviolet;
 }

@@ -12,18 +12,12 @@ import { BrowserRouter, Routes, Route } from 'react-router'
 
 import "./assets/fonts/Yourmate/Yourmate.ttf"
 import WebcamTest from './screens/WebcamTest/WebcamTest.tsx'
+import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <Cursor rippleOffset={{ x: -9, y: -7 }} />
-      <Routes>
-        <Route path="/" element={<MainMenu />} />
-        <Route path="/:room_id/:session_id/waiting" element={<WaitingRoom />} />
-        <Route path="/test" element={<Test />} />
-        <Route path="/gametest" element={<GameRoom />} />
-        <Route path="/testwebcam" element={<WebcamTest />} />
-      </Routes>
+      <App />
     </BrowserRouter>
   </StrictMode>,
 )

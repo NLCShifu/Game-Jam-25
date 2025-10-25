@@ -19,6 +19,8 @@ async def ws_video(websocket: WebSocket, room_id: str, session_id: str):
             # reçoit un chunk vidéo (bytes ou base64)
             data = await websocket.receive_bytes()
 
+            print(data)
+
             # broadcast à tous les autres participants du même room
             for session_id, session in rooms[room_id].sessions.items():
                 if (
