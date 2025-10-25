@@ -14,9 +14,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 10px;
+    /* adjust the spacing */
 }
 
-.menuButtons > button {
+.menuButtons>button {
     margin-top: 10px;
     margin-bottom: 10px;
     width: 50%;
@@ -41,7 +43,7 @@
     padding: 20px;
 }
 
-.menuPanel > span {
+.menuPanel>span {
     position: absolute;
 
     font-size: 20px;
@@ -63,4 +65,53 @@
     position: absolute;
     top: 15px;
     right: 15px;
+}
+
+
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(0.8);
+    }
+
+    50% {
+        transform: scale(0.85);
+    }
+}
+
+.pulsing-logo {
+    animation: pulse 2s ease-in-out infinite;
+    cursor: pointer;
+}
+
+/* New fart animation */
+@keyframes fart {
+    0% {
+        transform: scale(0.5);
+    }
+
+    25% {
+        transform: scale(0.9);
+    }
+
+    50% {
+        transform: scale(0.6);
+    }
+
+
+    100% {
+        transform: scale(0.8);
+    }
+}
+
+.fart-animate {
+    animation: fart 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    /* smooth bounce */
+}
+
+
+.fart-animate {
+    animation: fart 1s ease-in-out;
 }

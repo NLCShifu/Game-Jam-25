@@ -10,10 +10,11 @@ interface ButtonWideProps {
     color: string; // color folder name
     onClick?: () => void;
     size?: number; // new prop: scaling factor (1 = default size)
+    colorText?: string;
 }
 
 // Component
-const ButtonWide: React.FC<ButtonWideProps> = ({ text, color, onClick, size = 1 }) => {
+const ButtonWide: React.FC<ButtonWideProps> = ({ text, color, onClick, size = 1, colorText = "white" }) => {
     const [state, setState] = useState<ButtonState>("idle");
 
     // default dimensions
@@ -76,7 +77,7 @@ const ButtonWide: React.FC<ButtonWideProps> = ({ text, color, onClick, size = 1 
                     top: "50%",
                     left: "50%",
                     transform: "translate(-50%, -50%)",
-                    color: "white",
+                    color: colorText,
                     fontSize,
                     fontWeight: "bold",
                     pointerEvents: "none",
