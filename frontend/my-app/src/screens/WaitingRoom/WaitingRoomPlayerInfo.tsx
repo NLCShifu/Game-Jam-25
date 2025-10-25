@@ -1,19 +1,21 @@
-type PropTypes = {
+type PlayerData = {
     playerNumber: number,
     hasJoined: boolean,
     displayName: string
+}
+
+type PropTypes = {
+    playerData: PlayerData
 };
 
-function WaitingRoomPlayerInfo({
-    playerNumber,
-    hasJoined,
-    displayName
-}: Readonly<PropTypes>) {
+function WaitingRoomPlayerInfo({ playerData }: Readonly<PropTypes>) {
     return (
-        <div>
-            {playerNumber} - {hasJoined} - {displayName}
+        <div className="playerInfo">
+            {playerData.playerNumber} - {playerData.hasJoined.toString()} - {playerData.displayName}
         </div>
     )
 }
+
+export type { PlayerData }
 
 export default WaitingRoomPlayerInfo
