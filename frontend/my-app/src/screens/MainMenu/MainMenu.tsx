@@ -35,18 +35,6 @@ function MainMenu() {
     <>
       <div id="mainMenu" className="imageBackground">
         {/* Background SVG */}
-        <div className="backgroundSvg">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 800 400"
-            width="800"
-            height="400"
-            role="img"
-            aria-label="Deux silhouettes face à face - respiration + rires animés"
-          >
-            {/* Your SVG content here (paths, g, defs, style...) */}
-          </svg>
-        </div>
 
         <div style={{ flex: "1" }} />
         <img
