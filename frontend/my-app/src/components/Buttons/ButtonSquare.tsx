@@ -14,7 +14,7 @@ interface ButtonSquareProps {
 }
 
 // inside component
-const ButtonSquare: React.FC<ButtonSquareProps> = ({ iconName, color, size = 90, onClick }) => {
+const ButtonSquare: React.FC<ButtonSquareProps> = ({ iconName, color, size = 90, onClick, }) => {
     const [state, setState] = useState<ButtonState>("idle");
 
     // dynamically build image paths for button background
