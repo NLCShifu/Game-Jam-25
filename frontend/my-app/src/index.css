@@ -110,6 +110,7 @@ button:focus-visible {
 
 ::-webkit-scrollbar {
   width: 30px;
+  pointer-events: none
 }
 
 ::-webkit-scrollbar-track {
