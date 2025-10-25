@@ -5,7 +5,10 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* background-color: #242424; */
+  /* background-image: radial-gradient(rgb(92, 247, 181) 0%, rgb(39, 158, 110) 100%);
+  background-image: url("./assets/backgrounds/green.jpg");
+  background-size: cover; */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -91,4 +94,15 @@ button:focus-visible {
 * {
   cursor: none !important;
   font-family: "Yourmate";
+}
+
+/* -- Background -- */
+
+.imageBackground {
+  background-image: url("./assets/backgrounds/green.jpg");
+  background-size: cover;
+}
+
+.gradientBackground {
+  background-image: radial-gradient(rgb(92, 247, 181) 0%, rgb(39, 158, 110) 100%);
 }

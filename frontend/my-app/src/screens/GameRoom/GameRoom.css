@@ -24,19 +24,27 @@
 }
 
 .otherCameraContainer {
-    flex: 3;
+    flex: 300;
 }
 
 .livesContainer {
     flex: 1;
 
     display: flex;
+
+    padding: 15px;
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    /* Paths terrify me */
+    clip-path: polygon(0 0, 50% 0, 45% 55%, 50% 55%, 45% 100%, 50% 100%, 55% 45%, 50% 45%, 55% 0, 100% 0, 100% 100%, 0 100%);
 }
 
 .effectsContainer {
     flex: 3;
 
-    background-color: black;
+    /* border-radius: 15px;
+    background-color: rgba(0, 0, 0, 0.5); */
 }
 
 .ownCameraContainer {

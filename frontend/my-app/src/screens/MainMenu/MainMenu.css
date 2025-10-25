@@ -1,7 +1,13 @@
+#mainMenu {
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+}
+
 .title {
     font-size: 100pt;
     margin: 0 auto;
-    font-family: "Yourmate";
 }
 
 .menuButtons {
