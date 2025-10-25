@@ -6,7 +6,13 @@ description = "Backend FastAPI pour rooms avec REST + WebSocket (video + metadat
 authors = [
   { name = "Romain Croughs", email = "romain.croughs@student.kuleuven.be" },
 ]
-dependencies = ["fastapi[standard]", "uvicorn"]
+dependencies = [
+    "fastapi[standard]",
+    "uvicorn",
+    "opencv-python",
+    "mediapipe",
+    "numpy"
+]
 
 [tool.uv]
 scripts = { start = "uv run fastapi src/main.py" }
