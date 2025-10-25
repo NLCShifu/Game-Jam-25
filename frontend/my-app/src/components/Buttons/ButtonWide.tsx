@@ -1,72 +1,93 @@
 // ButtonWide.tsx
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
-// Import images
-import idleImage from "../../assets/Buttons/wide_idle.png";
-import hoverImage from "../../assets/Buttons/wide_hover.png";
-import clickImage from "../../assets/Buttons/wide_click.png";
-
 // Map button states to images
 type ButtonState = "idle" | "hover" | "pressed";
-const imageSources: Record<ButtonState, string> = {
-    idle: idleImage,
-    hover: hoverImage,
-    pressed: clickImage,
-};
 
 // Props
 interface ButtonWideProps {
+    text: string;
+    color: string; // new prop: color name
     onClick?: () => void;
 }
 
-const ButtonWide: React.FC<ButtonWideProps> = ({ onClick }) => {
-    const [currentImageSrc, setCurrentImageSrc] = useState<string>(imageSources.idle);
+// inside component
+const ButtonWide: React.FC<ButtonWideProps> = ({ text, color, onClick }) => {
+    const [state, setState] = useState<ButtonState>("idle");
 
-    // Framer Motion animations
-    const buttonAnimations = {
-        whileHover: { scale: 1.05, transition: { duration: 0.15 } },
-        whileTap: { scale: 0.95, transition: { duration: 0.05 } },
+    // dynamically build image paths
+    const imageSources: Record<ButtonState, string> = {
+        idle: `/${color}/button wide idle.png`,
+        hover: `/${color}/button wide hover.png`,
+        pressed: `/${color}/button wide clicked.png`,
     };
 
-    // Event handlers
-    const handleHoverStart = () => setCurrentImageSrc(imageSources.hover);
-    const handleHoverEnd = () => setCurrentImageSrc(imageSources.idle);
-    const handleTapStart = () => setCurrentImageSrc(imageSources.pressed);
-    const handleTapEnd = () => setCurrentImageSrc(imageSources.hover);
+    const safeSrc = imageSources[state] || imageSources.idle;
 
-    // Fallback image if import fails
-    const safeSrc = currentImageSrc || "";
+    // Event handlers
+    const handleHoverStart = () => setState("hover");
+    const handleHoverEnd = () => setState("idle");
+    const handleTapStart = () => setState("pressed");
+    const handleTapEnd = () => setState("hover");
 
     return (
-        <button
+        <motion.div
+            onMouseEnter={handleHoverStart}
+            onMouseLeave={handleHoverEnd}
+            onMouseDown={handleTapStart}
+            onMouseUp={handleTapEnd}
             onClick={onClick}
             style={{
-                border: "none",
-                padding: 0,
-                background: "none",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
                 cursor: "pointer",
+                position: "relative",
+                width: "250px", // optional fixed size
             }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
         >
-            <motion.img
+            <img
                 src={safeSrc}
                 alt="Animated Button"
-                onHoverStart={handleHoverStart}
-                onHoverEnd={handleHoverEnd}
-                onTapStart={handleTapStart}
-                onTap={handleTapEnd}
-                {...buttonAnimations}
-                initial={{ scale: 1.0 }}
                 style={{
-                    width: "300px", // ensures visible size
+                    width: "100%",
                     height: "auto",
-                }}
-                onError={(e) => {
-                    console.warn("Button image failed to load:", e);
+                    userSelect: "none",
+                    pointerEvents: "none",
                 }}
             />
-        </button>
+            <span
+                style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    color: "white",
+                    fontSize: "30px",
+                    fontWeight: "bold",
+                    pointerEvents: "none",
+                    textAlign: "center",
+                    whiteSpace: "nowrap",
+                    textShadow: `
+                        -4px -4px 0 black,
+                        4px -4px 0 black,
+                        -4px 4px 0 black,
+                        4px 4px 0 black,
+                        0px -4px 0 black,
+                        -4px 0px 0 black,
+                        4px 0px 0 black,
+                        0px 4px 0 black
+                    `,
+                }}
+
+            >
+                {text}
+            </span>
+        </motion.div >
     );
 };
 
