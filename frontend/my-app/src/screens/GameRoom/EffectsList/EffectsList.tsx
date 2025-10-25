@@ -6,6 +6,8 @@ import EffectTab from "./EffectTabContent";
 import MemesList from "./MemesList";
 
 import testImg from "../../../assets/cursor.png";
+import ButtonSquare from "../../../components/Buttons/ButtonSquare";
+import PopupWindow from "../../../components/PopupWindow";
 
 const Tab = {
     MEMES: 0,
@@ -31,23 +33,26 @@ function EffectsList() {
     }
 
     return (
-        <div className="effectsList">
+        // <div className="effectsList">
+        <PopupWindow color="basic orange" animated={false} className="effectsList">
             <div className="header">
-                <button onClick={prevTab}>{"<"}</button>
+                {/* <button onClick={prevTab}>{"<"}</button> */}
+                <ButtonSquare iconName="icons arrow left.png" color="basic yellow" size={50} onClick={prevTab} />
                 <span>{tabName(tab)}</span>
-                <button onClick={nextTab}>{">"}</button>
+                <ButtonSquare iconName="icons arrow right.png" color="basic yellow" size={50} onClick={nextTab} />
             </div>
             <div className="tabHolder">
                 <EffectTab visible={tab === Tab.MEMES}>
                     <MemesList memes={[
-                        testImg, testImg, testImg, testImg
+                        // testImg, testImg, testImg, testImg
                     ]}/>
                 </EffectTab>
                 <EffectTab visible={tab === Tab.SFX}>
                     SFX tab
                 </EffectTab>
             </div>
-        </div>
+        </PopupWindow>
+        // </div>
     )
 }
 

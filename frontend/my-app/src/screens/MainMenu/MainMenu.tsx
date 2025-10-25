@@ -28,12 +28,14 @@ function MainMenu() {
 
   return (
     <>
-      <div id="mainMenu">
+      <div id="mainMenu" className="imageBackground">
+        <div style={{ flex: "1" }} />
         <p className="title">BARBICHETTE</p>
         <div className="menuButtons">
           <button onClick={handleCreate}>Create</button>
           <button onClick={() => setShowPopup(true)}>Join</button>
         </div>
+        <div style={{ flex: "1" }} />
       </div>
       
       <JoinMenu showPopup={showPopup} closePopup={() => setShowPopup(false)} />

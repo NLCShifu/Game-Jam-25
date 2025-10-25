@@ -62,7 +62,7 @@ function WaitingRoom() {
     }
 
     return (
-        <div className="waitingRoom">
+        <div className="waitingRoom imageBackground">
             <div style={{ "flexGrow": 1 }} />
 
             <div className="playerInfoPanels">
