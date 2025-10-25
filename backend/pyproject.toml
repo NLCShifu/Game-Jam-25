@@ -1,0 +1,12 @@
+[project]
+name = "BarbichetteAPI"
+version = "0.1.0"
+requires-python = ">=3.8"
+description = "Backend FastAPI pour rooms avec REST + WebSocket (video + metadata)"
+authors = [
+  { name = "Romain Croughs", email = "romain.croughs@student.kuleuven.be" },
+]
+dependencies = ["fastapi[standard]", "uvicorn"]
+
+[tool.uv]
+scripts = { start = "uv run fastapi src/main.py" }
