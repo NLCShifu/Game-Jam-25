@@ -4,7 +4,6 @@ from unittest.mock import DEFAULT
 from .gamePhase import GamePhase
 from .session import Session
 from .round import Round
-from services.room_service import rooms
 
 
 class GameState:
@@ -66,4 +65,6 @@ class GameState:
         self.phase = GamePhase.WAITING
 
     def network_update(self, player_index: int, message: dict[str, int | str]) -> None:
+        from services.rooms_service import rooms
+
         rooms[self.room_id].sessions[player_index].ws_meta.send_json(message)
