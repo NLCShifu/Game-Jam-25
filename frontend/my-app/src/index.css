@@ -106,3 +106,23 @@ button:focus-visible {
 .gradientBackground {
   background-image: radial-gradient(rgb(92, 247, 181) 0%, rgb(39, 158, 110) 100%);
 }
+
+
+::-webkit-scrollbar {
+  width: 30px;
+}
+
+::-webkit-scrollbar-track {
+  border-image: url('/basic black/scrollbar vertical.png') 20 fill / 12px;
+  /* width of preserved edges */
+  border-style: solid;
+  /* needed for border-image to work */
+
+}
+
+
+::-webkit-scrollbar-thumb {
+  border-image: url('/basic black/scrollbar slider.png') 20 fill /10px;
+  /* makes the image fit the thumb */
+  border-style: solid;
+}

@@ -31,7 +31,6 @@ function Test() {
 
     return (
         <>
-
             <ButtonWide text="NIGGA" color="basic pink" size={0.5} onClick={() => {
                 const sound = new Howl({
                     src: ["/MISTER V-LE POULET.mp3"],
