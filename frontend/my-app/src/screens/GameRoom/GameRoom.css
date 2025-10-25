@@ -61,6 +61,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    gap: 10px;
 }
 
 .livesDisplay.otherLives {
@@ -69,6 +70,17 @@
 .livesDisplay.ownLives {
     align-items: flex-end;
 }
+
+.container {
+    position: relative;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* .livesDisplay > span {
+    margin-top: 2px;
+    margin-bottom: 15px;
+} */
 
 .livesDisplayContainer {
     flex: 1;

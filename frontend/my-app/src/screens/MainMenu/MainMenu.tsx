@@ -37,8 +37,9 @@ function MainMenu() {
         </div>
         <div style={{ flex: "1" }} />
       </div>
-      
       <JoinMenu showPopup={showPopup} closePopup={() => setShowPopup(false)} />
+      
+      
     </>
   )
 }

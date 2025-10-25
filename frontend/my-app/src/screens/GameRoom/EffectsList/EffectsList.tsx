@@ -34,7 +34,7 @@ function EffectsList() {
 
     return (
         // <div className="effectsList">
-        <PopupWindow color="basic orange" animated={false} className="effectsList">
+        <PopupWindow color="basic orange" animated={false} className="container effectsList">
             <div className="header">
                 {/* <button onClick={prevTab}>{"<"}</button> */}
                 <ButtonSquare iconName="icons arrow left.png" color="basic yellow" size={50} onClick={prevTab} />
