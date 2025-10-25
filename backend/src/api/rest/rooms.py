@@ -9,10 +9,6 @@ from models.session import Session
 router = APIRouter(prefix="/rooms", tags=["rooms"])
 
 
-class JoinRequest(BaseModel):
-    username: str
-
-
 @router.post("")
 def create_room():
     room_id = str(uuid.uuid4())
@@ -31,14 +27,15 @@ def get_room(room_id: str):
 
 
 @router.post("/{room_id}/join")
-def join_room(room_id: str, body: JoinRequest):
+def join_room(room_id: str):
     if room_id not in rooms:
         raise HTTPException(404, "Room not found")
     session_id = str(uuid.uuid4())
-    session = Session(session_id, body.username)
+    username = "blank"
+    session = Session(session_id, username)
     sessions[session_id] = {
         "room_id": room_id,
-        "user_name": body.username,
+        "user_name": username,
         "expires": datetime.utcnow() + timedelta(minutes=10),
     }
     rooms[room_id].add_sessions(session)

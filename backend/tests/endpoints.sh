@@ -14,13 +14,13 @@ fi
 echo "Room created: $room_id"
 
 # join player1
-resp1=$(curl -s -X POST "$BASE/rooms/$room_id/join" -H "Content-Type: application/json" -d '{"display_name":"player1"}')
+resp1=$(curl -s -X POST "$BASE/rooms/$room_id/join")
 session1=$(echo "$resp1" | jq -r '.session_id // .sessionId // .id // .client_id // empty')
 if [ -z "$session1" ]; then session1="player1"; fi
 echo "player1 session: $session1"
 
 # join player2
-resp2=$(curl -s -X POST "$BASE/rooms/$room_id/join" -H "Content-Type: application/json" -d '{"display_name":"player2"}')
+resp2=$(curl -s -X POST "$BASE/rooms/$room_id/join")
 session2=$(echo "$resp2" | jq -r '.session_id // .sessionId // .id // .client_id // empty')
 if [ -z "$session2" ]; then session2="player2"; fi
 echo "player2 session: $session2"
