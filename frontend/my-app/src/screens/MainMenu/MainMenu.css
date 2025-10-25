@@ -42,17 +42,25 @@
 }
 
 .menuPanel > span {
+    position: absolute;
+
     font-size: 20px;
 }
 
 .menuPanel input {
     resize: none;
     text-align: center;
-    height: min-content;
+    /* height: min-content; */
+    font-size: 35px;
+    width: 200px;
+    height: 45px;
+    border: 0;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .menuPanel .exitbutton {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 15px;
+    right: 15px;
 }

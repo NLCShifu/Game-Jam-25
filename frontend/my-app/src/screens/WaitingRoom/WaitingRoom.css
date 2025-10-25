@@ -12,13 +12,23 @@
     flex-direction: row;
     align-items: stretch;
     justify-content: space-evenly;
-    flex-grow: 2;
+    flex: 2;
     width: 100%;
+    /* gap: 10px; */
 }
 
 .waitingRoom .playerInfoPanels .playerInfo {
-    background-color: black;
-    width: calc(50% - 10px);
+    width: calc(50% - 100px);
+    /* flex: 1; */
+
+    display: flex;
+    flex-direction: column;
+    /* gap: 10px; */
+
+    padding: 20px;
+    box-sizing: border-box;
+
+    font-size: 20px;
 }
 
 .waitingRoom .startButton {
@@ -30,4 +40,45 @@
     position: absolute;
     top: 5px;
     right: 5px;
+}
+
+.waitingRoom .roomId {
+    padding: 15px;
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: flex-end;
+    gap: 15px;
+}
+
+.waitingRoom .roomId span {
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 0px 10px 0px 10px;
+    font-size: 30px;
+}
+
+#copyNotification {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    margin-left: -100px;
+    width: 200px;
+    color:rgba(255, 255, 255, 0);
+}
+
+#copyNotification .anim {
+    animation-name: copyPopup;
+    animation-duration: 2s;
+}
+
+@keyframes copyPopup {
+    0% {
+        top: -25px;
+        color:rgba(255, 255, 255, 1);
+    }
+    100% {
+        top: -45px;
+        color:rgba(255, 255, 255, 0);
+    }
 }
