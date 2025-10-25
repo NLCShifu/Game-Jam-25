@@ -50,7 +50,7 @@ const PopupWindow: React.FC<PopupWindowProps> = ({
                     alt="Popup Window"
                     style={{ width, height, position: "absolute", top: 0, left: 0 }}
                 />*/}
-                <div
+                {/* <div
                     style={{
                         position: "relative",
                         width: "100%",
@@ -62,9 +62,9 @@ const PopupWindow: React.FC<PopupWindowProps> = ({
                         // justifyContent: "center",
                         // alignItems: "center",
                     }}
-                >
+                > */}
                     {children}
-                </div>
+                {/* </div> */}
                 {/* <img src={backgroundSrc} alt="Popup Window" style={{
                     width: "100%",
                     height: "10%",
@@ -89,33 +89,37 @@ const PopupWindow: React.FC<PopupWindowProps> = ({
                     animate="visible"
                     exit="exit"
                     variants={variants}
+                    // style={{
+                    //     // width,
+                    //     // height,
+                    //     // position: "relative",
+                    //     // display: "inline-block",
+                    // }}
                     style={{
-                        width,
-                        height,
-                        position: "relative",
-                        display: "inline-block",
-                    }}
+                    borderImage: `url('${backgroundSrc}') 20 fill / 12px`
+                }}
+                className={className}
                 >
-                    <img
+                    {/* <img
                         src={backgroundSrc}
                         alt="Popup Window"
                         style={{ width, height, position: "absolute", top: 0, left: 0 }}
-                    />
-                    <div
+                    /> */}
+                    {/* <div
                         style={{
                             position: "relative",
                             width: "100%",
                             height: "100%",
                             padding: 20,
                             boxSizing: "border-box",
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "center",
-                            alignItems: "center",
+                            // display: "flex",
+                            // flexDirection: "column",
+                            // justifyContent: "center",
+                            // alignItems: "center",
                         }}
-                    >
+                    > */}
                         {children}
-                    </div>
+                    {/* </div> */}
                 </motion.div>
             )}
         </AnimatePresence>
