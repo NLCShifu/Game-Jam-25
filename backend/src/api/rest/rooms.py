@@ -4,6 +4,7 @@ from pydantic import BaseModel
 import uuid
 from datetime import datetime, timedelta
 from services.rooms_service import rooms, sessions
+from services.id_service import generate_unique_id
 from models.room import Room
 from models.session import Session
 
@@ -12,7 +13,7 @@ router = APIRouter(prefix="/rooms", tags=["rooms"])
 
 @router.post("")
 def create_room():
-    room_id = str(uuid.uuid4())
+    room_id = generate_unique_id()
     room = Room(room_id)
     rooms[room_id] = room
     return {"room_id": room_id}
@@ -31,8 +32,7 @@ def get_room(room_id: str):
 def join_room(room_id: str):
     if room_id not in rooms:
         raise HTTPException(404, "Room not found")
-    session_id = str(uuid.uuid4())
-
+    session_id = generate_unique_id()
     with open("res/usernames.txt", "r") as file:
         lines = file.readlines()
     usernames = [line.strip() for line in lines]
