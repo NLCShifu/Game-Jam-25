@@ -1,0 +1,33 @@
+.waitingRoom {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    gap: 10px;
+}
+
+.waitingRoom .playerInfoPanels {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-evenly;
+    flex-grow: 2;
+    width: 100%;
+}
+
+.waitingRoom .playerInfoPanels .playerInfo {
+    background-color: black;
+    width: calc(50% - 10px);
+}
+
+.waitingRoom .startButton {
+    flex-grow: 1;
+    max-width: min-content;
+}
+
+.waitingRoom .exitButton {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}

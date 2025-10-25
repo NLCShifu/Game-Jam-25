@@ -1,0 +1,44 @@
+.title {
+    font-size: 100pt;
+    margin: 0 auto;
+    font-family: "Yourmate";
+}
+
+.menuButtons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.menuButtons > button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 50%;
+}
+
+.menuPanel {
+    position: fixed;
+
+    top: 20%;
+    bottom: 20%;
+    left: 20%;
+    right: 20%;
+
+    background-color: black;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.menuPanel input {
+    resize: none;
+    text-align: center;
+    height: min-content;
+}
+
+.menuPanel .exitbutton {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
