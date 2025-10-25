@@ -6,6 +6,8 @@ import Heart, { type HeartHandle } from "../../components/Heart"
 import IconPanel from "../../components/IconPanel"
 import PopupWindow from "../../components/PopupWindow"
 import Ribbon from "../../components/Ribbon"
+import Hearts, { type HeartsHandle } from "../../components/Hearts";
+import Confetti from "../../components/Confetti"
 
 
 
@@ -16,9 +18,19 @@ function Test() {
         heartRef.current?.unfill();
     };
 
+    const heartsRef = useRef<HeartsHandle>(null);
+
+    const loseLife = () => {
+        heartsRef.current?.loseLife();
+    };
+
+    const resetHearts = () => {
+        heartsRef.current?.reset();
+    };
 
     return (
         <>
+
             <ButtonWide text="NIGGA" color="basic pink" />
             <ButtonSquare iconName="icons arrow right.png" color="basic blue" />
             <ButtonWider text="FRIED CHICKEN" color="basic green" />
@@ -28,6 +40,10 @@ function Test() {
             <IconPanel color="metal" />
             <Heart ref={heartRef} color="basic red" initialFilled={true} />
             <ButtonSquare iconName="icons cross.png" color="basic black" onClick={handleUnfill} />
+            <Hearts ref={heartsRef} color="basic red" lives={3} size={80} direction="rtl" finalSound="/death_fortnite.mp3" />
+            <button onClick={loseLife}>Lose Life</button>
+            <button onClick={resetHearts}>Reset Hearts</button>
+            <Confetti />
         </>
     )
 }
