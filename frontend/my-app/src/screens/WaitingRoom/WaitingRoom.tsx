@@ -3,6 +3,10 @@ import { useNavigate, useParams } from "react-router"
 import "./WaitingRoom.css"
 import WaitingRoomPlayerInfo, { type PlayerData } from "./WaitingRoomPlayerInfo"
 import { useEffect, useReducer, useState } from "react";
+import ButtonSquare from "../../components/Buttons/ButtonSquare";
+import ButtonWide from "../../components/Buttons/ButtonWide";
+import PopupWindow from "../../components/PopupWindow";
+import RoomId from "./RoomId";
 
 type ParticipantInfo = {
     session_id: string,
@@ -12,7 +16,7 @@ type ParticipantInfo = {
 
 function WaitingRoom() {
     const navigate = useNavigate();
-    // let { room_id, session_id } = useParams()
+    let { room_id, session_id } = useParams()
 
     // retrieve players currently in room
     // this will use useWebsocket to automatically update when new data is received
@@ -41,11 +45,11 @@ function WaitingRoom() {
                     "display_name": "Name",
                     "joined_at": "never. they aren't real. you have to move on."
                 },
-                {
-                    "session_id": "fhjkhf",
-                    "display_name": "FBWEOFOWF",
-                    "joined_at": "fnkdon."
-                }
+                // {
+                //     "session_id": "fhjkhf",
+                //     "display_name": "FBWEOFOWF",
+                //     "joined_at": "fnkdon."
+                // }
             ]
         };
 
@@ -62,19 +66,33 @@ function WaitingRoom() {
     }
 
     return (
-        <div className="waitingRoom">
+        <div className="waitingRoom imageBackground">
             <div style={{ "flexGrow": 1 }} />
+
+            {/* <div onClick={async () => await navigator.clipboard.writeText(room_id!)}>
+                <PopupWindow color="basic pink" className="roomId">
+                    <div>room code:<br />(click to copy)</div> <span>{room_id}</span>
+                </PopupWindow>
+            </div> */}
+            <RoomId room_id={room_id!} />
 
             <div className="playerInfoPanels">
                 <WaitingRoomPlayerInfo playerData={playerOneData} />
                 <WaitingRoomPlayerInfo playerData={playerTwoData} />
             </div>
 
+            {/* <div className="startButton">
+                <button disabled={!canStart}>START</button>
+                
+            </div> */}
             <div className="startButton">
-                <button className="startButton" disabled={!canStart}>START</button>
+                <ButtonWide color="basic yellow" text="START" size={0.6} />
             </div>
             
-            <button className="exitButton" onClick={exitRoom}>X</button>
+            {/* <button className="exitButton" onClick={exitRoom}>X</button> */}
+            <div className="exitButton">
+                <ButtonSquare iconName="icons cross.png" color="basic red" onClick={exitRoom} size={40} />
+            </div>
         </div>
     )
 }

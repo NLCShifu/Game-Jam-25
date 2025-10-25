@@ -1,9 +1,15 @@
 import { useState } from 'react'
 import './MainMenu.css'
 
+
 import JoinMenu from './JoinMenu'
 import axios from 'axios';
 import { useNavigate } from 'react-router';
+import ButtonWide from '../../components/Buttons/ButtonWide';
+import { scale, transform } from 'framer-motion';
+
+
+const imageSrc = '/logo.png';
 
 function MainMenu() {
   const navigate = useNavigate();
@@ -28,15 +34,18 @@ function MainMenu() {
 
   return (
     <>
-      <div id="mainMenu">
-        <p className="title">BARBICHETTE</p>
+      <div id="mainMenu" className="imageBackground">
+        <div style={{ flex: "1" }} />
+        <img src={imageSrc} alt="Logo" className='pulsing-logo' style={{ transform: 'scale(0.9)' }} />
         <div className="menuButtons">
-          <button onClick={handleCreate}>Create</button>
-          <button onClick={() => setShowPopup(true)}>Join</button>
+          <ButtonWide color="basic black" onClick={handleCreate} text='Create' size={0.7} />
+          <ButtonWide color="basic black" onClick={() => setShowPopup(true)} text='Join' size={0.7} />
         </div>
+        <div style={{ flex: "1" }} />
       </div>
-      
       <JoinMenu showPopup={showPopup} closePopup={() => setShowPopup(false)} />
+
+
     </>
   )
 }

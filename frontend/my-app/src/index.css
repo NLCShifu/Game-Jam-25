@@ -5,7 +5,10 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* background-color: #242424; */
+  /* background-image: radial-gradient(rgb(92, 247, 181) 0%, rgb(39, 158, 110) 100%);
+  background-image: url("./assets/backgrounds/green.jpg");
+  background-size: cover; */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -91,4 +94,36 @@ button:focus-visible {
 * {
   cursor: none !important;
   font-family: "Yourmate";
+}
+
+/* -- Background -- */
+
+.imageBackground {
+  background-image: url("./assets/backgrounds/green.jpg");
+  background-size: cover;
+}
+
+.gradientBackground {
+  background-image: radial-gradient(rgb(92, 247, 181) 0%, rgb(39, 158, 110) 100%);
+}
+
+
+::-webkit-scrollbar {
+  width: 30px;
+  pointer-events: none
+}
+
+::-webkit-scrollbar-track {
+  border-image: url('/basic black/scrollbar vertical.png') 20 fill / 12px;
+  /* width of preserved edges */
+  border-style: solid;
+  /* needed for border-image to work */
+
+}
+
+
+::-webkit-scrollbar-thumb {
+  border-image: url('/basic black/scrollbar slider.png') 20 fill /10px;
+  /* makes the image fit the thumb */
+  border-style: solid;
 }

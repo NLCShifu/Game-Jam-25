@@ -1,16 +1,24 @@
+#mainMenu {
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+}
+
 .title {
     font-size: 100pt;
     margin: 0 auto;
-    font-family: "Yourmate";
 }
 
 .menuButtons {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 10px;
+    /* adjust the spacing */
 }
 
-.menuButtons > button {
+.menuButtons>button {
     margin-top: 10px;
     margin-bottom: 10px;
     width: 50%;
@@ -19,26 +27,61 @@
 .menuPanel {
     position: fixed;
 
-    top: 20%;
-    bottom: 20%;
-    left: 20%;
-    right: 20%;
-
-    background-color: black;
+    left: 50%;
+    top: 50%;
+    margin-left: -150px;
+    margin-top: -100px;
+    width: 300px;
+    height: 200px;
 
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    gap: 10px;
+
+    padding: 20px;
+}
+
+.menuPanel>span {
+    position: absolute;
+
+    font-size: 20px;
 }
 
 .menuPanel input {
     resize: none;
     text-align: center;
-    height: min-content;
+    /* height: min-content; */
+    font-size: 35px;
+    width: 200px;
+    height: 45px;
+    border: 0;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .menuPanel .exitbutton {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 15px;
+    right: 15px;
+}
+
+
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(0.8);
+    }
+
+    50% {
+        transform: scale(0.85);
+        /* slightly larger */
+    }
+}
+
+.pulsing-logo {
+    animation: pulse 2s ease-in-out infinite;
 }

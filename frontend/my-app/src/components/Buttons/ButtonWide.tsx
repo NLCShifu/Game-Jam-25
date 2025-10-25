@@ -1,4 +1,3 @@
-// ButtonWide.tsx
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
@@ -8,13 +7,24 @@ type ButtonState = "idle" | "hover" | "pressed";
 // Props
 interface ButtonWideProps {
     text: string;
-    color: string; // new prop: color name
+    color: string; // color folder name
     onClick?: () => void;
+    size?: number; // new prop: scaling factor (1 = default size)
+    colorText?: string;
 }
 
-// inside component
-const ButtonWide: React.FC<ButtonWideProps> = ({ text, color, onClick }) => {
+// Component
+const ButtonWide: React.FC<ButtonWideProps> = ({ text, color, onClick, size = 1, colorText = "white" }) => {
     const [state, setState] = useState<ButtonState>("idle");
+
+    // default dimensions
+    const baseWidth = 320;
+    const baseHeight = 120;
+
+    // apply scaling
+    const width = baseWidth * size;
+    const height = baseHeight * size;
+    const fontSize = 60 * size;
 
     // dynamically build image paths
     const imageSources: Record<ButtonState, string> = {
@@ -44,7 +54,8 @@ const ButtonWide: React.FC<ButtonWideProps> = ({ text, color, onClick }) => {
                 justifyContent: "center",
                 cursor: "pointer",
                 position: "relative",
-                width: "250px", // optional fixed size
+                width,
+                height,
             }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -54,8 +65,8 @@ const ButtonWide: React.FC<ButtonWideProps> = ({ text, color, onClick }) => {
                 src={safeSrc}
                 alt="Animated Button"
                 style={{
-                    width: "100%",
-                    height: "auto",
+                    width,
+                    height,
                     userSelect: "none",
                     pointerEvents: "none",
                 }}
@@ -66,28 +77,17 @@ const ButtonWide: React.FC<ButtonWideProps> = ({ text, color, onClick }) => {
                     top: "50%",
                     left: "50%",
                     transform: "translate(-50%, -50%)",
-                    color: "white",
-                    fontSize: "30px",
+                    color: colorText,
+                    fontSize,
                     fontWeight: "bold",
                     pointerEvents: "none",
                     textAlign: "center",
                     whiteSpace: "nowrap",
-                    textShadow: `
-                        -4px -4px 0 black,
-                        4px -4px 0 black,
-                        -4px 4px 0 black,
-                        4px 4px 0 black,
-                        0px -4px 0 black,
-                        -4px 0px 0 black,
-                        4px 0px 0 black,
-                        0px 4px 0 black
-                    `,
                 }}
-
             >
                 {text}
             </span>
-        </motion.div >
+        </motion.div>
     );
 };
 
