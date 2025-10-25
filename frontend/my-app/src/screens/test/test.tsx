@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import ButtonSquare from "../../components/Buttons/ButtonSquare"
 import ButtonWide from "../../components/Buttons/ButtonWide"
 import ButtonWider from "../../components/Buttons/ButtonWider"
@@ -9,6 +9,7 @@ import Ribbon from "../../components/Ribbon"
 import Hearts, { type HeartsHandle } from "../../components/Hearts";
 import Confetti from "../../components/Confetti"
 import { Howl } from "howler"
+import ImagePopup from "../../components/ImagePopup"
 
 
 
@@ -28,11 +29,22 @@ function Test() {
     const resetHearts = () => {
         heartsRef.current?.reset();
     };
+    const [showPopup, setShowPopup] = useState(false);
+    const imgSrc = "/image.png";
+    const [popupVisible, setPopupVisible] = useState(false);
 
     return (
-        <>
+        <div>
+            <button onClick={() => setPopupVisible(true)}>Show Image</button>
 
-            <ButtonWide text="NIGGA" color="basic pink" size={0.5} onClick={() => {
+            <ImagePopup
+                imageSrc={imgSrc}
+                visible={popupVisible}
+                duration={3000}
+                soundSrc="/whoosh-sounds-effects-no-copyright_2vZLPrmm.mp3"
+                onClose={() => setPopupVisible(false)}
+            />
+            {/* <ButtonWide text="NIGGA" color="basic pink" size={0.5} onClick={() => {
                 const sound = new Howl({
                     src: ["/MISTER V-LE POULET.mp3"],
                     volume: 0.5,
@@ -50,8 +62,11 @@ function Test() {
             <Hearts ref={heartsRef} color="basic red" lives={3} size={80} direction="rtl" finalSound="/death_fortnite.mp3" />
             <button onClick={loseLife}>Lose Life</button>
             <button onClick={resetHearts}>Reset Hearts</button>
-            <Confetti />
-        </>
+            <Confetti /> */}
+
+
+        </div>
+
     )
 }
 
