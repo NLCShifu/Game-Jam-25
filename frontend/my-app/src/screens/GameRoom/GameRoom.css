@@ -1,0 +1,75 @@
+.layoutGap {
+    gap: 10px;
+}
+
+.gameRoom {
+    height: 100vh;
+    display: flex;
+
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.gameRoom .half {
+    display: flex;
+    flex-direction: column;
+}
+
+.gameRoom .left {
+    flex: 4;
+}
+
+.gameRoom .right {
+    flex: 2;
+}
+
+.otherCameraContainer {
+    flex: 3;
+}
+
+.livesContainer {
+    flex: 1;
+
+    display: flex;
+}
+
+.effectsContainer {
+    flex: 3;
+
+    background-color: black;
+}
+
+.ownCameraContainer {
+    flex: 2;
+}
+
+.placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: black;
+}
+
+.livesDisplay {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.livesDisplay.otherLives {
+    align-items: flex-start;
+}
+.livesDisplay.ownLives {
+    align-items: flex-end;
+}
+
+.livesDisplayContainer {
+    flex: 1;
+    display: flex;
+    gap: 10px;
+}
+
+.placeholderHeart {
+    width: min-content;
+    height: min-content;
+    font-size: 100px;
+}
