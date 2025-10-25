@@ -115,3 +115,39 @@
 .fart-animate {
     animation: fart 1s ease-in-out;
 }
+
+#mainMenu {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    position: relative;   /* important */
+    overflow: hidden;
+    background-color: black; /* or your existing bg */
+}
+
+/* animated layer */
+.menuOverlayVideo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 140%;
+
+    object-fit: cover;  /* fill the screen nicely */
+    opacity: 0.3;       /* same faded vibe as before */
+    pointer-events: none;
+    z-index: 1;
+
+    /* perf hints */
+    will-change: transform, opacity;
+    transform: translateZ(0);
+}
+
+/* everything interactive sits above it */
+.pulsing-logo,
+.menuButtons,
+.title,
+.menuPanel {
+    position: relative;
+    z-index: 2;
+}

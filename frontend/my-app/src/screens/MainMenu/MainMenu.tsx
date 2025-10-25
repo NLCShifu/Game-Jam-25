@@ -53,6 +53,15 @@ function MainMenu() {
       <div id="mainMenu" className="imageBackground">
         {/* Background SVG */}
 
+        <video
+        className="menuOverlayVideo"
+        src="/jewish.webm"
+        autoPlay
+        muted
+        loop
+        playsInline
+          />
+
         <div style={{ flex: "1" }} />
         <img
           src={imageSrc}
