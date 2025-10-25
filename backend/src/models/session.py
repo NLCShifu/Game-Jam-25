@@ -1,4 +1,5 @@
 from fastapi import WebSocket
+from backend.src.models.state import State
 
 
 class Session:
@@ -10,6 +11,7 @@ class Session:
     def __init__(self, session_id: str, display_name: str):
         self.session_id = session_id
         self.username = display_name
+        self.state = State()
         self.ws_video = None
         self.ws_audio = None
 
