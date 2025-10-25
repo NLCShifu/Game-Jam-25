@@ -1,3 +1,4 @@
+import random
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 import uuid
@@ -31,7 +32,17 @@ def join_room(room_id: str):
     if room_id not in rooms:
         raise HTTPException(404, "Room not found")
     session_id = str(uuid.uuid4())
-    username = "blank"
+
+    with open("../../../res/usernames.txt", "r") as file:
+        lines = file.readlines()
+    usernames = [line.strip() for line in lines]
+
+    username = random.choice(usernames)
+    if len(rooms[room_id].sessions) > 1:
+        while username == rooms[room_id].sessions[0].username:
+            username = random.choice(usernames)
+    print(username)
+
     session = Session(session_id, username)
     sessions[session_id] = {
         "room_id": room_id,
