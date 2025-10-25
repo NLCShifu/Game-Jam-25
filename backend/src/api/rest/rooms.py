@@ -14,9 +14,9 @@ class JoinRequest(BaseModel):
 
 
 @router.post("")
-def create_room(title: str):
+def create_room():
     room_id = str(uuid.uuid4())
-    room = Room(room_id, title)
+    room = Room(room_id)
     rooms[room_id] = room
     return {"room_id": room_id}
 

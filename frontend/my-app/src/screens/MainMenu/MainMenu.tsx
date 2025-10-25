@@ -10,18 +10,26 @@ function MainMenu() {
 
   const [showPopup, setShowPopup] = useState(false);
 
-  // const handleCreate = async () => {
-  //   try {
-  //     await axios.post("/rooms");
-  //   } catch (error) {
-  //     console.error("Error joining room", error);
-  //   }
-  // };
-  const handleCreate = () => {
-    // retrieve room uuid using POST request
-    let roomId = "1234";
-    // join room and retrieve session id using POST request
-    let sessionId = "5678"
+  const handleCreate = async () => {
+    let roomId: string;
+    let sessionId: string;
+
+    try {
+      const response = await axios.post("http://localhost:8000/rooms")
+      roomId = response.data.room_id
+    } catch (error) {
+      console.error("Error creating room", error);
+      return;
+    }
+    try {
+      const response = await axios.post(`http://localhost:8000/rooms/${roomId}/join`, {
+        display_name: "Player1",
+      });
+      sessionId = response.data.session_id;
+    } catch (error) {
+      console.error("Error joining room", error);
+      return;
+    }
 
     navigate(`/${roomId}/${sessionId}/waiting`);
   }

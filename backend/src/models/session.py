@@ -3,13 +3,13 @@ from fastapi import WebSocket
 
 class Session:
     session_id: str
-    display_name: str
+    username: str
     ws_video: WebSocket | None
     ws_audio: WebSocket | None
 
-    def __init__(self, session_id: str, display_name: str):
+    def __init__(self, session_id: str, username: str):
         self.session_id = session_id
-        self.username = display_name
+        self.username = username
         self.ws_video = None
         self.ws_audio = None
 
