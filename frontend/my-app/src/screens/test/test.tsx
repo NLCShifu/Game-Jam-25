@@ -8,6 +8,7 @@ import PopupWindow from "../../components/PopupWindow"
 import Ribbon from "../../components/Ribbon"
 import Hearts, { type HeartsHandle } from "../../components/Hearts";
 import Confetti from "../../components/Confetti"
+import { Howl } from "howler"
 
 
 
@@ -31,7 +32,13 @@ function Test() {
     return (
         <>
 
-            <ButtonWide text="NIGGA" color="basic pink" />
+            <ButtonWide text="NIGGA" color="basic pink" size={0.5} onClick={() => {
+                const sound = new Howl({
+                    src: ["/MISTER V-LE POULET.mp3"],
+                    volume: 0.5,
+                })
+                sound.play();
+            }} />
             <ButtonSquare iconName="icons arrow right.png" color="basic blue" />
             <ButtonWider text="FRIED CHICKEN" color="basic green" />
             <PopupWindow color="basic yellow" show={true} animated={true}>
