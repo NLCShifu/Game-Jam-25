@@ -31,7 +31,7 @@ function Test() {
     return (
         <>
 
-            <ButtonWide text="NIGGA" color="basic pink" />
+            <ButtonWide text="NIGGA" color="basic pink" size={0.5} />
             <ButtonSquare iconName="icons arrow right.png" color="basic blue" />
             <ButtonWider text="FRIED CHICKEN" color="basic green" />
             <PopupWindow color="basic yellow" show={true} animated={true}>
