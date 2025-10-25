@@ -4,13 +4,13 @@ from .state import State
 
 class Session:
     session_id: str
-    display_name: str
+    username: str
     ws_video: WebSocket | None
     ws_audio: WebSocket | None
 
-    def __init__(self, session_id: str, display_name: str):
+    def __init__(self, session_id: str, username: str):
         self.session_id = session_id
-        self.username = display_name
+        self.username = username
         self.state = State()
         self.ws_video = None
         self.ws_audio = None
@@ -18,7 +18,7 @@ class Session:
     def to_dict(self):
         return {
             "session_id": self.session_id,
-            "display_name": self.username,
+            "username": self.username,
         }
 
     def add_ws_video(self, websocket):

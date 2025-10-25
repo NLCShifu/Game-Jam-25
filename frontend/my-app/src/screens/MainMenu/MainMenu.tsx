@@ -23,7 +23,7 @@ function MainMenu() {
     }
     try {
       const response = await axios.post(`http://localhost:8000/rooms/${roomId}/join`, {
-        display_name: "Player1",
+        username: "Player1",
       });
       sessionId = response.data.session_id;
     } catch (error) {

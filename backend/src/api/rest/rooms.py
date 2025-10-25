@@ -10,7 +10,7 @@ router = APIRouter(prefix="/rooms", tags=["rooms"])
 
 
 class JoinRequest(BaseModel):
-    display_name: str
+    username: str
 
 
 @router.post("")
@@ -35,10 +35,10 @@ def join_room(room_id: str, body: JoinRequest):
     if room_id not in rooms:
         raise HTTPException(404, "Room not found")
     session_id = str(uuid.uuid4())
-    session = Session(session_id, body.display_name)
+    session = Session(session_id, body.username)
     sessions[session_id] = {
         "room_id": room_id,
-        "user_name": body.display_name,
+        "user_name": body.username,
         "expires": datetime.utcnow() + timedelta(minutes=10),
     }
     rooms[room_id].add_sessions(session)

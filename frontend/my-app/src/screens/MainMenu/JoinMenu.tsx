@@ -25,7 +25,7 @@ function JoinMenu({ showPopup, closePopup }: Readonly<PropTypes>) {
 
         try {
             const resp = await axios.post(`http://localhost:8000/rooms/${code}/join`, {
-                display_name: displayName
+                username: displayName
             });
             const sessionId = resp.data.session_id;
             closePopup();
