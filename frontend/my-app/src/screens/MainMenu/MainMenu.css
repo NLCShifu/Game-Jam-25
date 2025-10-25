@@ -14,9 +14,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 10px;
+    /* adjust the spacing */
 }
 
-.menuButtons > button {
+.menuButtons>button {
     margin-top: 10px;
     margin-bottom: 10px;
     width: 50%;
@@ -41,7 +43,7 @@
     padding: 20px;
 }
 
-.menuPanel > span {
+.menuPanel>span {
     position: absolute;
 
     font-size: 20px;
@@ -63,4 +65,23 @@
     position: absolute;
     top: 15px;
     right: 15px;
+}
+
+
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(0.8);
+    }
+
+    50% {
+        transform: scale(0.85);
+        /* slightly larger */
+    }
+}
+
+.pulsing-logo {
+    animation: pulse 2s ease-in-out infinite;
 }
