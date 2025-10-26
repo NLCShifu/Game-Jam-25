@@ -28,9 +28,15 @@ function GameRoom() {
 
     // const [currentSound, setCurrentSound] = useState("");
     
-    const { roomState, memeState, resetMeme, soundState, resetSound, sendMeme, sendSound, ownLaughState, resetOwnLaugh, otherLaughState, resetOtherLaugh, gameStatus } = useMeta();
-    const { sendVideoFrame } = useVideo();
-    const { sendAudioFrame } = useAudio();
+    const { roomState, memeState, resetMeme, soundState, resetSound, sendMeme, sendSound, ownLaughState, resetOwnLaugh, otherLaughState, resetOtherLaugh, gameStatus, closeConnection: closeMeta } = useMeta();
+    const { sendVideoFrame, closeConnection: closeVideo } = useVideo();
+    const { sendAudioFrame, closeConnection: closeAudio } = useAudio();
+
+    // useEffect(() => () => {
+    //     closeMeta();
+    //     closeVideo();
+    //     closeAudio();
+    // }, [])
     
     const [currentSoundUrl, setCurrentSoundUrl] = useState("");
 
@@ -213,6 +219,10 @@ function GameRoom() {
 
     const handleGoHome = () => {
         // Navigate home
+        closeMeta();
+        closeVideo();
+        closeAudio();
+
         navigate("/");
     };
 
@@ -233,7 +243,7 @@ function GameRoom() {
                             />
                         </div>
                         <div style={{ marginTop: "60px", textAlign: "center", display: "flex", gap: "100px", justifyContent: "center" }}>
-                            <ButtonSquare color="basic green" iconName="icons restart.png" onClick={handlePlayAgain} size={60} />
+                            {/* <ButtonSquare color="basic green" iconName="icons restart.png" onClick={handlePlayAgain} size={60} /> */}
                             <ButtonSquare color="basic green" iconName="icons home.png" onClick={handleGoHome} size={60} />
                         </div>
                     </PopupWindow>

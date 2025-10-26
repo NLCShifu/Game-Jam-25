@@ -1,4 +1,4 @@
-import { useState, forwardRef, useImperativeHandle } from "react";
+import { useState, forwardRef, useImperativeHandle, useRef, useEffect } from "react";
 import { Howl } from "howler";
 
 type HeartProps = {
@@ -21,24 +21,32 @@ const Heart = forwardRef<HeartHandle, HeartProps>(
         const filledSrc = `/${color}/heart filled.png`;
         const unfilledSrc = `/${color}/heart empty.png`;
 
-        // default unfill sound
-        const unfillSound = new Howl({
-            src: ["/pump-shotgun-fortnite-loud.mp3"],
-            volume: 0.1,
-        });
+        const unfillAudioRef = useRef<HTMLAudioElement>(null);
+        const unfillFinalAudioRef = useRef<HTMLAudioElement>(null);
 
-        // special last-heart sound (if provided)
-        const unfillFinalSound = unfillFinalSrc
-            ? new Howl({
-                src: [unfillFinalSrc],
-                volume: 0.1,
-            })
-            : null;
+        useEffect(() => {
+            unfillAudioRef.current!.volume = 0.2;
+            unfillFinalAudioRef.current!.volume = 0.4;
+        }, []);
+
+        // default unfill sound
+        // const unfillSound = new Howl({
+        //     src: ["/pump-shotgun-fortnite-loud.mp3"],
+        //     volume: 0.1,
+        // });
+
+        // // special last-heart sound (if provided)
+        // const unfillFinalSound = unfillFinalSrc
+        //     ? new Howl({
+        //         src: [unfillFinalSrc],
+        //         volume: 0.1,
+        //     })
+        //     : null;
 
         const unfill = (isFinal = false) => {
             if (filled) {
-                if (isFinal && unfillFinalSound) unfillFinalSound.play();
-                else unfillSound.play();
+                if (isFinal) unfillFinalAudioRef.current!.play();
+                else unfillAudioRef.current!.play();
                 setFilled(false);
                 return true;
             }
@@ -56,20 +64,24 @@ const Heart = forwardRef<HeartHandle, HeartProps>(
         }));
 
         return (
-            <div
-                style={{
-                    width: size,
-                    height: size,
-                    display: "inline-block",
-                    filter: filled ? "drop-shadow(0 0 10px rgba(255,0,0,0.8))" : "none",
-                }}
-            >
-                <img
-                    src={filled ? filledSrc : unfilledSrc}
-                    alt="heart"
-                    style={{ width: "100%", height: "100%" }}
-                />
-            </div>
+            <>
+                <div
+                    style={{
+                        width: size,
+                        height: size,
+                        display: "inline-block",
+                        filter: filled ? "drop-shadow(0 0 10px rgba(255,0,0,0.8))" : "none",
+                    }}
+                >
+                    <img
+                        src={filled ? filledSrc : unfilledSrc}
+                        alt="heart"
+                        style={{ width: "100%", height: "100%" }}
+                    />
+                </div>
+                <audio ref={unfillAudioRef} src={"/pump-shotgun-fortnite-loud.mp3"} />
+                <audio ref={unfillFinalAudioRef} src={unfillFinalSrc} />
+            </>
         );
     }
 );
