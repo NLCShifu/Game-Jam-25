@@ -44,6 +44,7 @@ async def ws_video(websocket: WebSocket, room_id: str, session_id: str):
                 # Still locked — skip detection
                 is_laughing = last_is_laughing
                 if is_laughing:
+                    print("Laugh detected (locked)")
                     await rooms[room_id].gameState.lose_life(session_id)
             else:
                 try:

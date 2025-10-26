@@ -31,6 +31,7 @@ export function useMeta() {
 
 function MetaProvider({ children }: Readonly<PropsWithChildren>) {
     const wsMetaRef = useRef<WebSocket | null>(null);
+    const baseUrl = import.meta.env.VITE_API_URL;
 
     const [roomState, setRoomState] = useState<Room | null>(null);
     const [memeState, setMemeState] = useState<string | null>(null);
@@ -39,7 +40,7 @@ function MetaProvider({ children }: Readonly<PropsWithChildren>) {
 
     const openConnection = useCallback((roomId: string, sessionId: string) => {
         if (!wsMetaRef.current) {
-            const url = `ws://localhost:8000/ws/meta/${roomId}?session_id=${encodeURIComponent(sessionId)}`;
+            const url = `ws://${baseUrl}:8000/ws/meta/${roomId}?session_id=${encodeURIComponent(sessionId)}`;
             
             const ws = new WebSocket(url);
             wsMetaRef.current = ws;

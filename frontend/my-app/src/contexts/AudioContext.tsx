@@ -19,10 +19,11 @@ function AudioProvider({ children }: PropsWithChildren) {
     const wsAudioRef = useRef<WebSocket | null>(null);
     const playbackCtxRef = useRef<AudioContext | null>(null);
     const playbackCursorRef = useRef<number>(0);
+    const baseUrl = import.meta.env.VITE_API_URL;
 
     const openConnection = useCallback((roomId: string, sessionId: string) => {
         if (!wsAudioRef.current) {
-          const url = `ws://localhost:8000/ws/audio/${roomId}?session_id=${encodeURIComponent(
+          const url = `ws://${baseUrl}:8000/ws/audio/${roomId}?session_id=${encodeURIComponent(
             sessionId
           )}`;
 
