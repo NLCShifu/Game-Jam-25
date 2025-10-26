@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Howl } from "howler";
 import "./SoundsList.css";
@@ -18,7 +18,56 @@ function SoundsList({ sounds, onSoundClick, cooldownDuration = 10000 }: Readonly
     const [cooldown, setCooldown] = useState(false);
     const [remaining, setRemaining] = useState(0);
 
-    // main click handler (triggers cooldown)
+    // on stocke les Howl préchargés dans une ref (pas dans le state)
+    // ref.current sera: { [soundName]: Howl }
+    const howlsRef = useRef<Record<string, Howl>>({});
+
+    // construire (ou mettre à jour) les Howl quand `sounds` change
+    useEffect(() => {
+        const map: Record<string, Howl> = {};
+
+        sounds.forEach((sound) => {
+            map[sound.name] = new Howl({
+                src: [sound.url],
+                volume: 1.0,
+                format: ["mp3"],
+            });
+        });
+
+        // assignation dans la ref
+        howlsRef.current = map;
+
+        // cleanup pour libérer l'audio en mémoire si le composant unmount
+        return () => {
+            Object.values(map).forEach((h) => h.unload());
+        };
+    }, [sounds]);
+
+    // jouer l'aperçu au hover
+    const handleHoverStart = (sound: Sound) => {
+        // couper tous les autres sons en cours
+        Object.entries(howlsRef.current).forEach(([name, howl]) => {
+            if (name !== sound.name) {
+                howl.stop();
+            }
+        });
+
+        const howl = howlsRef.current[sound.name];
+        if (howl) {
+            howl.stop(); // repart du début à chaque hover
+            howl.play();
+        }
+    };
+
+    // stopper l'aperçu quand on sort le curseur
+    const handleHoverEnd = (sound: Sound) => {
+        const howl = howlsRef.current[sound.name];
+        if (howl) {
+            howl.stop();
+        }
+    };
+
+    // main click handler (Use) + cooldown
     const handleClick = (sound: Sound) => {
         if (cooldown) return;
 
@@ -40,12 +89,6 @@ function SoundsList({ sounds, onSoundClick, cooldownDuration = 10000 }: Readonly
         setTimeout(() => setCooldown(false), cooldownDuration);
     };
 
-    // preview button (plays sound without cooldown)
-    const handlePreview = (sound: Sound) => {
-        const howl = new Howl({ src: [sound.url] });
-        howl.play();
-    };
-
     return (
         <div className="soundsListContainer">
             <div className="soundsList">
@@ -55,7 +98,9 @@ function SoundsList({ sounds, onSoundClick, cooldownDuration = 10000 }: Readonly
                         className="soundRow"
                         whileHover={{
                             scale: cooldown ? 1 : 1.02,
-                            boxShadow: cooldown ? "none" : "0 0 8px rgba(255,255,255,0.3)",
+                            boxShadow: cooldown
+                                ? "none"
+                                : "0 0 8px rgba(255,255,255,0.3)",
                         }}
                         whileTap={!cooldown ? { scale: 0.95 } : {}}
                         transition={{ type: "spring", stiffness: 400, damping: 20 }}
@@ -63,21 +108,15 @@ function SoundsList({ sounds, onSoundClick, cooldownDuration = 10000 }: Readonly
                             opacity: cooldown ? 0.5 : 1,
                             pointerEvents: cooldown ? "none" : "auto",
                         }}
+                        onMouseEnter={() => handleHoverStart(sound)}
+                        onMouseLeave={() => handleHoverEnd(sound)}
                     >
                         <span className="soundName">{sound.name}</span>
-                        <button
-                            className="previewButton"
-                            onClick={(e) => {
-                                e.stopPropagation(); // prevent parent click
-                                handlePreview(sound);
-                            }}
-                        >
-                            Preview
-                        </button>
+
                         <button
                             className="useButton"
                             onClick={(e) => {
-                                e.stopPropagation(); // also stop propagation
+                                e.stopPropagation();
                                 handleClick(sound);
                             }}
                         >
