@@ -11,6 +11,7 @@ import ButtonSquare from "../../components/Buttons/ButtonSquare";
 import { useNavigate, useParams } from "react-router";
 import Confetti from "../../components/Confetti";
 import { useMeta } from "../../contexts/MetaContext";
+import { Howl } from "howler";
 import OtherCameraDisplay from "../../components/Webcam/OtherCameraDisplay";
 import WebcamDisplay from "../../components/Webcam/WebcamDisplay";
 import { useVideo } from "../../contexts/VideoContext";
@@ -22,11 +23,12 @@ function GameRoom() {
     const ownLivesRef = useRef<HeartsHandle>(null);
     const otherLivesRef = useRef<HeartsHandle>(null);
 
-    let { room_id, session_id } = useParams();
+    // let { room_id, session_id } = useParams();
 
+    const { roomState, memeState, resetMeme, soundState, resetSound, sendMeme, sendSound, ownLaughState, resetOwnLaugh, otherLaughState, resetOtherLaugh } = useMeta();
     const { sendVideoFrame } = useVideo();
     const { sendAudioFrame } = useAudio();
-    const { roomState, memeState, resetMeme, soundState, resetSound } = useMeta();
+
 
     const [popupVisible, setPopupVisible] = useState(false);
     const imgSrc = "/image.png";
@@ -38,6 +40,8 @@ function GameRoom() {
     const [fetchError, setFetchError] = useState<string | null>(null);
     const [memes, setMemes] = useState<{ name: string; url: string }[]>([]);
     const [sounds, setSounds] = useState<{ name: string; url: string }[]>([]);
+    const [meme, setMeme] = useState<string | null>(null);
+    // const [sound, setSound] = useState<string | null>(null);
 
     const handleFetchEffects = async () => {
         // Memes
@@ -95,18 +99,62 @@ function GameRoom() {
     useEffect(() => {
         if (memeState == null) return;
 
-        // Show popup of the meme
-
+        console.log("Meme state changed:", memeState);
+        const fetchImage = async () => {
+            const imgResponse = await axios.get(`${baseUrl}/images/${memeState}`, {
+                responseType: "blob",
+            });
+            setMeme(URL.createObjectURL(imgResponse.data));
+        };
+        fetchImage();
+        setPopupVisible(true);
         resetMeme();
     }, [memeState]);
 
     useEffect(() => {
         if (soundState == null) return;
-        
-        // Play sound effect
 
-        resetSound();
+        const playSound = async () => {
+            console.log("Sound state changed:", soundState);
+
+            const fetchSound = async () => {
+                const soundResponse = await axios.get(`${baseUrl}/sounds/${soundState}`, {
+                    responseType: "blob",
+                });
+                const sound = URL.createObjectURL(soundResponse.data)
+                // setSound(sound);
+                return sound;
+                // console.log("Fetched sound URL:", URL.createObjectURL(soundResponse.data));
+            };
+            const sound = await fetchSound();
+            console.log("Playing sound:", sound);
+            const soundplayer = new Howl({
+
+                src: [sound || ""],
+                format: ['mp3'],
+                volume: 0.2,
+            });
+            soundplayer.play();
+
+            resetSound();
+        }
+
+        playSound();
     }, [soundState]);
+
+    useEffect(() => {
+        if (ownLaughState === null) return;
+
+        // Implement life loss animation/sound
+
+        resetOwnLaugh();
+    }, [ownLaughState]);
+
+    useEffect(() => {
+        if (otherLaughState === null) return;
+        // Implement life loss animation/sound
+        resetOtherLaugh();
+    }, [otherLaughState]);
 
     const handlePlayAgain = () => {
         // Reset the game or call API to start again go back to waiting room
@@ -145,10 +193,9 @@ function GameRoom() {
 
             <div className="layoutGap gameRoom gradientBackground">
                 <ImagePopup
-                    imageSrc={imgSrc}
+                    imageSrc={meme || ""}
                     visible={popupVisible}
                     duration={3000}
-
                     onClose={() => setPopupVisible(false)}
                 />
 
@@ -172,7 +219,7 @@ function GameRoom() {
                 {/* Right half */}
                 <div className="layoutGap half right">
                     <div className="effectsContainer">
-                        <EffectsList memes={memes} sounds={sounds} />
+                        <EffectsList memes={memes} sounds={sounds} onclickMemeFunc={sendMeme} onclickSoundFunc={sendSound} />
                     </div>
                     <PopupWindow color="basic pink" animated={false} className="container ownCameraContainer">
                         <WebcamDisplay sendVideoData={sendVideoFrame} sendAudioData={sendAudioFrame} />

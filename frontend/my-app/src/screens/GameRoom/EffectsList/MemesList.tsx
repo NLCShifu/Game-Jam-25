@@ -8,7 +8,7 @@ type Meme = {
 
 type PropTypes = {
     memes: Meme[];
-    onMemeClick?: (meme: Meme) => void;
+    onMemeClick?: (meme_name: string) => void;
     cooldownDuration?: number; // optional custom cooldown in ms
 };
 
@@ -18,7 +18,7 @@ function MemesList({ memes, onMemeClick, cooldownDuration = 5000 }: Readonly<Pro
 
     const handleClick = (meme: Meme) => {
         if (cooldown) return; // prevent spam
-        onMemeClick?.(meme);
+        onMemeClick?.(meme.name);
         setCooldown(true);
         setRemaining(cooldownDuration / 1000);
 
