@@ -38,9 +38,10 @@ def join_room(room_id: str):
     usernames = [line.strip() for line in lines]
 
     username = random.choice(usernames)
-    if len(rooms[room_id].sessions) > 1:
-        while username == rooms[room_id].sessions[0].username:
-            username = random.choice(usernames)
+    # if len(rooms[room_id].sessions) >= 1:
+    #     print(rooms[room_id].sessions)
+    #     while username == rooms[room_id].sessions[0].username:
+    #         username = random.choice(usernames)
     print(username)
 
     session = Session(session_id, username)
