@@ -17,6 +17,11 @@ const ImagePopup: React.FC<ImagePopupProps> = ({ imageSrc, visible, duration = 3
     const endAudioRef = useRef<HTMLAudioElement>(null);
 
     useEffect(() => {
+        startAudioRef.current!.volume = 0.5;
+        endAudioRef.current!.volume = 0.5;
+    }, []);
+
+    useEffect(() => {
         if (visible) {
             startAudioRef.current?.play();
         } else {

@@ -25,7 +25,7 @@ const Heart = forwardRef<HeartHandle, HeartProps>(
         const unfillFinalAudioRef = useRef<HTMLAudioElement>(null);
 
         useEffect(() => {
-            unfillAudioRef.current!.volume = 0.2;
+            unfillAudioRef.current!.volume = 0.1;
             unfillFinalAudioRef.current!.volume = 0.4;
         }, []);
 
