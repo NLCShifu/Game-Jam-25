@@ -37,6 +37,7 @@ export function useMeta() {
 
 function MetaProvider({ children }: Readonly<PropsWithChildren>) {
     const wsMetaRef = useRef<WebSocket | null>(null);
+    const baseUrl = import.meta.env.VITE_API_URL;
 
     const [roomState, setRoomState] = useState<Room | null>(null);
     const [memeState, setMemeState] = useState<string | null>(null);

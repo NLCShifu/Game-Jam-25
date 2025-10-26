@@ -18,13 +18,14 @@ export function useVideo() {
 
 function VideoProvider({ children }: Readonly<PropsWithChildren>) {
     const wsVideoRef = useRef<WebSocket | null>(null);
+    const baseUrl = import.meta.env.VITE_API_URL;
 
     // Current other video frame received
     const [otherCameraFrame, setOtherCameraFrame] = useState<string | null>(null);
 
     const openConnection = useCallback((roomId: string, sessionId: string) => {
         if (!wsVideoRef.current) {
-            const url = `ws://localhost:8000/ws/video/${roomId}?session_id=${encodeURIComponent(sessionId)}`;
+            const url = `ws://${baseUrl}:8000/ws/video/${roomId}?session_id=${encodeURIComponent(sessionId)}`;
             
             const ws = new WebSocket(url);
             ws.binaryType = "arraybuffer";

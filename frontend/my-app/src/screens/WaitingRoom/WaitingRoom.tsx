@@ -29,6 +29,7 @@ function WaitingRoom() {
     const { openConnection: openVideoConnection, closeConnection: closeVideoConnection, sendVideoFrame } = useVideo();
     const { openConnection: openAudioConnection, closeConnection: closeAudioConnection, sendAudioFrame } = useAudio();
     const { openConnection: openMetaConnection, closeConnection: closeMetaConnection, roomState, gameStatus, startGame} = useMeta();
+    const baseUrl = import.meta.env.VITE_API_URL;
 
     // retrieve players currently in room
     // this will use useWebsocket to automatically update when new data is received
@@ -77,7 +78,7 @@ function WaitingRoom() {
 
         const fetchParticipants = async () => {
             try {
-                const resp = await axios.get(`http://localhost:8000/rooms/${room_id}`, {
+                const resp = await axios.get(`http://${baseUrl}:8000/rooms/${room_id}`, {
                     headers: { "Accept": "application/json" }
                 })
                 // console.log(resp.data);

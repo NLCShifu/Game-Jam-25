@@ -12,6 +12,7 @@ type PropTypes = {
 
 function JoinMenu({ showPopup, closePopup }: Readonly<PropTypes>) {
     const navigate = useNavigate();
+    const baseUrl = import.meta.env.VITE_API_URL;
 
     const [code, setCode] = useState("");
     const [displayName, setDisplayName] = useState("");
@@ -21,7 +22,7 @@ function JoinMenu({ showPopup, closePopup }: Readonly<PropTypes>) {
     const handleJoin = async () => {
       let sessionId: string;
       try {
-        let response = await axios.post(`http://localhost:8000/rooms/${code}/join`);
+        let response = await axios.post(`http://${baseUrl}:8000/rooms/${code}/join`);
         sessionId = response.data.session_id;
       } catch (error) {
         console.error("Error joining the room", error);

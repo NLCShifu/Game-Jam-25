@@ -64,13 +64,13 @@ class GameState:
         self.phase = GamePhase.WAITING
 
     def room_sessions_ids(self) -> List[str]:
-        from models.room import rooms
+        from services.rooms_service import rooms
 
         return rooms[self.room_id].sessions.keys()
 
     async def lose_life(self, session_id: str):
-        from models.room import rooms
-        
+        from services.rooms_service import rooms
+
         for i, sid in enumerate(self.room_sessions_ids()):
             if sid == session_id:
                 self.lives_left[i] -= 1

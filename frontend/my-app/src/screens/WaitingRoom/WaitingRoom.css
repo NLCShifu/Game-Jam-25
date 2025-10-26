@@ -57,28 +57,3 @@
     padding: 0px 10px 0px 10px;
     font-size: 30px;
 }
-
-#copyNotification {
-    position: absolute;
-    top: -25px;
-    left: 50%;
-    margin-left: -100px;
-    width: 200px;
-    color:rgba(255, 255, 255, 0);
-}
-
-#copyNotification .anim {
-    animation-name: copyPopup;
-    animation-duration: 2s;
-}
-
-@keyframes copyPopup {
-    0% {
-        top: -25px;
-        color:rgba(255, 255, 255, 1);
-    }
-    100% {
-        top: -45px;
-        color:rgba(255, 255, 255, 0);
-    }
-}
