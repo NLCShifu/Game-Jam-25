@@ -14,30 +14,49 @@ const ImagePopup: React.FC<ImagePopupProps> = ({ imageSrc, visible, duration = 3
     const soundSrc = "/the-rock-sound-effect.mp3";
     const endSoundSrc = "/whoosh-sounds-effects-no-copyright_2vZLPrmm.mp3";
 
-    const startSound = useMemo(() => new Howl({
-        src: [soundSrc],
-        volume: 0.1,
-    }), []);
-    const endSound = useMemo(() => new Howl({
-        src: [endSoundSrc],
-        volume: 0.1,
-    }), []);
+    // const startSound = useMemo(() => new Howl({
+    //     src: [soundSrc],
+    //     volume: 0.1,
+    // }), []);
+    // const endSound = useMemo(() => new Howl({
+    //     src: [endSoundSrc],
+    //     volume: 0.1,
+    // }), []);
 
     useEffect(() => {
-        let sound: Howl;
-        // startSound.off()
 
         if (visible) {
-            sound = startSound;
+            new Howl({
+                src: [soundSrc],
+                volume: 0.1,
+                autoplay: true
+            });
         } else {
-            sound = endSound;
+            new Howl({
+                src: [endSoundSrc],
+                volume: 0.1,
+                autoplay: true
+            });
         }
+        // startSound.stop();
+        // endSound.stop();
 
-        sound.play();
+        // console.log(startSound.playing());
 
-        return () => {
-            sound.stop();
-        }
+        // // let sound: Howl;
+        // // startSound.off()
+
+        // // if (visible) {
+        // //     sound = startSound;
+        // // } else {
+        // //     sound = endSound;
+        // // }
+
+        // startSound.play();
+
+        // return () => {
+        //     startSound.stop();
+        // }
     }, [visible]);
 
     // useEffect(() => {

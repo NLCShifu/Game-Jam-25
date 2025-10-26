@@ -4,9 +4,9 @@ import { useVideo } from "../../contexts/VideoContext";
 function OtherCameraDisplay() {
     const { otherCameraFrame } = useVideo();
 
-    useEffect(() => {
-        console.log("update");
-    }, [otherCameraFrame]);
+    // useEffect(() => {
+    //     console.log("update");
+    // }, [otherCameraFrame]);
 
     return (
         <div className="otherCameraDisplay">
