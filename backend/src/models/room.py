@@ -8,12 +8,12 @@ class Room:
     def __init__(
         self,
         uuid: str,
-        sessions: dict[str, Session] = {},
+        sessions: dict[str, Session] | None = None,
     ):
 
         self.uuid = uuid
         self.gameState = GameState(self.uuid)
-        self.sessions = sessions
+        self.sessions = sessions or {}
 
     def add_sessions(self, session: Session):
         self.sessions[session.session_id] = session
@@ -34,5 +34,8 @@ class Room:
         - Evaluate end conditions
         - Broacasts clients if something changed
         """
+
+    def __str__(self) -> str:
+        return f"Room(uuid={self.uuid}, sessions={list(self.sessions.keys())})"
 
 

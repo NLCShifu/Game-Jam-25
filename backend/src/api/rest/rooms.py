@@ -1,7 +1,6 @@
 import random
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-import uuid
 from datetime import datetime, timedelta
 from services.rooms_service import rooms, sessions
 from services.id_service import generate_unique_id
@@ -21,6 +20,7 @@ def create_room():
 
 @router.get("/{room_id}")
 def get_room(room_id: str):
+    print(rooms.get(room_id))
     return (
         rooms.get(room_id).to_dict()
         if room_id in rooms
