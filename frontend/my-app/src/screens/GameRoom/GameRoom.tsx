@@ -162,7 +162,6 @@ function GameRoom() {
     }, [soundState]);
 
     useEffect(() => {
-        console.log("PLay sOUND", currentSoundUrl);
         // playSound();
         if (audioRef.current) {
             audioRef.current!.play();
