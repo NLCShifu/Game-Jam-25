@@ -35,7 +35,7 @@ function WebcamDisplay({ sendVideoData, sendAudioData }: Readonly<PropTypes>) {
 
         for (let i = 0; i < input.length; i++) {
             const sample = Math.max(-1, Math.min(1, input[i]));
-            
+
             buffer[i] = sample < 0 ? sample * 0x8000 : sample * 0x7fff;
         }
 
@@ -95,7 +95,7 @@ function WebcamDisplay({ sendVideoData, sendAudioData }: Readonly<PropTypes>) {
                 // Setup video
 
                 const stream = await navigator.mediaDevices.getUserMedia({
-                    video: true, audio: true
+                    video: true, audio: false
                 })
 
                 if (cancelled) {
@@ -103,9 +103,9 @@ function WebcamDisplay({ sendVideoData, sendAudioData }: Readonly<PropTypes>) {
                         track.stop();
                     }
                 }
-                
+
                 setMediaStream(stream);
-                setupAudio(stream);
+                // setupAudio(stream);
             } catch (err) {
                 console.error("Error opening webcam");
             }
@@ -116,10 +116,10 @@ function WebcamDisplay({ sendVideoData, sendAudioData }: Readonly<PropTypes>) {
         return () => {
             cancelled = true;
 
-            cleanupAudio();
+            // cleanupAudio();
             stopWebcam();
         }
-    }, [mediaStream, setupAudio]);
+    }, [mediaStream]);
 
     // Send webcam data to the server
     useEffect(() => {
@@ -174,8 +174,8 @@ function WebcamDisplay({ sendVideoData, sendAudioData }: Readonly<PropTypes>) {
         }
 
         // return stopWebcam;
-        return () => { 
-            abort = true; 
+        return () => {
+            abort = true;
         }
     }, [mediaStream])
 
