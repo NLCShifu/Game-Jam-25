@@ -42,11 +42,11 @@ function GameRoom() {
     const handleFetchEffects = async () => {
         // Memes
         try {
-            const response = await axios.get<string[]>(baseUrl + '/images');
+            const response = await axios.get<string[]>('http://' + baseUrl + ':8000/images');
             const imgs = response.data;
             console.log("Fetched images:", imgs);
             const memePromises = imgs.map(async (image_name) => {
-                const imgResponse = await axios.get(`${baseUrl}/images/${image_name}`, {
+                const imgResponse = await axios.get(`http://${baseUrl}:8000/images/${image_name}`, {
                     responseType: "blob",
                 });
                 return { name: image_name, url: URL.createObjectURL(imgResponse.data) };
@@ -61,11 +61,11 @@ function GameRoom() {
 
         // Sounds
         try {
-            const response = await axios.get<string[]>(baseUrl + '/sounds');
+            const response = await axios.get<string[]>('http://' + baseUrl + ':8000/sounds');
             const sounds = response.data;
             console.log("Fetched sounds:", sounds);
             const soundPromises = sounds.map(async (sound_name) => {
-                const soundResponse = await axios.get(`${baseUrl}/sounds/${sound_name}`, {
+                const soundResponse = await axios.get(`http://${baseUrl}:8000/sounds/${sound_name}`, {
                     responseType: "blob",
                 });
                 return { name: sound_name, url: URL.createObjectURL(soundResponse.data) };

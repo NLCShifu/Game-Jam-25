@@ -16,6 +16,7 @@ function MainMenu() {
   const [fartClicked, setFartClicked] = useState(false)
   const [musicPlaying, setMusicPlaying] = useState(false)
   const [music, setMusic] = useState<Howl | null>(null)
+  const baseUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     // Create the Howl instance for background music
@@ -47,7 +48,7 @@ function MainMenu() {
     let sessionId: string
 
     try {
-      const response = await axios.post('http://localhost:8000/rooms')
+      const response = await axios.post(`http://${baseUrl}:8000/rooms`)
       roomId = response.data.room_id
     } catch (error) {
       console.error('Error creating room', error)
@@ -55,7 +56,7 @@ function MainMenu() {
     }
 
     try {
-      const response = await axios.post(`http://localhost:8000/rooms/${roomId}/join`)
+      const response = await axios.post(`http://${baseUrl}:8000/rooms/${roomId}/join`)
       sessionId = response.data.session_id
     } catch (error) {
       console.error('Error joining the room', error)
