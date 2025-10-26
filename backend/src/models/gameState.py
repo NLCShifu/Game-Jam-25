@@ -4,7 +4,6 @@ from unittest.mock import DEFAULT
 from .gamePhase import GamePhase
 from .session import Session
 from .round import Round
-from models.room import rooms
 
 
 class GameState:
@@ -65,9 +64,13 @@ class GameState:
         self.phase = GamePhase.WAITING
 
     def room_sessions_ids(self) -> List[str]:
+        from models.room import rooms
+
         return rooms[self.room_id].sessions.keys()
 
     async def lose_life(self, session_id: str):
+        from models.room import rooms
+
         for i, sid in enumerate(self.room_sessions_ids()):
             if sid == session_id:
                 self.lives_left[i] -= 1
