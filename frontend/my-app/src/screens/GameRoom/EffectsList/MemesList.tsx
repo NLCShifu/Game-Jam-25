@@ -1,19 +1,22 @@
+type Meme = {
+    name: string;
+    url: string;
+};
+
 type PropTypes = {
-    memes: string[]
+    memes: Meme[];
 };
 
 function MemesList({ memes }: Readonly<PropTypes>) {
     return (
         <div className="memesList">
-            {
-                memes.map(link => (
-                    <div key={link} className="meme">
-                        <img src={link} alt="Meme" />
-                    </div>
-                ))
-            }
+            {memes.map((meme) => (
+                <div key={meme.name} className="meme">
+                    <img src={meme.url} alt={meme.name} />
+                </div>
+            ))}
         </div>
-    )
+    );
 }
 
-export default MemesList
+export default MemesList;

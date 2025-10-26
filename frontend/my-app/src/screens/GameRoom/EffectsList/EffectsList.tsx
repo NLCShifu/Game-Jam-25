@@ -5,7 +5,6 @@ import "./EffectTabs.css"
 import EffectTab from "./EffectTabContent";
 import MemesList from "./MemesList";
 
-import testImg from "../../../assets/cursor.png";
 import ButtonSquare from "../../../components/Buttons/ButtonSquare";
 import PopupWindow from "../../../components/PopupWindow";
 
@@ -18,10 +17,19 @@ const TAB_COUNT = 2;
 
 type Tab = (typeof Tab)[keyof typeof Tab];
 
-function EffectsList() {
+type Meme = {
+    name: string;
+    url: string;
+};
+
+type EffectsListProps = {
+    memes: Meme[];
+};
+
+function EffectsList({ memes }: EffectsListProps) {
     const [tab, setTab] = useState<number>(Tab.MEMES);
 
-    const prevTab = () => setTab(tab === 0 ? TAB_COUNT-1 : tab-1);
+    const prevTab = () => setTab(tab === 0 ? TAB_COUNT - 1 : tab - 1);
     const nextTab = () => setTab((tab + 1) % TAB_COUNT);
 
     const tabName = (tab: number) => {
@@ -30,30 +38,25 @@ function EffectsList() {
             case Tab.SFX: return "SFX";
             default: return "ERROR";
         }
-    }
+    };
 
     return (
-        // <div className="effectsList">
         <PopupWindow color="basic orange" animated={false} className="container effectsList">
             <div className="header">
-                {/* <button onClick={prevTab}>{"<"}</button> */}
                 <ButtonSquare iconName="icons arrow left.png" color="basic yellow" size={50} onClick={prevTab} />
                 <span>{tabName(tab)}</span>
                 <ButtonSquare iconName="icons arrow right.png" color="basic yellow" size={50} onClick={nextTab} />
             </div>
             <div className="tabHolder">
                 <EffectTab visible={tab === Tab.MEMES}>
-                    <MemesList memes={[
-                        // testImg, testImg, testImg, testImg
-                    ]}/>
+                    <MemesList memes={memes} />
                 </EffectTab>
                 <EffectTab visible={tab === Tab.SFX}>
                     SFX tab
                 </EffectTab>
             </div>
         </PopupWindow>
-        // </div>
-    )
+    );
 }
 
 export default EffectsList;

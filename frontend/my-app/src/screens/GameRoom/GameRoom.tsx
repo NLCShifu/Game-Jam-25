@@ -54,13 +54,13 @@ function GameRoom() {
     useEffect(() => {
         handleFetchImages();
         // This would be replaced by your actual API listener
-        const timer = setTimeout(() => {
-            const apiResult: "won" | "lost" = Math.random() > 0.5 ? "won" : "lost";
-            setGameEnded(true);
-            setGameResult(apiResult);
-        }, 5000); // simulate game ending after 5s
+        // const timer = setTimeout(() => {
+        //     const apiResult: "won" | "lost" = Math.random() > 0.5 ? "won" : "lost";
+        //     setGameEnded(true);
+        //     setGameResult(apiResult);
+        // }, 5000); // simulate game ending after 5s
 
-        return () => clearTimeout(timer);
+        // return () => clearTimeout(timer);
     }, []);
 
     const handlePlayAgain = () => {
@@ -127,7 +127,7 @@ function GameRoom() {
                 {/* Right half */}
                 <div className="layoutGap half right">
                     <div className="effectsContainer">
-                        <EffectsList />
+                        <EffectsList memes={memes} />
                     </div>
                     <PopupWindow color="basic pink" animated={false} className="container ownCameraContainer">
                         <div className="placeholder">your camera</div>
