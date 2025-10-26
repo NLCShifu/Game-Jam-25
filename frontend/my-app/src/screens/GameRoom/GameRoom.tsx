@@ -24,17 +24,15 @@ function GameRoom() {
     const [gameEnded, setGameEnded] = useState(false);
     const [gameResult, setGameResult] = useState<"won" | "lost" | null>(null);
 
-    const [images, setImages] = useState<string[]>([]);
     const [fetchError, setFetchError] = useState<string | null>(null);
     const [memes, setMemes] = useState<{ name: string; url: string }[]>([]);
-
+    const [sounds, setSounds] = useState<{ name: string; url: string }[]>([]);
 
     const handleFetchImages = async () => {
         try {
             const response = await axios.get<string[]>(baseUrl + '/images');
             const imgs = response.data;
             console.log("Fetched images:", imgs);
-            setImages(imgs);
             const memePromises = imgs.map(async (image_name) => {
                 const imgResponse = await axios.get(`${baseUrl}/images/${image_name}`, {
                     responseType: "blob",
@@ -47,6 +45,25 @@ function GameRoom() {
         } catch (error) {
             console.error("Error fetching the images", error);
             setFetchError("could not load images from backend");
+        }
+
+
+        try {
+            const response = await axios.get<string[]>(baseUrl + '/sounds');
+            const sounds = response.data;
+            console.log("Fetched sounds:", sounds);
+            const soundPromises = sounds.map(async (sound_name) => {
+                const soundResponse = await axios.get(`${baseUrl}/sounds/${sound_name}`, {
+                    responseType: "blob",
+                });
+                return { name: sound_name, url: URL.createObjectURL(soundResponse.data) };
+            });
+            const soundResults = await Promise.all(soundPromises);
+            setSounds(soundResults);
+            console.log("Loaded sounds:", soundResults);
+        } catch (error) {
+            console.error("Error fetching the sounds", error);
+            setFetchError("could not load sounds from backend");
         }
     };
 
@@ -73,10 +90,6 @@ function GameRoom() {
         // Navigate home
         navigate("/");
     };
-
-    const sounds = [
-        { name: "Whoosh", url: "/whoosh-sounds-effects-no-copyright_2vZLPrmm.mp3" }
-    ];
 
     return (
         <>
@@ -107,7 +120,7 @@ function GameRoom() {
                     imageSrc={imgSrc}
                     visible={popupVisible}
                     duration={3000}
-                    soundSrc="/whoosh-sounds-effects-no-copyright_2vZLPrmm.mp3"
+
                     onClose={() => setPopupVisible(false)}
                 />
 
