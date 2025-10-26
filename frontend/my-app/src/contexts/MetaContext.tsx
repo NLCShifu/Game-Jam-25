@@ -80,6 +80,15 @@ function MetaProvider({ children }: Readonly<PropsWithChildren>) {
                 if (data.other_laugh) {
                     setOtherLaughState(data.other_laugh as boolean);
                 }
+
+                if (data.game_result) {
+                    console.log("Game ended!");
+                    if (data.game_result === "won") {
+                        setGameStatus(GameStatus.WON);
+                    } else {
+                        setGameStatus(GameStatus.LOST);
+                    }
+                }
             }
         }
     }, []);

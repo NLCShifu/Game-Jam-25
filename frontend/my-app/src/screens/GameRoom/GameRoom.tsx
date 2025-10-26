@@ -16,6 +16,7 @@ import OtherCameraDisplay from "../../components/Webcam/OtherCameraDisplay";
 import WebcamDisplay from "../../components/Webcam/WebcamDisplay";
 import { useVideo } from "../../contexts/VideoContext";
 import { useAudio } from "../../contexts/AudioContext";
+import { GameStatus } from "../../models/GameStatus";
 
 function GameRoom() {
     const baseUrl = import.meta.env.VITE_API_URL;
@@ -25,7 +26,7 @@ function GameRoom() {
 
     // let { room_id, session_id } = useParams();
 
-    const { roomState, memeState, resetMeme, soundState, resetSound, sendMeme, sendSound, ownLaughState, resetOwnLaugh, otherLaughState, resetOtherLaugh } = useMeta();
+    const { roomState, memeState, resetMeme, soundState, resetSound, sendMeme, sendSound, ownLaughState, resetOwnLaugh, otherLaughState, resetOtherLaugh, gameStatus } = useMeta();
     const { sendVideoFrame } = useVideo();
     const { sendAudioFrame } = useAudio();
 
@@ -175,6 +176,16 @@ function GameRoom() {
         otherLivesRef.current?.loseLife();
         resetOtherLaugh();
     }, [otherLaughState]);
+
+    useEffect(() => {
+        if (gameStatus === GameStatus.WON) {
+            setGameEnded(true);
+            setGameResult("won");
+        } else if (gameStatus === GameStatus.LOST) {
+            setGameEnded(true);
+            setGameResult("lost");
+        }
+    }, [gameStatus]);
 
     const handlePlayAgain = () => {
         // Reset the game or call API to start again go back to waiting room

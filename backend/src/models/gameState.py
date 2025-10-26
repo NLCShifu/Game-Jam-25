@@ -90,5 +90,29 @@ class GameState:
                 {"other_laugh": True, "lives_left": self.lives_left}
             )
 
+        if self.lives_left.count(0) == 1:
+            self.phase = GamePhase.FINISHED
+            self.final_winner = (
+                next(
+                    sid
+                    for i, sid in enumerate(self.room_sessions_ids())
+                    if self.lives_left[i] > 0
+                )
+                or None
+            )
+            await rooms[self.room_id].sessions[self.final_winner].ws_meta.send_json(
+                {"game_result": "won"}
+            )
+            loser_session = next(
+                (
+                    s
+                    for s in rooms[self.room_id].sessions.values()
+                    if s.session_id != self.final_winner
+                ),
+                None,
+            )
+            if loser_session:
+                await loser_session.ws_meta.send_json({"game_result": "lost"})
+
     def __str__(self) -> str:
         return f"GameState(room_id={self.room_id}, phase={self.phase}, lives_left={self.lives_left})"
