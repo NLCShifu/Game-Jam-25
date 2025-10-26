@@ -48,7 +48,7 @@ function MetaProvider({ children }: Readonly<PropsWithChildren>) {
 
     const openConnection = useCallback((roomId: string, sessionId: string) => {
         if (!wsMetaRef.current) {
-            const url = `ws://localhost:8000/ws/meta/${roomId}?session_id=${encodeURIComponent(sessionId)}`;
+            const url = `ws://${baseUrl}:8000/ws/meta/${roomId}?session_id=${encodeURIComponent(sessionId)}`;
 
             const ws = new WebSocket(url);
             wsMetaRef.current = ws;

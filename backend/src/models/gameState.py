@@ -87,7 +87,7 @@ class GameState:
         )
         if opponent_session:
             await opponent_session.ws_meta.send_json(
-                {"opponent_laugh": True, "lives_left": self.lives_left}
+                {"other_laugh": True, "lives_left": self.lives_left}
             )
 
     def __str__(self) -> str:

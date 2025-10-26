@@ -146,14 +146,14 @@ function GameRoom() {
     useEffect(() => {
         if (ownLaughState === null) return;
 
-        // Implement life loss animation/sound
-
+        ownLivesRef.current?.loseLife();
         resetOwnLaugh();
     }, [ownLaughState]);
 
     useEffect(() => {
         if (otherLaughState === null) return;
-        // Implement life loss animation/sound
+
+        otherLivesRef.current?.loseLife();
         resetOtherLaugh();
     }, [otherLaughState]);
 
