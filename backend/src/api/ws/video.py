@@ -43,6 +43,14 @@ async def ws_video(websocket: WebSocket, room_id: str, session_id: str):
             if now < lock_until:
                 # Still locked — skip detection
                 is_laughing = last_is_laughing
+                if is_laughing:
+                    rooms[room_id].sessions[session_id].state.laugh()
+                    opponent_session = next(
+                        (s for s in rooms[room_id].sessions.values() if s.session_id != session_id),
+                        None,
+                    )
+                    if opponent_session:
+                        won_round(opponent_session, session_id, room_id)
             else:
                 try:
                     blend_features = laugh_detector.detect_features(img_rgb)
@@ -56,14 +64,7 @@ async def ws_video(websocket: WebSocket, room_id: str, session_id: str):
                     print(f"Detection error: {e}")
                     is_laughing = False
                     
-            #TODO Send laughter status to the meta WebSocket if available 
-            # if participant and participant.ws_meta: 
-            # await participant.ws_meta.send_text(json.dumps({ 
-            # 'type': 'laugh_status', 
-            # 'is_laughing': is_laughing, 
-            # 'session_id': session_id 
-            # }))
-
+            
             # Broadcast the frame
             for sid, session in rooms[room_id].sessions.items():
                 if (

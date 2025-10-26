@@ -3,7 +3,6 @@ from services.rooms_service import validate_session, rooms
 
 router = APIRouter()
 
-
 @router.websocket("/ws/meta/{room_id}")
 async def ws_meta(websocket: WebSocket, room_id: str, session_id: str):
     session = validate_session(session_id, room_id)
