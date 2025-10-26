@@ -1,12 +1,19 @@
 import { createContext, useCallback, useContext, useMemo, useRef, useState, type PropsWithChildren } from "react";
 import type { WebsocketContext } from "./AbstractWebsocketContext";
 import type { Room } from "../models/room";
+import { GameStatus } from "../models/GameStatus";
 
 
 interface MetaContextInterface extends WebsocketContext {
     startGame: () => void;
 
     roomState: Room | null;
+    gameStatus: GameStatus;
+    memeState: string | null;
+    resetMeme: () => void;
+
+    soundState: string | null;
+    resetSound: () => void;
 
     sendMeme: (imgName: string) => void;
     sendSound: (soundName: string) => void;
@@ -26,6 +33,9 @@ function MetaProvider({ children }: Readonly<PropsWithChildren>) {
     const wsMetaRef = useRef<WebSocket | null>(null);
 
     const [roomState, setRoomState] = useState<Room | null>(null);
+    const [memeState, setMemeState] = useState<string | null>(null);
+    const [soundState, setSoundState] = useState<string | null>(null);
+    const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.WAITING);
 
     const openConnection = useCallback((roomId: string, sessionId: string) => {
         if (!wsMetaRef.current) {
@@ -40,6 +50,19 @@ function MetaProvider({ children }: Readonly<PropsWithChildren>) {
 
                 if (data.room_update) {
                     setRoomState(data.room_update as Room);
+                }
+
+                if (data.meme) {
+                    setMemeState(data.meme as string);
+                }
+
+                if (data.sound) {
+                    setSoundState(data.sound as string);
+                }
+
+                if (data.game_started) {
+                    console.log("Game started!");
+                    setGameStatus(GameStatus.PLAYING);
                 }
             }
         }
@@ -58,7 +81,7 @@ function MetaProvider({ children }: Readonly<PropsWithChildren>) {
 
     const startGame = useCallback(() => {
         if (wsMetaRef.current) {
-            wsMetaRef.current.send(JSON.stringify({ action: "start_game" }));
+            wsMetaRef.current.send(JSON.stringify({ "action": "start_game" }));
         }
     }, []);
 
@@ -74,14 +97,30 @@ function MetaProvider({ children }: Readonly<PropsWithChildren>) {
         }
     }, []);
 
+    const resetMeme = useCallback(() => {
+        setMemeState(null);
+    }, []);
+
+    const resetSound = useCallback(() => {
+        setSoundState(null);
+    }, []);
+
     const value = useMemo<MetaContextInterface>(() => ({
         openConnection,
         closeConnection,
         roomState,
         startGame,
+        gameStatus,
+
+        memeState,
+        resetMeme,
+
+        soundState,
+        resetSound,
+
         sendMeme,
         sendSound,
-    }), [roomState]);
+    }), [roomState, memeState]);
 
     return (
         <Metacontext.Provider value={value}>

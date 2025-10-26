@@ -21,12 +21,14 @@ class GameState:
         ]
 
     def _enough_players(self, sessions: Dict[str, Session]) -> bool:
-        return len(sessions) > 2
+        return len(sessions) == 2
 
-    def start_if_ready(self, sessions: Dict[str, Session]) -> None:
+    def start_if_ready(self, sessions: Dict[str, Session]) -> bool:
         if self.phase == GamePhase.WAITING and self._enough_players(sessions):
             self.phase = GamePhase.PLAYING
             self.round = DEFAULT  # changer + tard
+            return True
+        return False
 
     def update(self, sessions: Dict[str, Session]) -> None:
         """
@@ -63,11 +65,3 @@ class GameState:
         self.final_winner = None
         self.round = Round.DEFAULT
         self.phase = GamePhase.WAITING
-
-    def start_game(self) -> None:
-        self.phase = GamePhase.PLAYING
-
-    def network_update(self, player_index: int, message: dict[str, int | str]) -> None:
-        from services.rooms_service import rooms
-
-        rooms[self.room_id].sessions[player_index].ws_meta.send_json(message)

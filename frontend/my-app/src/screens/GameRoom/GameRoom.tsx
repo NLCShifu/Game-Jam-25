@@ -8,14 +8,19 @@ import Hearts, { type HeartsHandle } from "../../components/Hearts";
 import ImagePopup from "../../components/ImagePopup";
 import Ribbon from "../../components/Ribbon";
 import ButtonSquare from "../../components/Buttons/ButtonSquare";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import Confetti from "../../components/Confetti";
+import { useMeta } from "../../contexts/MetaContext";
 
 function GameRoom() {
     const baseUrl = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
     const ownLivesRef = useRef<HeartsHandle>(null);
     const otherLivesRef = useRef<HeartsHandle>(null);
+
+    let { room_id, session_id } = useParams();
+
+    const { roomState, memeState, resetMeme, soundState, resetSound } = useMeta();
 
     const [popupVisible, setPopupVisible] = useState(false);
     const imgSrc = "/image.png";
@@ -79,6 +84,22 @@ function GameRoom() {
 
         // return () => clearTimeout(timer);
     }, []);
+
+    useEffect(() => {
+        if (memeState == null) return;
+
+        // Show popup of the meme
+
+        resetMeme();
+    }, [memeState]);
+
+    useEffect(() => {
+        if (soundState == null) return;
+        
+        // Play sound effect
+
+        resetSound();
+    }, [soundState]);
 
     const handlePlayAgain = () => {
         // Reset the game or call API to start again go back to waiting room
