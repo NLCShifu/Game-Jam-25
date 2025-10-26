@@ -10,7 +10,7 @@ type Sound = {
 
 type Props = {
     sounds: Sound[];
-    onSoundClick?: (sound: Sound) => void; // main click handler
+    onSoundClick?: (sound_name: string) => void; // main click handler
     cooldownDuration?: number; // in ms, default 10s
 };
 
@@ -22,7 +22,7 @@ function SoundsList({ sounds, onSoundClick, cooldownDuration = 10000 }: Readonly
     const handleClick = (sound: Sound) => {
         if (cooldown) return;
 
-        onSoundClick?.(sound);
+        onSoundClick?.(sound.name);
 
         setCooldown(true);
         setRemaining(cooldownDuration / 1000);

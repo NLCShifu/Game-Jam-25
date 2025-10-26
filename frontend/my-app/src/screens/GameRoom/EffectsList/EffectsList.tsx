@@ -32,9 +32,11 @@ type Sound = {
 type EffectsListProps = {
     memes: Meme[];
     sounds: Sound[];
+    onclickMemeFunc?: (meme_name: string) => void;
+    onclickSoundFunc?: (sound_name: string) => void;
 };
 
-function EffectsList({ memes, sounds }: EffectsListProps) {
+function EffectsList({ memes, sounds, onclickMemeFunc, onclickSoundFunc }: EffectsListProps) {
     const [tab, setTab] = useState<number>(Tab.MEMES);
 
     const prevTab = () => setTab(tab === 0 ? TAB_COUNT - 1 : tab - 1);
@@ -57,12 +59,12 @@ function EffectsList({ memes, sounds }: EffectsListProps) {
             </div>
             <div className="tabHolder">
                 <EffectTab visible={tab === Tab.MEMES}>
-                    <MemesList memes={memes} />
+                    <MemesList memes={memes} onMemeClick={onclickMemeFunc} />
                 </EffectTab>
                 <EffectTab visible={tab === Tab.SFX}>
                     <SoundsList
                         sounds={sounds} // array of { name, url }
-                        onSoundClick={(sound) => console.log("Played sound:", sound)}
+                        onSoundClick={onclickSoundFunc}
                         cooldownDuration={10000}
                     />
                 </EffectTab>
