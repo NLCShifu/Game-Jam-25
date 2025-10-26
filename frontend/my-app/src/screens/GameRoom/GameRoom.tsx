@@ -2,7 +2,6 @@ import { useRef, useState, useEffect } from "react";
 
 import "./GameRoom.css";
 import axios from "axios";
-import LivesDisplay from "./LivesDisplay";
 import EffectsList from "./EffectsList/EffectsList";
 import PopupWindow from "../../components/PopupWindow";
 import Hearts, { type HeartsHandle } from "../../components/Hearts";
@@ -13,6 +12,7 @@ import { useNavigate } from "react-router";
 import Confetti from "../../components/Confetti";
 
 function GameRoom() {
+    const baseUrl = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
     const ownLivesRef = useRef<HeartsHandle>(null);
     const otherLivesRef = useRef<HeartsHandle>(null);
@@ -31,17 +31,19 @@ function GameRoom() {
 
     const handleFetchImages = async () => {
         try {
-            const response = await axios.get<string[]>(VITE_API_URL + '/images');
+            const response = await axios.get<string[]>(baseUrl + '/images');
             const imgs = response.data;
             console.log("Fetched images:", imgs);
             setImages(imgs);
-             const memePromises = names.map(async (name) => {
-                 const imgResponse = await axios.get(`http://localhost:8000/images/${name}`, {
-                     responseType: "blob",
-             });
-             const memeResults = await Promise.all(memePromises);
-             setMemes(memeResults);
-           
+            const memePromises = imgs.map(async (image_name) => {
+                const imgResponse = await axios.get(`${baseUrl}/images/${image_name}`, {
+                    responseType: "blob",
+                });
+                return { name: image_name, url: URL.createObjectURL(imgResponse.data) };
+            });
+            const memeResults = await Promise.all(memePromises);
+            setMemes(memeResults);
+
         } catch (error) {
             console.error("Error fetching the images", error);
             setFetchError("could not load images from backend");
