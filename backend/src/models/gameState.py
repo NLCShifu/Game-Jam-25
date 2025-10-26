@@ -4,15 +4,13 @@ from unittest.mock import DEFAULT
 from .gamePhase import GamePhase
 from .session import Session
 from .round import Round
+from models.room import rooms
 
 
 class GameState:
     def __init__(self, room_id: str):
         self.room_id: str = room_id
         self.phase: GamePhase = GamePhase.WAITING
-        self.current_winner: Session | None
-        self.final_winner: Session | None
-        self.round: Round = Round.DEFAULT
         self.lives_left: List[int] = [3, 3]
 
     def _alive_players(self, sessions: Dict[str, Session]) -> List[Session]:
@@ -65,3 +63,29 @@ class GameState:
         self.final_winner = None
         self.round = Round.DEFAULT
         self.phase = GamePhase.WAITING
+
+    def room_sessions_ids(self) -> List[str]:
+        return rooms[self.room_id].sessions.keys()
+
+    async def lose_life(self, session_id: str):
+        for i, sid in enumerate(self.room_sessions_ids()):
+            if sid == session_id:
+                self.lives_left[i] -= 1
+        rooms[self.room_id].sessions[session_id].ws_meta.send_json(
+            {"own_laugh": True, "lives_left": self.lives_left}
+        )
+        opponent_session = next(
+            (
+                s
+                for s in rooms[self.room_id].sessions.values()
+                if s.session_id != session_id
+            ),
+            None,
+        )
+        if opponent_session:
+            await opponent_session.ws_meta.send_json(
+                {"opponent_laugh": True, "lives_left": self.lives_left}
+            )
+
+    def __str__(self) -> str:
+        return f"GameState(room_id={self.room_id}, phase={self.phase}, lives_left={self.lives_left})"

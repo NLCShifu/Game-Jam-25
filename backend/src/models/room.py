@@ -29,6 +29,7 @@ class Room:
     
     async def start_game(self):
         if (self.gameState.start_if_ready(self.sessions)):
+            print(f"Game started in room {self.uuid}")
             for session in self.sessions.values():
                 if session.ws_meta:
                     print(f"Notifying session {session.session_id} about game start")
