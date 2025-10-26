@@ -27,6 +27,13 @@ class Room:
             ],
         }
     
+    async def start_game(self):
+        if (self.gameState.start_if_ready(self.sessions)):
+            for session in self.sessions.values():
+                if session.ws_meta:
+                    print(f"Notifying session {session.session_id} about game start")
+                    await session.ws_meta.send_json({"game_started": True})
+    
 
     def update(self):
         """

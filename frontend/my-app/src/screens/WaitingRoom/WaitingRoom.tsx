@@ -28,7 +28,7 @@ function WaitingRoom() {
 
     const { openConnection: openVideoConnection, closeConnection: closeVideoConnection, sendVideoFrame } = useVideo();
     const { openConnection: openAudioConnection, closeConnection: closeAudioConnection, sendAudioFrame } = useAudio();
-    const { openConnection: openMetaConnection, closeConnection: closeMetaConnection, roomState } = useMeta();
+    const { openConnection: openMetaConnection, closeConnection: closeMetaConnection, roomState, gameStatus, startGame} = useMeta();
 
     // retrieve players currently in room
     // this will use useWebsocket to automatically update when new data is received
@@ -43,9 +43,6 @@ function WaitingRoom() {
         }
     }
     
-    const [playerOneData, playerOneDispatch] = useReducer(reducer, { playerNumber: 1, hasJoined: false, displayName: "" })
-    const [playerTwoData, playerTwoDispatch] = useReducer(reducer, { playerNumber: 2, hasJoined: false, displayName: "" })
-
     const [participants, setParticipants] = useState<ParticipantInfo[]>([])
     const [canStart, setCanStart] = useState(false);
     const [isStreaming, setIsStreaming] = useState(false);
@@ -101,6 +98,12 @@ function WaitingRoom() {
             clearInterval(interval)
         }
     }, [room_id, navigate])
+
+    useEffect(() => {
+        if (gameStatus === "playing") {
+            navigate(`/${room_id}/${session_id}`);
+        }
+    }, [gameStatus, navigate, room_id, session_id])
 
     useEffect(() => {
         if (!canStart) {
@@ -159,7 +162,7 @@ function WaitingRoom() {
                 
             </div> */}
             <div className="startButton">
-                <ButtonWide color="basic yellow" text="START" size={0.6} />
+                <ButtonWide color="basic yellow" text="START" size={0.6} onClick={startGame} />
             </div>
             
             {/* <button className="exitButton" onClick={exitRoom}>X</button> */}
