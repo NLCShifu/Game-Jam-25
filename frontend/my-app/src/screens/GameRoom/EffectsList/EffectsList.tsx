@@ -22,8 +22,15 @@ type Meme = {
     url: string;
 };
 
+
+type Sound = {
+    name: string;
+    url: string;
+};
+
 type EffectsListProps = {
     memes: Meme[];
+    sounds: Sound[];
 };
 
 function EffectsList({ memes }: EffectsListProps) {

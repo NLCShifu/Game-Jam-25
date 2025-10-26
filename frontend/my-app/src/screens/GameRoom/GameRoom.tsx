@@ -74,6 +74,10 @@ function GameRoom() {
         navigate("/");
     };
 
+    const sounds = [
+        { name: "Whoosh", url: "/whoosh-sounds-effects-no-copyright_2vZLPrmm.mp3" }
+    ];
+
     return (
         <>
             {gameEnded && gameResult && (
@@ -127,7 +131,7 @@ function GameRoom() {
                 {/* Right half */}
                 <div className="layoutGap half right">
                     <div className="effectsContainer">
-                        <EffectsList memes={memes} />
+                        <EffectsList memes={memes} sounds={sounds} />
                     </div>
                     <PopupWindow color="basic pink" animated={false} className="container ownCameraContainer">
                         <div className="placeholder">your camera</div>
