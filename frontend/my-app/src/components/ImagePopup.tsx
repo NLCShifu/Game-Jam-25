@@ -1,6 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Howl } from 'howler';
 
 interface ImagePopupProps {
     imageSrc: string;
@@ -14,49 +13,15 @@ const ImagePopup: React.FC<ImagePopupProps> = ({ imageSrc, visible, duration = 3
     const soundSrc = "/the-rock-sound-effect.mp3";
     const endSoundSrc = "/whoosh-sounds-effects-no-copyright_2vZLPrmm.mp3";
 
-    // const startSound = useMemo(() => new Howl({
-    //     src: [soundSrc],
-    //     volume: 0.1,
-    // }), []);
-    // const endSound = useMemo(() => new Howl({
-    //     src: [endSoundSrc],
-    //     volume: 0.1,
-    // }), []);
+    const startAudioRef = useRef<HTMLAudioElement>(null);
+    const endAudioRef = useRef<HTMLAudioElement>(null);
 
     useEffect(() => {
-
         if (visible) {
-            new Howl({
-                src: [soundSrc],
-                volume: 0.1,
-                autoplay: true
-            });
+            startAudioRef.current?.play();
         } else {
-            new Howl({
-                src: [endSoundSrc],
-                volume: 0.1,
-                autoplay: true
-            });
+            endAudioRef.current?.play();
         }
-        // startSound.stop();
-        // endSound.stop();
-
-        // console.log(startSound.playing());
-
-        // // let sound: Howl;
-        // // startSound.off()
-
-        // // if (visible) {
-        // //     sound = startSound;
-        // // } else {
-        // //     sound = endSound;
-        // // }
-
-        // startSound.play();
-
-        // return () => {
-        //     startSound.stop();
-        // }
     }, [visible]);
 
     // useEffect(() => {
@@ -92,31 +57,36 @@ const ImagePopup: React.FC<ImagePopupProps> = ({ imageSrc, visible, duration = 3
     // }, [visible, duration, onClose]);
 
     return (
-        <AnimatePresence>
-            {visible && (
-                <motion.div
-                    key={imageSrc}
-                    initial={{ opacity: 0, scale: 0.75 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0 }}
-                    transition={{ duration: 0.2 }}
-                >
-                    <img
-                        src={imageSrc}
-                        alt="popup"
-                        style={{
-                            position: 'fixed',
-                            top: '50%',
-                            left: '50%',
-                            transform: 'translate(-50%, -50%)',
-                            width: '50%',
-                            zIndex: 9999,
-                            pointerEvents: 'none',
-                        }}
-                    />
-                </motion.div>
-            )}
-        </AnimatePresence>
+        <>
+            <AnimatePresence>
+                {visible && (
+                    <motion.div
+                        key={imageSrc}
+                        initial={{ opacity: 0, scale: 0.75 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0 }}
+                        transition={{ duration: 0.2 }}
+                    >
+                        <img
+                            src={imageSrc}
+                            alt="popup"
+                            style={{
+                                position: 'fixed',
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                                width: '50%',
+                                zIndex: 9999,
+                                pointerEvents: 'none',
+                            }}
+                        />
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            <audio src={soundSrc} ref={startAudioRef} />
+            <audio src={endSoundSrc} ref={endAudioRef} />
+        </>
     );
 };
 

@@ -137,9 +137,13 @@ function WebcamDisplay({ sendVideoData, sendAudioData }: Readonly<PropTypes>) {
                 const ctx = canvas.getContext("2d");
 
                 if (ctx && video.videoHeight && video.videoWidth) {
+                    const aspectRatio = video.videoWidth / video.videoHeight;
+
+                    const SIZE = 400;
+
                     // Set canvas dimensions to video dimensions
-                    canvas.width = video.videoWidth;
-                    canvas.height = video.videoHeight;
+                    canvas.width = SIZE * aspectRatio;
+                    canvas.height = SIZE;
 
                     let intervalId = 0;
 
