@@ -116,6 +116,9 @@
     animation: fart 1s ease-in-out;
 }
 
+
+
+/*ChapGPT generated*/
 #mainMenu {
     height: 100vh;
     display: flex;
@@ -134,13 +137,14 @@
     height: 140%;
 
     object-fit: cover;  /* fill the screen nicely */
-    opacity: 0.3;       /* same faded vibe as before */
+    opacity: 0.37;       /* same faded vibe as before */
     pointer-events: none;
     z-index: 1;
 
     /* perf hints */
     will-change: transform, opacity;
     transform: translateZ(0);
+    transform: translateY(10%);
 }
 
 /* everything interactive sits above it */

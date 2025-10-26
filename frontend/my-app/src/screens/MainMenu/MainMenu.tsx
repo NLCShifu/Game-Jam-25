@@ -68,7 +68,7 @@ function MainMenu() {
           alt="Logo"
           className={`pulsing-logo ${fartClicked ? 'fart-animate' : ''}`}
           onClick={fartSound}
-          style={{ marginTop: '-150px', marginBottom: '50px' }}
+          style={{ marginTop: '-250px', marginBottom: '50px' }}
         />
         <div className="menuButtons">
           <ButtonWide color="basic black" onClick={handleCreate} text='Create' size={0.7} />
