@@ -8,32 +8,32 @@ type PlayerData = {
 };
 
 type PropTypes = {
-    playerData: PlayerData;
+    name: string;
+    hasJoined: boolean;
+    isOwn: boolean;
     cameraDisplay: ReactNode;
 };
 
-function WaitingRoomPlayerInfo({ playerData, cameraDisplay }: Readonly<PropTypes>) {
+function WaitingRoomPlayerInfo({ name, hasJoined, isOwn, cameraDisplay }: Readonly<PropTypes>) {
     const [dots, setDots] = useState("");
 
     useEffect(() => {
-        if (playerData.hasJoined) return; // stop animation if joined
+        if (hasJoined) return; // stop animation if joined
 
         const interval = setInterval(() => {
             setDots((prev) => (prev.length < 3 ? prev + "." : ""));
         }, 500); // one dot every 0.5s
 
         return () => clearInterval(interval);
-    }, [playerData.hasJoined]);
+    }, [hasJoined]);
 
     return (
         <PopupWindow color="basic orange" className="playerInfo">
             <span style={{ fontSize: "12px" }}>
-
-                {`Player ${playerData.playerNumber}`}
-
+                {isOwn ? `You` : `Them`}
             </span>
             <span style={{ fontSize: "30px" }}>
-                {playerData.hasJoined ? playerData.displayName : "waiting" + dots}
+                {hasJoined ? name : "waiting" + dots}
             </span>
             {/* <div className="placeholder" /> */}
             {cameraDisplay}

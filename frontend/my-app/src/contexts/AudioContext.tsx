@@ -11,6 +11,8 @@ export function useAudio() {
     const ctx = useContext(CamAudioContext);
 
     if (!ctx) throw new Error("useAudio must be used within a AudioProvider");
+
+    return ctx;
 }
 
 function AudioProvider({ children }: PropsWithChildren) {
@@ -68,6 +70,8 @@ function AudioProvider({ children }: PropsWithChildren) {
             const ws = wsAudioRef.current;
 
             ws.close();
+
+            wsAudioRef.current = null;
         }
     }, []);
 
@@ -90,3 +94,5 @@ function AudioProvider({ children }: PropsWithChildren) {
 
     return <CamAudioContext value={value}>{children}</CamAudioContext>;
 }
+
+export default AudioProvider;

@@ -26,6 +26,7 @@ class Room:
                 for s in self.sessions.values()
             ],
         }
+    
 
     def update(self):
         """

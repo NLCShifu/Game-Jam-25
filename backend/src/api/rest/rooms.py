@@ -20,7 +20,7 @@ def create_room():
 
 @router.get("/{room_id}")
 def get_room(room_id: str):
-    print(rooms.get(room_id))
+    # print(rooms.get(room_id))
     return (
         rooms.get(room_id).to_dict()
         if room_id in rooms

@@ -1,36 +1,22 @@
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import "./WebcamDisplay.css"
 
 type PropTypes = {
     sendVideoData: (buffer: ArrayBuffer) => void;
+    sendAudioData: (stream: Int16Array) => void;
 }
 
-function WebcamDisplay({ sendVideoData }: PropTypes) {
+function WebcamDisplay({ sendVideoData, sendAudioData }: Readonly<PropTypes>) {
     const videoRef = useRef<HTMLVideoElement>(null);
-    // const canvasRef = useRef<HTMLCanvasElement>(null);
     const canvas = useMemo<HTMLCanvasElement>(() => document.createElement("canvas"), []);
 
-
+    const audioContextRef = useRef<AudioContext>(null);
+    const audioSourceRef = useRef<MediaStreamAudioSourceNode>(null);
+    const audioProcessorRef = useRef<ScriptProcessorNode>(null);
 
     const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
 
-    // const startWebcam = async () => {
-    //     if (mediaStream) return;
-
-    //     try {
-    //         const stream = await navigator.mediaDevices.getUserMedia({
-    //             video: true, audio: true
-    //         })
-
-    //         console.log("Webcam START");
-
-    //         setMediaStream(stream);
-    //     } catch (err) {
-    //         console.error("Error opening webcam");
-    //     }
-    // }
-
-    const stopWebcam = () => {
+    const stopWebcam = useCallback(() => {
         if (mediaStream) {
             for (const track of mediaStream.getTracks()) {
                 track.stop();
@@ -40,8 +26,62 @@ function WebcamDisplay({ sendVideoData }: PropTypes) {
 
             setMediaStream(null);
         }
-    }
+    }, [mediaStream]);
 
+    const processAudio = useCallback((e: AudioProcessingEvent) => {
+        const input = e.inputBuffer.getChannelData(0);
+        const buffer = new Int16Array(input.length);
+
+        for (let i = 0; i < input.length; i++) {
+            const sample = Math.max(-1, Math.min(1, input[i]));
+            
+            buffer[i] = sample < 0 ? sample * 0x8000 : sample * 0x7fff;
+        }
+
+        sendAudioData(buffer);
+    }, [sendAudioData])
+
+    const setupAudio = useCallback(() => {
+        if (!mediaStream) return;
+
+        const audioContext = new AudioContext();
+        audioContextRef.current = audioContext;
+        const src = audioContext.createMediaStreamSource(mediaStream);
+        audioSourceRef.current = src;
+        const processor = audioContext.createScriptProcessor(4096, 1, 1);
+        audioProcessorRef.current = processor;
+
+        processor.onaudioprocess = processAudio;
+
+        src.connect(processor);
+        processor.connect(audioContext.destination);
+    }, [processAudio]);
+
+    const cleanupAudio = useCallback(() => {
+        const src = audioSourceRef.current;
+        const processor = audioProcessorRef.current;
+        const audioContext = audioContextRef.current;
+
+        if (processor) {
+            processor.disconnect();
+            processor.onaudioprocess = null;
+        }
+
+        src?.disconnect();
+
+        if (audioContext) {
+            try { audioContext.close(); }
+            catch (err) {
+                console.warn("Failed to close audio context", err)
+            }
+        }
+
+        audioSourceRef.current = null;
+        audioProcessorRef.current = null;
+        audioContextRef.current = null;
+    }, []);
+
+    // Startup webcam
     useEffect(() => {
         let cancelled = false;
 
@@ -49,6 +89,8 @@ function WebcamDisplay({ sendVideoData }: PropTypes) {
             if (mediaStream) return;
 
             try {
+                // Setup video
+
                 const stream = await navigator.mediaDevices.getUserMedia({
                     video: true, audio: true
                 })
@@ -60,6 +102,7 @@ function WebcamDisplay({ sendVideoData }: PropTypes) {
                 }
                 
                 setMediaStream(stream);
+                setupAudio();
             } catch (err) {
                 console.error("Error opening webcam");
             }
@@ -69,11 +112,13 @@ function WebcamDisplay({ sendVideoData }: PropTypes) {
 
         return () => {
             cancelled = true;
-            
+
+            cleanupAudio();
             stopWebcam();
         }
-    }, [mediaStream]);
+    }, [mediaStream, setupAudio]);
 
+    // Send webcam data to the server
     useEffect(() => {
         console.log("setup", mediaStream);
         let abort = false;
@@ -96,6 +141,14 @@ function WebcamDisplay({ sendVideoData }: PropTypes) {
                     let intervalId = 0;
 
                     const render = () => {
+                        if (abort) {
+                            clearInterval(intervalId);
+
+                            return;
+                        }
+
+                        // Video processing
+
                         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
                         canvas.toBlob(blob => {
@@ -108,8 +161,6 @@ function WebcamDisplay({ sendVideoData }: PropTypes) {
                                 sendVideoData(buffer);
                             })
                         }, "image/jpeg", 0.4);
-
-                        if (abort) clearInterval(intervalId);
                     }
 
                     intervalId = setInterval(render, 40);
@@ -128,9 +179,6 @@ function WebcamDisplay({ sendVideoData }: PropTypes) {
     return (
         <div className="webcamDisplay">
             <video ref={videoRef} />
-            {/* <canvas ref={canvasRef} /> */}
-            {/* <button onClick={startWebcam}>start</button>
-            <button onClick={stopWebcam}>stop</button> */}
         </div>
     )
 }

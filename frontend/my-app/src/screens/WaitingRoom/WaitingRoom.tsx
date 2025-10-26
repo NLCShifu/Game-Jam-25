@@ -12,6 +12,8 @@ import RoomId from "./RoomId";
 import { useVideo } from "../../contexts/VideoContext";
 import WebcamDisplay from "../../components/Webcam/WebcamDisplay";
 import OtherCameraDisplay from "../../components/Webcam/OtherCameraDisplay";
+import { useAudio } from "../../contexts/AudioContext";
+import { useMeta } from "../../contexts/MetaContext";
 
 type ParticipantInfo = {
     session_id: string,
@@ -24,7 +26,9 @@ function WaitingRoom() {
 
     let { room_id, session_id } = useParams()
 
-    const { openConnection, closeConnection, sendVideoFrame } = useVideo();
+    const { openConnection: openVideoConnection, closeConnection: closeVideoConnection, sendVideoFrame } = useVideo();
+    const { openConnection: openAudioConnection, closeConnection: closeAudioConnection, sendAudioFrame } = useAudio();
+    const { openConnection: openMetaConnection, closeConnection: closeMetaConnection, roomState } = useMeta();
 
     // retrieve players currently in room
     // this will use useWebsocket to automatically update when new data is received
@@ -48,8 +52,11 @@ function WaitingRoom() {
     const autoStartRef = useRef(false);
 
     useEffect(() => {
-        console.log("CONNECT HFOIDHNFW NDLKWNFKLW");
-        openConnection(room_id!, session_id!);
+        openVideoConnection(room_id!, session_id!);
+
+        openAudioConnection(room_id!, session_id!);
+
+        openMetaConnection(room_id!, session_id!);
     }, []);
 
     useEffect(() => {
@@ -109,11 +116,27 @@ function WaitingRoom() {
 
     const exitRoom = () => {
         console.log("EXIT");
-        closeConnection();
+
+        closeVideoConnection();
+        closeAudioConnection();
+        closeMetaConnection();
 
         // TODO: appeler un endpoint pour quitter proprement si existant
         navigate("/");
     }
+
+    const getOwn = (session_id: string | undefined) => {
+        if (!session_id) return undefined;
+        return roomState?.participants.find((p) => p.session_id == session_id)
+    }
+
+    const getOther = (session_id: string | undefined) => {
+        if (!session_id) return undefined;
+        return roomState?.participants.find((p) => p.session_id != session_id)
+    }
+
+    const ownParticipant = getOwn(session_id);
+    const otherParticipant = getOther(session_id);
 
     return (
         <div className="waitingRoom imageBackground">
@@ -127,8 +150,8 @@ function WaitingRoom() {
             <RoomId room_id={room_id!} />
 
             <div className="playerInfoPanels">
-                <WaitingRoomPlayerInfo playerData={playerOneData} cameraDisplay={<WebcamDisplay sendVideoData={sendVideoFrame} />} />
-                <WaitingRoomPlayerInfo playerData={playerTwoData} cameraDisplay={<OtherCameraDisplay />} />
+                <WaitingRoomPlayerInfo name={ownParticipant?.username ?? ""} hasJoined={!!ownParticipant} isOwn={true} cameraDisplay={<WebcamDisplay sendVideoData={sendVideoFrame} sendAudioData={sendAudioFrame} />} />
+                <WaitingRoomPlayerInfo name={otherParticipant?.username ?? ""} hasJoined={!!otherParticipant} isOwn={false} cameraDisplay={<OtherCameraDisplay />} />
             </div>
 
             {/* <div className="startButton">

@@ -64,6 +64,9 @@ class GameState:
         self.round = Round.DEFAULT
         self.phase = GamePhase.WAITING
 
+    def start_game(self) -> None:
+        self.phase = GamePhase.PLAYING
+
     def network_update(self, player_index: int, message: dict[str, int | str]) -> None:
         from services.rooms_service import rooms
 
