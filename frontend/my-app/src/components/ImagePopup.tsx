@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Howl } from 'howler';
 
@@ -10,41 +10,71 @@ interface ImagePopupProps {
 }
 
 const ImagePopup: React.FC<ImagePopupProps> = ({ imageSrc, visible, duration = 3000, onClose }) => {
-    const [isVisible, setIsVisible] = useState(visible);
+    // const [isVisible, setIsVisible] = useState(visible);
     const soundSrc = "/the-rock-sound-effect.mp3";
     const endSoundSrc = "/whoosh-sounds-effects-no-copyright_2vZLPrmm.mp3";
 
+    const startSound = useMemo(() => new Howl({
+        src: [soundSrc],
+        volume: 0.1,
+    }), []);
+    const endSound = useMemo(() => new Howl({
+        src: [endSoundSrc],
+        volume: 0.1,
+    }), []);
+
     useEffect(() => {
+        let sound: Howl;
+        // startSound.off()
+
         if (visible) {
-            setIsVisible(true);
-
-            // Play appearance sound
-            const startSound = new Howl({
-                src: [soundSrc],
-                volume: 0.1,
-            });
-            startSound.play();
-
-            // Auto-hide after duration
-            const timer = setTimeout(() => {
-                const endSound = new Howl({
-                    src: [endSoundSrc],
-                    volume: 0.1,
-                });
-                endSound.play();
-
-                setIsVisible(false);
-
-                onClose?.();
-            }, duration);
-
-            return () => clearTimeout(timer);
+            sound = startSound;
+        } else {
+            sound = endSound;
         }
-    }, [visible, duration, onClose]);
+
+        sound.play();
+
+        return () => {
+            sound.stop();
+        }
+    }, [visible]);
+
+    // useEffect(() => {
+    //     if (visible) {
+    //         setIsVisible(true);
+
+    //         console.log("SHOW POPUP");
+
+    //         // Play appearance sound
+            // const startSound = new Howl({
+            //     src: [soundSrc],
+            //     volume: 0.1,
+            // });
+            // startSound.play();
+
+    //         // Auto-hide after duration
+    //         const timer = setTimeout(() => {
+    //             // const endSound = new Howl({
+    //             //     src: [endSoundSrc],
+    //             //     volume: 0.1,
+    //             // });
+    //             // endSound.play();
+
+    //             setIsVisible(false);
+
+    //             console.log("HIDE POPUP");
+
+    //             onClose?.();
+    //         }, duration);
+
+    //         return () => clearTimeout(timer);
+    //     }
+    // }, [visible, duration, onClose]);
 
     return (
         <AnimatePresence>
-            {isVisible && (
+            {visible && (
                 <motion.div
                     key={imageSrc}
                     initial={{ opacity: 0, scale: 0.75 }}
