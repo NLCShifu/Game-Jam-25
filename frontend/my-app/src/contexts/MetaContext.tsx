@@ -149,7 +149,7 @@ function MetaProvider({ children }: Readonly<PropsWithChildren>) {
 
         sendMeme,
         sendSound,
-    }), [roomState, memeState]);
+    }), [roomState, memeState, soundState, ownLaughState, otherLaughState]);
 
     return (
         <Metacontext.Provider value={value}>

@@ -41,7 +41,7 @@ function GameRoom() {
     const [memes, setMemes] = useState<{ name: string; url: string }[]>([]);
     const [sounds, setSounds] = useState<{ name: string; url: string }[]>([]);
     const [meme, setMeme] = useState<string | null>(null);
-    const [sound, setSound] = useState<string | null>(null);
+    // const [sound, setSound] = useState<string | null>(null);
 
     const handleFetchEffects = async () => {
         // Memes
@@ -99,7 +99,7 @@ function GameRoom() {
     useEffect(() => {
         if (memeState == null) return;
 
-
+        console.log("Meme state changed:", memeState);
         const fetchImage = async () => {
             const imgResponse = await axios.get(`${baseUrl}/images/${memeState}`, {
                 responseType: "blob",
@@ -114,22 +114,32 @@ function GameRoom() {
     useEffect(() => {
         if (soundState == null) return;
 
-        const fetchSound = async () => {
-            const soundResponse = await axios.get(`${baseUrl}/sounds/${soundState}`, {
-                responseType: "blob",
+        const playSound = async () => {
+            console.log("Sound state changed:", soundState);
+
+            const fetchSound = async () => {
+                const soundResponse = await axios.get(`${baseUrl}/sounds/${soundState}`, {
+                    responseType: "blob",
+                });
+                const sound = URL.createObjectURL(soundResponse.data)
+                // setSound(sound);
+                return sound;
+                // console.log("Fetched sound URL:", URL.createObjectURL(soundResponse.data));
+            };
+            const sound = await fetchSound();
+            console.log("Playing sound:", sound);
+            const soundplayer = new Howl({
+
+                src: [sound || ""],
+                format: ['mp3'],
+                volume: 0.2,
             });
-            setSound(URL.createObjectURL(soundResponse.data));
-        };
-        fetchSound();
+            soundplayer.play();
 
-        const soundplayer = new Howl({
-            src: [sound || ""],
-            format: ['mp3'],
-            volume: 0.2,
-        });
-        soundplayer.play();
+            resetSound();
+        }
 
-        resetSound();
+        playSound();
     }, [soundState]);
 
     useEffect(() => {
