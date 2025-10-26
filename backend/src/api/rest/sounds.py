@@ -6,19 +6,19 @@ router = APIRouter(prefix="/sounds", tags=["sounds"])
 
 
 @router.get("")
-def get_images() -> List[str]:
-    images: List[str] = []
+def get_sounds() -> List[str]:
+    sounds: List[str] = []
     for element in os.listdir("./res/sounds/"):
         if os.path.isfile(os.path.join("./res/sounds/", element)):
-            images.append(element)
-    return images
+            sounds.append(element)
+    return sounds
 
 
-@router.get("/{image_name}")
-def get_image(image_name: str):
-    image_path = os.path.join("./res/sounds/", image_name)
-    if os.path.isfile(image_path):
-        image: bytes = open(image_path, "rb").read()
-        return Response(content=image, media_type="sound/mpeg")
+@router.get("/{sound_name}")
+def get_sound(sound_name: str):
+    sound_path = os.path.join("./res/sounds/", sound_name)
+    if os.path.isfile(sound_path):
+        sound: bytes = open(sound_path, "rb").read()
+        return Response(content=sound, media_type="sound/mpeg")
     else:
         return {"error": "Sound not found"}, 404
