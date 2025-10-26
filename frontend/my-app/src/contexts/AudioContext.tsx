@@ -76,10 +76,12 @@ function AudioProvider({ children }: PropsWithChildren) {
     }, []);
 
     const sendAudioFrame = useCallback((samples: Int16Array) => {
+      console.log("entered sendAudioFrame");
         if (wsAudioRef.current) {
           const ws = wsAudioRef.current;
 
           if (ws.readyState == WebSocket.OPEN) {
+            console.log("Sent audio");
             ws.send(samples);
           }
         }
