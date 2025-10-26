@@ -36,9 +36,10 @@ function MetaProvider({ children }: Readonly<PropsWithChildren>) {
 
             ws.onmessage = (event) => {
                 const data = JSON.parse(event.data);
+                console.log("Received ws_meta message:", data);
 
-                if (data.update_room) {
-                    setRoomState(data.update as Room);
+                if (data.room_update) {
+                    setRoomState(data.room_update as Room);
                 }
             }
         }

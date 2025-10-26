@@ -127,12 +127,12 @@ function WaitingRoom() {
 
     const getOwn = (session_id: string | undefined) => {
         if (!session_id) return undefined;
-        return roomState?.participants.find((p) => p.session_id === session_id)
+        return roomState?.participants.find((p) => p.session_id == session_id)
     }
 
     const getOther = (session_id: string | undefined) => {
         if (!session_id) return undefined;
-        return roomState?.participants.find((p) => p.session_id !== session_id)
+        return roomState?.participants.find((p) => p.session_id != session_id)
     }
 
     const ownParticipant = getOwn(session_id);
