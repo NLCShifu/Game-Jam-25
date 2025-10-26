@@ -172,8 +172,7 @@ function GameRoom() {
     useEffect(() => {
         if (ownLaughState === null) return;
 
-        // Implement life loss animation/sound
-
+        ownLivesRef.current?.loseLife();
         resetOwnLaugh();
     }, [ownLaughState]);
 
@@ -191,7 +190,8 @@ function GameRoom() {
 
     useEffect(() => {
         if (otherLaughState === null) return;
-        // Implement life loss animation/sound
+
+        otherLivesRef.current?.loseLife();
         resetOtherLaugh();
     }, [otherLaughState]);
 
@@ -243,12 +243,12 @@ function GameRoom() {
                     </PopupWindow>
                     <div className="container livesContainer">
                         <div className="livesDisplay otherLives">
-                            <Hearts color="basic red" ref={otherLivesRef} size={80} />
+                            <Hearts color="basic red" ref={otherLivesRef} size={80} finalSound="/death_fortnite.mp3"/>
                             <span>Their lives</span>
                         </div>
                         <div className="livesDisplay ownLives">
                             <span>Your lives</span>
-                            <Hearts color="basic red" ref={ownLivesRef} size={80} />
+                            <Hearts color="basic red" ref={ownLivesRef} size={80} finalSound="/death_fortnite.mp3"/>
                         </div>
                     </div>
                 </div>

@@ -74,7 +74,7 @@ class GameState:
         for i, sid in enumerate(self.room_sessions_ids()):
             if sid == session_id:
                 self.lives_left[i] -= 1
-        rooms[self.room_id].sessions[session_id].ws_meta.send_json(
+        await rooms[self.room_id].sessions[session_id].ws_meta.send_json(
             {"own_laugh": True, "lives_left": self.lives_left}
         )
         opponent_session = next(
@@ -87,7 +87,7 @@ class GameState:
         )
         if opponent_session:
             await opponent_session.ws_meta.send_json(
-                {"opponent_laugh": True, "lives_left": self.lives_left}
+                {"other_laugh": True, "lives_left": self.lives_left}
             )
 
     def __str__(self) -> str:

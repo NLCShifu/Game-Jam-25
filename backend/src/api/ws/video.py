@@ -43,9 +43,6 @@ async def ws_video(websocket: WebSocket, room_id: str, session_id: str):
             if now < lock_until:
                 # Still locked — skip detection
                 is_laughing = last_is_laughing
-                if is_laughing:
-                    print("Laugh detected (locked)")
-                    await rooms[room_id].gameState.lose_life(session_id)
             else:
                 try:
                     blend_features = laugh_detector.detect_features(img_rgb)
@@ -55,6 +52,7 @@ async def ws_video(websocket: WebSocket, room_id: str, session_id: str):
                     if is_laughing:
                         # lock for 5 seconds
                         lock_until = now + cooldown
+                        await rooms[room_id].gameState.lose_life(session_id)
                 except Exception as e:
                     print(f"Detection error: {e}")
                     is_laughing = False
