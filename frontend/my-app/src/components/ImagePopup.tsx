@@ -7,42 +7,40 @@ interface ImagePopupProps {
     visible: boolean;          // control visibility from parent
     duration?: number;
     onClose?: () => void;       // callback when popup disappears
-    soundSrc?: string;
 }
 
-const ImagePopup: React.FC<ImagePopupProps> = ({ imageSrc, visible, duration = 3000, onClose, soundSrc }) => {
+const ImagePopup: React.FC<ImagePopupProps> = ({ imageSrc, visible, duration = 3000, onClose }) => {
     const [isVisible, setIsVisible] = useState(visible);
+    const soundSrc = "/the-rock-sound-effect.mp3";
+    const endSoundSrc = "/whoosh-sounds-effects-no-copyright_2vZLPrmm.mp3";
 
     useEffect(() => {
         if (visible) {
             setIsVisible(true);
 
-            // Play sound if provided
-            if (soundSrc) {
-                const sound = new Howl({
-                    src: [soundSrc],
-                    volume: 0.1
-                });
-                sound.play();
-            }
+            // Play appearance sound
+            const startSound = new Howl({
+                src: [soundSrc],
+                volume: 0.1,
+            });
+            startSound.play();
 
             // Auto-hide after duration
             const timer = setTimeout(() => {
+                const endSound = new Howl({
+                    src: [endSoundSrc],
+                    volume: 0.1,
+                });
+                endSound.play();
+
                 setIsVisible(false);
-                // Play sound if provided
-                if (soundSrc) {
-                    const sound = new Howl({
-                        src: [soundSrc],
-                        volume: 0.1
-                    });
-                    sound.play();
-                    onClose?.();
-                }
+
+                onClose?.();
             }, duration);
 
             return () => clearTimeout(timer);
         }
-    }, [visible, duration, onClose, soundSrc]);
+    }, [visible, duration, onClose]);
 
     return (
         <AnimatePresence>
@@ -52,11 +50,7 @@ const ImagePopup: React.FC<ImagePopupProps> = ({ imageSrc, visible, duration = 3
                     initial={{ opacity: 0, scale: 0.75 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0 }}
-                    transition={{ duration: 0.5 }}
-                    style={{
-
-
-                    }}
+                    transition={{ duration: 0.2 }}
                 >
                     <img
                         src={imageSrc}
@@ -69,7 +63,6 @@ const ImagePopup: React.FC<ImagePopupProps> = ({ imageSrc, visible, duration = 3
                             width: '50%',
                             zIndex: 9999,
                             pointerEvents: 'none',
-
                         }}
                     />
                 </motion.div>

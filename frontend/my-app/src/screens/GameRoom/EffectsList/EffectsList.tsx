@@ -7,6 +7,7 @@ import MemesList from "./MemesList";
 
 import ButtonSquare from "../../../components/Buttons/ButtonSquare";
 import PopupWindow from "../../../components/PopupWindow";
+import SoundsList from "./SoundsList";
 
 const Tab = {
     MEMES: 0,
@@ -33,7 +34,7 @@ type EffectsListProps = {
     sounds: Sound[];
 };
 
-function EffectsList({ memes }: EffectsListProps) {
+function EffectsList({ memes, sounds }: EffectsListProps) {
     const [tab, setTab] = useState<number>(Tab.MEMES);
 
     const prevTab = () => setTab(tab === 0 ? TAB_COUNT - 1 : tab - 1);
@@ -59,8 +60,13 @@ function EffectsList({ memes }: EffectsListProps) {
                     <MemesList memes={memes} />
                 </EffectTab>
                 <EffectTab visible={tab === Tab.SFX}>
-                    SFX tab
+                    <SoundsList
+                        sounds={sounds} // array of { name, url }
+                        onSoundClick={(sound) => console.log("Played sound:", sound)}
+                        cooldownDuration={10000}
+                    />
                 </EffectTab>
+
             </div>
         </PopupWindow>
     );
