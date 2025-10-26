@@ -87,13 +87,13 @@ function MetaProvider({ children }: Readonly<PropsWithChildren>) {
 
     const sendMeme = useCallback((imgName: string) => {
         if (wsMetaRef.current) {
-            wsMetaRef.current.send(JSON.stringify({ sendMeme: imgName }));
+            wsMetaRef.current.send(JSON.stringify({ meme: imgName }));
         }
     }, []);
 
     const sendSound = useCallback((soundName: string) => {
         if (wsMetaRef.current) {
-            wsMetaRef.current.send(JSON.stringify({ sendSound: soundName }));
+            wsMetaRef.current.send(JSON.stringify({ sound: soundName }));
         }
     }, []);
 
