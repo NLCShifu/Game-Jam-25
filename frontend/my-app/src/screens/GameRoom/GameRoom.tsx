@@ -101,10 +101,11 @@ function GameRoom() {
 
         console.log("Meme state changed:", memeState);
         const fetchImage = async () => {
-            const imgResponse = await axios.get(`${baseUrl}/images/${memeState}`, {
+            const imgResponse = await axios.get(`http://${baseUrl}:8000/images/${memeState}`, {
                 responseType: "blob",
             });
             setMeme(URL.createObjectURL(imgResponse.data));
+            console.log("Fetched meme URL:", URL.createObjectURL(imgResponse.data))
         };
         fetchImage();
         setPopupVisible(true);
@@ -118,7 +119,7 @@ function GameRoom() {
             console.log("Sound state changed:", soundState);
 
             const fetchSound = async () => {
-                const soundResponse = await axios.get(`${baseUrl}/sounds/${soundState}`, {
+                const soundResponse = await axios.get(`http://${baseUrl}:8000/sounds/${soundState}`, {
                     responseType: "blob",
                 });
                 const sound = URL.createObjectURL(soundResponse.data)
