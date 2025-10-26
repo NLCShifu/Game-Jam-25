@@ -31,7 +31,7 @@ function GameRoom() {
 
     const handleFetchImages = async () => {
         try {
-            const response = await axios.get<string[]>(VITE_API_URL + '/images');
+            const response = await axios.get<string[]>('https://localhost:8000/images');
             const imgs = response.data;
             console.log("Fetched images:", imgs);
             setImages(imgs);
