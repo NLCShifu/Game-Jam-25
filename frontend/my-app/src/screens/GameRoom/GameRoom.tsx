@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 
 import "./GameRoom.css";
-
+import axios from "axios";
 import LivesDisplay from "./LivesDisplay";
 import EffectsList from "./EffectsList/EffectsList";
 import PopupWindow from "../../components/PopupWindow";
@@ -24,8 +24,33 @@ function GameRoom() {
     const [gameEnded, setGameEnded] = useState(false);
     const [gameResult, setGameResult] = useState<"won" | "lost" | null>(null);
 
+    const [images, setImages] = useState<string[]>([]);
+    const [fetchError, setFetchError] = useState<string | null>(null);
+    const [memes, setMemes] = useState<{ name: string; url: string }[]>([]);
+
+
+    const handleFetchImages = async () => {
+        try {
+            const response = await axios.get<string[]>(VITE_API_URL + '/images');
+            const imgs = response.data;
+            console.log("Fetched images:", imgs);
+            setImages(imgs);
+             const memePromises = names.map(async (name) => {
+                 const imgResponse = await axios.get(`http://localhost:8000/images/${name}`, {
+                     responseType: "blob",
+             });
+             const memeResults = await Promise.all(memePromises);
+             setMemes(memeResults);
+           
+        } catch (error) {
+            console.error("Error fetching the images", error);
+            setFetchError("could not load images from backend");
+        }
+    };
+
     // Example: simulate API sending game-end info
     useEffect(() => {
+        handleFetchImages();
         // This would be replaced by your actual API listener
         const timer = setTimeout(() => {
             const apiResult: "won" | "lost" = Math.random() > 0.5 ? "won" : "lost";
