@@ -1,6 +1,6 @@
 fastapi[standard]
 uvicorn
 opencv-python
-mediapipe
+mediapipe==0.10.14
 numpy
 
