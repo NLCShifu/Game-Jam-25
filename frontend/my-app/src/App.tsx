@@ -22,6 +22,7 @@ function App() {
                         <Route path="/:room_id/:session_id/waiting" element={<WaitingRoom />} />
                         <Route path="/test" element={<Test />} />
                         <Route path="/gametest" element={<GameRoom />} />
+                        <Route path="/:room_id/:session_id" element={<GameRoom />} />
                         <Route path="/testwebcam" element={<WebcamTest />} />
                     </Routes>
                 </MetaProvider>

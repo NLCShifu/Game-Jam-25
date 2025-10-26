@@ -11,6 +11,10 @@ import ButtonSquare from "../../components/Buttons/ButtonSquare";
 import { useNavigate, useParams } from "react-router";
 import Confetti from "../../components/Confetti";
 import { useMeta } from "../../contexts/MetaContext";
+import OtherCameraDisplay from "../../components/Webcam/OtherCameraDisplay";
+import WebcamDisplay from "../../components/Webcam/WebcamDisplay";
+import { useVideo } from "../../contexts/VideoContext";
+import { useAudio } from "../../contexts/AudioContext";
 
 function GameRoom() {
     const baseUrl = import.meta.env.VITE_API_URL;
@@ -20,6 +24,8 @@ function GameRoom() {
 
     let { room_id, session_id } = useParams();
 
+    const { sendVideoFrame } = useVideo();
+    const { sendAudioFrame } = useAudio();
     const { roomState, memeState, resetMeme, soundState, resetSound } = useMeta();
 
     const [popupVisible, setPopupVisible] = useState(false);
@@ -148,7 +154,7 @@ function GameRoom() {
                 {/* Left half */}
                 <div className="layoutGap half left">
                     <PopupWindow color="basic pink" animated={false} className="container otherCameraContainer">
-                        <div className="placeholder">other camera</div>
+                        <OtherCameraDisplay />
                     </PopupWindow>
                     <div className="container livesContainer">
                         <div className="livesDisplay otherLives">
@@ -168,7 +174,7 @@ function GameRoom() {
                         <EffectsList memes={memes} sounds={sounds} />
                     </div>
                     <PopupWindow color="basic pink" animated={false} className="container ownCameraContainer">
-                        <div className="placeholder">your camera</div>
+                        <WebcamDisplay sendVideoData={sendVideoFrame} sendAudioData={sendAudioFrame} />
                     </PopupWindow>
                 </div>
 

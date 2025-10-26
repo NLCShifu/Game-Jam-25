@@ -1,15 +1,16 @@
-.webcamDisplay {
+.webcamDisplay, .otherCameraDisplay {
     position: relative;
 
     width: 100%;
     height: 100%;
 }
 
-.webcamDisplay > video {
+.webcamDisplay > video, .otherCameraDisplay > img {
     position: absolute;
     width: 100%;
     height: 100%;
     left: 0;
     /* background-color: black; */
     border-radius: 10px;
+    object-fit: contain;
 }
