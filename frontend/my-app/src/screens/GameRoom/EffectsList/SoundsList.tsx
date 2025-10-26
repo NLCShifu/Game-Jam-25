@@ -18,6 +18,8 @@ function SoundsList({ sounds, onSoundClick, cooldownDuration = 10000 }: Readonly
     const [cooldown, setCooldown] = useState(false);
     const [remaining, setRemaining] = useState(0);
 
+    
+
     // on stocke les Howl préchargés dans une ref (pas dans le state)
     // ref.current sera: { [soundName]: Howl }
     const howlsRef = useRef<Record<string, Howl>>({});

@@ -25,10 +25,15 @@ function GameRoom() {
 
     // let { room_id, session_id } = useParams();
 
+    // const [currentSound, setCurrentSound] = useState("");
+    
     const { roomState, memeState, resetMeme, soundState, resetSound, sendMeme, sendSound, ownLaughState, resetOwnLaugh, otherLaughState, resetOtherLaugh } = useMeta();
     const { sendVideoFrame } = useVideo();
     const { sendAudioFrame } = useAudio();
+    
+    const [currentSoundUrl, setCurrentSoundUrl] = useState("");
 
+    const audioRef = useRef<HTMLAudioElement>(null);
 
     const [popupVisible, setPopupVisible] = useState(false);
     const imgSrc = "/image.png";
@@ -122,7 +127,7 @@ function GameRoom() {
     useEffect(() => {
         if (soundState == null) return;
 
-        const playSound = async () => {
+        const play = async () => {
             console.log("Sound state changed:", soundState);
 
             const fetchSound = async () => {
@@ -136,19 +141,33 @@ function GameRoom() {
             };
             const sound = await fetchSound();
             console.log("Playing sound:", sound);
-            const soundplayer = new Howl({
 
-                src: [sound || ""],
-                format: ['mp3'],
-                volume: 0.2,
-            });
-            soundplayer.play();
+            setCurrentSoundUrl(sound);
+
+            // playSound();
+            // const soundplayer = new Howl({
+
+            //     src: [sound || ""],
+            //     format: ['mp3'],
+            //     volume: 0.2,
+            // });
+            // soundplayer.play();
+
+
 
             resetSound();
         }
 
-        playSound();
+        play();
     }, [soundState]);
+
+    useEffect(() => {
+        console.log("PLay sOUND", currentSoundUrl);
+        // playSound();
+        if (audioRef.current) {
+            audioRef.current!.play();
+        }
+    }, [currentSoundUrl]);
 
     useEffect(() => {
         if (ownLaughState === null) return;
@@ -247,6 +266,8 @@ function GameRoom() {
                 {/* Game End Popup */}
 
             </div>
+
+            <audio src={currentSoundUrl} ref={audioRef} />
         </>
     );
 }
