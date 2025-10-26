@@ -108,7 +108,7 @@ function MetaProvider({ children }: Readonly<PropsWithChildren>) {
 
     const sendSound = useCallback((soundName: string) => {
         if (wsMetaRef.current) {
-            wsMetaRef.current.send(JSON.stringify({ sendSound: soundName }));
+            wsMetaRef.current.send(JSON.stringify({ sound: soundName }));
         }
     }, []);
 

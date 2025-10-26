@@ -70,7 +70,7 @@ class GameState:
 
     async def lose_life(self, session_id: str):
         from models.room import rooms
-
+        
         for i, sid in enumerate(self.room_sessions_ids()):
             if sid == session_id:
                 self.lives_left[i] -= 1

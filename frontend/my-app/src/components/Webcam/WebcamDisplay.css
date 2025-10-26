@@ -13,4 +13,5 @@
     /* background-color: black; */
     border-radius: 10px;
     object-fit: contain;
+    scale: -1 1;
 }

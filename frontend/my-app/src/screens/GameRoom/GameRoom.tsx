@@ -43,7 +43,8 @@ function GameRoom() {
     const [meme, setMeme] = useState<string | null>(null);
     const [sound, setSound] = useState<string | null>(null);
 
-    const handleFetchImages = async () => {
+    const handleFetchEffects = async () => {
+        // Memes
         try {
             const response = await axios.get<string[]>(baseUrl + '/images');
             const imgs = response.data;
@@ -62,7 +63,7 @@ function GameRoom() {
             setFetchError("could not load images from backend");
         }
 
-
+        // Sounds
         try {
             const response = await axios.get<string[]>(baseUrl + '/sounds');
             const sounds = response.data;
@@ -84,7 +85,7 @@ function GameRoom() {
 
     // Example: simulate API sending game-end info
     useEffect(() => {
-        handleFetchImages();
+        handleFetchEffects();
         // This would be replaced by your actual API listener
         // const timer = setTimeout(() => {
         //     const apiResult: "won" | "lost" = Math.random() > 0.5 ? "won" : "lost";
