@@ -27,10 +27,10 @@
 .menuPanel {
     position: fixed;
 
-    left: 50%;
-    top: 50%;
-    margin-left: -150px;
-    margin-top: -100px;
+    left: calc(50% - 150px);
+    top: calc(50% - 100px);
+    /* margin-left: -150px;
+    margin-top: -500px; */
     width: 300px;
     height: 200px;
 
@@ -39,8 +39,8 @@
     align-items: center;
 
     gap: 10px;
-
     padding: 20px;
+    z-index: 10;
 }
 
 .menuPanel>span {
@@ -114,4 +114,55 @@
 
 .fart-animate {
     animation: fart 1s ease-in-out;
+}
+
+
+
+/*ChapGPT generated*/
+#mainMenu {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    position: relative;
+    /* important */
+    overflow: hidden;
+    background-color: black;
+    /* or your existing bg */
+}
+
+/* animated layer */
+.menuOverlayVideo {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 140%;
+
+    object-fit: cover;
+    /* fill the screen nicely */
+    opacity: 0.37;
+    /* same faded vibe as before */
+    pointer-events: none;
+    z-index: 1;
+
+    /* perf hints */
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    transform: translateY(10%);
+}
+
+/* everything interactive sits above it */
+.pulsing-logo,
+.menuButtons,
+.title,
+.menuPanel {
+
+    z-index: 2;
+}
+
+
+.musicButtonContainer {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
 }
