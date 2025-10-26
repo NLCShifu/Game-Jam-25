@@ -6,6 +6,7 @@ import numpy as np
 import json
 import os
 import time
+import typing
 
 MODEL_PATH = os.path.join("res", "face_landmarker.task")
 
@@ -27,35 +28,42 @@ async def ws_video(websocket: WebSocket, room_id: str, session_id: str):
     lock_until = 0.0
     cooldown = 5.0  # seconds
     last_is_laughing = False
+    frame_count = 0  # count received frames, analyze 1 every 20
 
     try:
         while True:
             data = await websocket.receive_bytes()
+            if rooms[room_id].gameState.phase != "waiting":
+                nparr = np.frombuffer(data, np.uint8)
+                img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+                if img is None:
+                    continue
+                img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
-            nparr = np.frombuffer(data, np.uint8)
-            img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-            if img is None:
-                continue
-            img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                now = time.monotonic()
+                frame_count += 1
 
-            now = time.monotonic()
+                if now < lock_until:
+                    # Still locked — skip detection
+                    is_laughing = last_is_laughing
+                else:
+                    # Analyse seulement 1 image sur 20 pour réduire la charge/latence
+                    if frame_count % 20 == 0:
+                        try:
+                            blend_features = laugh_detector.detect_features(img_rgb)
+                            is_laughing = blend_features.get("is_laughing", False)
+                            last_is_laughing = is_laughing
 
-            if now < lock_until:
-                # Still locked — skip detection
-                is_laughing = last_is_laughing
-            else:
-                try:
-                    blend_features = laugh_detector.detect_features(img_rgb)
-                    is_laughing = blend_features.get("is_laughing", False)
-                    last_is_laughing = is_laughing
-
-                    if is_laughing:
-                        # lock for 5 seconds
-                        lock_until = now + cooldown
-                        await rooms[room_id].gameState.lose_life(session_id)
-                except Exception as e:
-                    print(f"Detection error: {e}")
-                    is_laughing = False
+                            if is_laughing:
+                                # lock pour cooldown secondes
+                                lock_until = now + cooldown
+                                await rooms[room_id].gameState.lose_life(session_id)
+                        except Exception as e:
+                            print(f"Detection error: {e}")
+                            is_laughing = False
+                    else:
+                        # On ne détecte pas sur cette frame
+                        is_laughing = last_is_laughing
 
             # Broadcast the frame
             for sid, session in rooms[room_id].sessions.items():
