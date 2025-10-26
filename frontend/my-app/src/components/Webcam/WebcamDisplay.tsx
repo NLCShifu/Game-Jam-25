@@ -29,6 +29,7 @@ function WebcamDisplay({ sendVideoData, sendAudioData }: Readonly<PropTypes>) {
     }, [mediaStream]);
 
     const processAudio = useCallback((e: AudioProcessingEvent) => {
+        console.log("Processing audio");
         const input = e.inputBuffer.getChannelData(0);
         const buffer = new Int16Array(input.length);
 
@@ -41,12 +42,10 @@ function WebcamDisplay({ sendVideoData, sendAudioData }: Readonly<PropTypes>) {
         sendAudioData(buffer);
     }, [sendAudioData])
 
-    const setupAudio = useCallback(() => {
-        if (!mediaStream) return;
-
+    const setupAudio = useCallback((stream: MediaStream) => {
         const audioContext = new AudioContext();
         audioContextRef.current = audioContext;
-        const src = audioContext.createMediaStreamSource(mediaStream);
+        const src = audioContext.createMediaStreamSource(stream);
         audioSourceRef.current = src;
         const processor = audioContext.createScriptProcessor(4096, 1, 1);
         audioProcessorRef.current = processor;
@@ -55,6 +54,10 @@ function WebcamDisplay({ sendVideoData, sendAudioData }: Readonly<PropTypes>) {
 
         src.connect(processor);
         processor.connect(audioContext.destination);
+
+        console.log(audioContext.destination);
+
+        console.log("Audio set up successfully");
     }, [processAudio]);
 
     const cleanupAudio = useCallback(() => {
@@ -102,7 +105,7 @@ function WebcamDisplay({ sendVideoData, sendAudioData }: Readonly<PropTypes>) {
                 }
                 
                 setMediaStream(stream);
-                setupAudio();
+                setupAudio(stream);
             } catch (err) {
                 console.error("Error opening webcam");
             }
