@@ -99,17 +99,24 @@ function GameRoom() {
     useEffect(() => {
         if (memeState == null) return;
 
-        console.log("Meme state changed:", memeState);
-        const fetchImage = async () => {
-            const imgResponse = await axios.get(`http://${baseUrl}:8000/images/${memeState}`, {
-                responseType: "blob",
-            });
-            setMeme(URL.createObjectURL(imgResponse.data));
-            console.log("Fetched meme URL:", URL.createObjectURL(imgResponse.data))
-        };
-        fetchImage();
-        setPopupVisible(true);
-        resetMeme();
+        const showMeme = async () => {
+            console.log("Meme state changed:", memeState);
+
+            const fetchImage = async () => {
+                const imgResponse = await axios.get(`http://${baseUrl}:8000/images/${memeState}`, {
+                    responseType: "blob",
+                });
+                setMeme(URL.createObjectURL(imgResponse.data));
+                console.log("Fetched meme URL:", URL.createObjectURL(imgResponse.data))
+            };
+
+            await fetchImage();
+
+            setPopupVisible(true);
+            resetMeme();
+        }
+        
+        showMeme();
     }, [memeState]);
 
     useEffect(() => {
@@ -149,6 +156,18 @@ function GameRoom() {
         ownLivesRef.current?.loseLife();
         resetOwnLaugh();
     }, [ownLaughState]);
+
+    useEffect(() => {
+        let timer = null;
+
+        if (popupVisible) {
+            timer = setTimeout(() => setPopupVisible(false), 3000);
+        }
+
+        return () => {
+            if (timer) clearTimeout(timer);
+        }
+    }, [popupVisible]);
 
     useEffect(() => {
         if (otherLaughState === null) return;
@@ -196,8 +215,6 @@ function GameRoom() {
                 <ImagePopup
                     imageSrc={meme || ""}
                     visible={popupVisible}
-                    duration={3000}
-                    onClose={() => setPopupVisible(false)}
                 />
 
                 {/* Left half */}
