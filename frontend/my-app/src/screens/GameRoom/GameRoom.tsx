@@ -35,12 +35,6 @@ function GameRoom() {
             const imgs = response.data;
             console.log("Fetched images:", imgs);
             setImages(imgs);
-             const memePromises = names.map(async (name) => {
-                 const imgResponse = await axios.get(`http://localhost:8000/images/${name}`, {
-                     responseType: "blob",
-             });
-             const memeResults = await Promise.all(memePromises);
-             setMemes(memeResults);
            
         } catch (error) {
             console.error("Error fetching the images", error);
