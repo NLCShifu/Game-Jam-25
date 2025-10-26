@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type PropsWithChildren, type ReactNode } from "react";
 import PopupWindow from "../../components/PopupWindow";
 
 type PlayerData = {
@@ -9,9 +9,10 @@ type PlayerData = {
 
 type PropTypes = {
     playerData: PlayerData;
+    cameraDisplay: ReactNode;
 };
 
-function WaitingRoomPlayerInfo({ playerData }: Readonly<PropTypes>) {
+function WaitingRoomPlayerInfo({ playerData, cameraDisplay }: Readonly<PropTypes>) {
     const [dots, setDots] = useState("");
 
     useEffect(() => {
@@ -34,7 +35,8 @@ function WaitingRoomPlayerInfo({ playerData }: Readonly<PropTypes>) {
             <span style={{ fontSize: "30px" }}>
                 {playerData.hasJoined ? playerData.displayName : "waiting" + dots}
             </span>
-            <div className="placeholder" />
+            {/* <div className="placeholder" /> */}
+            {cameraDisplay}
         </PopupWindow>
     );
 }

@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo, useRef, useState, type PropsWithChildren } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type PropsWithChildren } from "react";
 import type { WebsocketContext } from "./AbstractWebsocketContext";
 
 interface VideoContextInterface extends WebsocketContext {
@@ -32,8 +32,14 @@ function VideoProvider({ children }: Readonly<PropsWithChildren>) {
 
             ws.onmessage = (e: MessageEvent<ArrayBuffer>) => {
                 try {
+                    console.log("message received");
+
+
+
                     const blob = new Blob([e.data], { type: "image/jpeg" });
                     const url = URL.createObjectURL(blob);
+
+                    console.log(url);
 
                     if (otherCameraFrame) URL.revokeObjectURL(otherCameraFrame);
 
@@ -45,15 +51,22 @@ function VideoProvider({ children }: Readonly<PropsWithChildren>) {
         }
     }, []);
 
+    useEffect(() => console.log("otherCameraFrame updated"), [otherCameraFrame]);
+
     const closeConnection = useCallback(() => {
+        console.log("Close ", wsVideoRef.current);
         if (wsVideoRef.current) {
             const ws = wsVideoRef.current;
 
             ws.close();
+
+            wsVideoRef.current = null;
+            setOtherCameraFrame(null);
         }
     }, []);
 
     const sendVideoFrame = useCallback((frame: ArrayBuffer) => {
+        console.log(wsVideoRef.current);
         if (wsVideoRef.current) {
             const ws = wsVideoRef.current;
 
@@ -69,7 +82,7 @@ function VideoProvider({ children }: Readonly<PropsWithChildren>) {
 
         sendVideoFrame,
         otherCameraFrame
-    }), []);
+    }), [otherCameraFrame]);
 
     return <VideoContext value={value}>
         {children}
