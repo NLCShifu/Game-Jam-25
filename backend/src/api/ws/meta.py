@@ -42,7 +42,9 @@ async def ws_meta(websocket: WebSocket, room_id: str, session_id: str):
                         break
                     case "action":
                         if request_value == "start_game":
-                            rooms[room_id].start_game()
+                            # AVANT: rooms[room_id].start_game()
+                            await rooms[room_id].start_game()
+                            print(rooms[room_id].gameState)
                             await send_room_info(room_id)
                     case _:
                         print(f"Unknown ws_meta request key: {request_key}")

@@ -10,9 +10,6 @@ class GameState:
     def __init__(self, room_id: str):
         self.room_id: str = room_id
         self.phase: GamePhase = GamePhase.WAITING
-        self.current_winner: Session | None
-        self.final_winner: Session | None
-        self.round: Round = Round.DEFAULT
         self.lives_left: List[int] = [3, 3]
 
     def _alive_players(self, sessions: Dict[str, Session]) -> List[Session]:
@@ -65,3 +62,6 @@ class GameState:
         self.final_winner = None
         self.round = Round.DEFAULT
         self.phase = GamePhase.WAITING
+
+    def __str__(self) -> str:
+        return f"GameState(room_id={self.room_id}, phase={self.phase}, lives_left={self.lives_left})"
