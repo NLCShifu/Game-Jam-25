@@ -159,3 +159,10 @@
 
     z-index: 2;
 }
+
+
+.musicButtonContainer {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+}
