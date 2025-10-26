@@ -3,16 +3,33 @@ from services.rooms_service import validate_session, rooms
 
 router = APIRouter()
 
+def send_room_info(room_id: str):
+    room = rooms[room_id]
+    for session in room.sessions.values():
+        if session.ws_meta:
+            participants = [
+                {
+                    "username": s.username,
+                }
+                for s in room.sessions.values()
+            ]
+            session.ws_meta.send_json({"room_update" :{
+                "participants": participants
+                }})
+
 @router.websocket("/ws/meta/{room_id}")
 async def ws_meta(websocket: WebSocket, room_id: str, session_id: str):
     session = validate_session(session_id, room_id)
-    ws = await websocket.accept()
+    await websocket.accept()
 
-    session.add_ws_meta(ws)
+    participant = rooms[room_id].sessions.get(session_id)
+    if participant:
+        participant.add_ws_meta(websocket)
 
     try:
+        send_room_info(room_id)
         while True:
-            request: dict[str, int | str] = await ws.receive_json()
+            request: dict[str, int | str] = await websocket.receive_json()
             for request_key, request_value in request.items():
                 match request_key:
                     case "meme":
@@ -27,6 +44,10 @@ async def ws_meta(websocket: WebSocket, room_id: str, session_id: str):
                                     {"sound": request_value}
                                 )
                         break
+                    case "action":
+                        if request_value == "start_game":
+                            rooms[room_id].gameState.start_game()
+                            send_room_info(room_id)
                     case _:
                         print(f"Unknown ws_meta request key: {request_key}")
     except WebSocketDisconnect:

@@ -1,11 +1,12 @@
 from datetime import datetime
+from models.session import Session
 from models.room import Room
 
 rooms: dict[str, Room] = {}
 sessions = {}
 
 
-def validate_session(session_id: str, room_id: str):
+def validate_session(session_id: str, room_id: str) -> Session:
     if session_id not in sessions:
         raise ValueError("Invalid session")
     s = sessions[session_id]
