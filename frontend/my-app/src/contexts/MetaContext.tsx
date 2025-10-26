@@ -15,6 +15,12 @@ interface MetaContextInterface extends WebsocketContext {
     soundState: string | null;
     resetSound: () => void;
 
+    ownLaughState: boolean | null;
+    resetOwnLaugh: () => void;
+
+    otherLaughState: boolean | null;
+    resetOtherLaugh: () => void;
+
     sendMeme: (imgName: string) => void;
     sendSound: (soundName: string) => void;
 }
@@ -36,11 +42,13 @@ function MetaProvider({ children }: Readonly<PropsWithChildren>) {
     const [memeState, setMemeState] = useState<string | null>(null);
     const [soundState, setSoundState] = useState<string | null>(null);
     const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.WAITING);
+    const [ownLaughState, setOwnLaughState] = useState<boolean | null>(null);
+    const [otherLaughState, setOtherLaughState] = useState<boolean | null>(null);
 
     const openConnection = useCallback((roomId: string, sessionId: string) => {
         if (!wsMetaRef.current) {
             const url = `ws://localhost:8000/ws/meta/${roomId}?session_id=${encodeURIComponent(sessionId)}`;
-            
+
             const ws = new WebSocket(url);
             wsMetaRef.current = ws;
 
@@ -63,6 +71,13 @@ function MetaProvider({ children }: Readonly<PropsWithChildren>) {
                 if (data.game_started) {
                     console.log("Game started!");
                     setGameStatus(GameStatus.PLAYING);
+                }
+                if (data.own_laugh) {
+                    setOwnLaughState(data.own_laugh as boolean);
+                }
+
+                if (data.other_laugh) {
+                    setOtherLaughState(data.other_laugh as boolean);
                 }
             }
         }
@@ -105,6 +120,14 @@ function MetaProvider({ children }: Readonly<PropsWithChildren>) {
         setSoundState(null);
     }, []);
 
+    const resetOwnLaugh = useCallback(() => {
+        setOwnLaughState(null);
+    }, []);
+
+    const resetOtherLaugh = useCallback(() => {
+        setOtherLaughState(null);
+    }, []);
+
     const value = useMemo<MetaContextInterface>(() => ({
         openConnection,
         closeConnection,
@@ -114,6 +137,12 @@ function MetaProvider({ children }: Readonly<PropsWithChildren>) {
 
         memeState,
         resetMeme,
+
+        ownLaughState,
+        otherLaughState,
+
+        resetOwnLaugh,
+        resetOtherLaugh,
 
         soundState,
         resetSound,

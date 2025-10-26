@@ -21,7 +21,7 @@ function GameRoom() {
 
     // let { room_id, session_id } = useParams();
 
-    const { roomState, memeState, resetMeme, soundState, resetSound, sendMeme, sendSound } = useMeta();
+    const { roomState, memeState, resetMeme, soundState, resetSound, sendMeme, sendSound, ownLaughState, resetOwnLaugh, otherLaughState, resetOtherLaugh } = useMeta();
 
     const [popupVisible, setPopupVisible] = useState(false);
     const imgSrc = "/image.png";
@@ -123,6 +123,20 @@ function GameRoom() {
 
         resetSound();
     }, [soundState]);
+
+    useEffect(() => {
+        if (ownLaughState === null) return;
+
+        // Implement life loss animation/sound
+
+        resetOwnLaugh();
+    }, [ownLaughState]);
+
+    useEffect(() => {
+        if (otherLaughState === null) return;
+        // Implement life loss animation/sound
+        resetOtherLaugh();
+    }, [otherLaughState]);
 
     const handlePlayAgain = () => {
         // Reset the game or call API to start again go back to waiting room
