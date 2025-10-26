@@ -9,6 +9,9 @@ import ButtonSquare from "../../components/Buttons/ButtonSquare";
 import ButtonWide from "../../components/Buttons/ButtonWide";
 import PopupWindow from "../../components/PopupWindow";
 import RoomId from "./RoomId";
+import { useVideo } from "../../contexts/VideoContext";
+import WebcamDisplay from "../../components/Webcam/WebcamDisplay";
+import OtherCameraDisplay from "../../components/Webcam/OtherCameraDisplay";
 
 type ParticipantInfo = {
     session_id: string,
@@ -18,7 +21,10 @@ type ParticipantInfo = {
 
 function WaitingRoom() {
     const navigate = useNavigate();
+
     let { room_id, session_id } = useParams()
+
+    const { openConnection, closeConnection, sendVideoFrame } = useVideo();
 
     // retrieve players currently in room
     // this will use useWebsocket to automatically update when new data is received
@@ -40,6 +46,11 @@ function WaitingRoom() {
     const [canStart, setCanStart] = useState(false);
     const [isStreaming, setIsStreaming] = useState(false);
     const autoStartRef = useRef(false);
+
+    useEffect(() => {
+        console.log("CONNECT HFOIDHNFW NDLKWNFKLW");
+        openConnection(room_id!, session_id!);
+    }, []);
 
     useEffect(() => {
         // test participants
@@ -65,7 +76,7 @@ function WaitingRoom() {
                 const resp = await axios.get(`http://localhost:8000/rooms/${room_id}`, {
                     headers: { "Accept": "application/json" }
                 })
-                console.log(resp.data);
+                // console.log(resp.data);
                 if (!mounted) return;
                 const list: ParticipantInfo[] = resp.data.participants || []
                 setParticipants(list)
@@ -97,6 +108,9 @@ function WaitingRoom() {
     }, [canStart])
 
     const exitRoom = () => {
+        console.log("EXIT");
+        closeConnection();
+
         // TODO: appeler un endpoint pour quitter proprement si existant
         navigate("/");
     }
@@ -113,8 +127,8 @@ function WaitingRoom() {
             <RoomId room_id={room_id!} />
 
             <div className="playerInfoPanels">
-                <WaitingRoomPlayerInfo playerData={playerOneData} />
-                <WaitingRoomPlayerInfo playerData={playerTwoData} />
+                <WaitingRoomPlayerInfo playerData={playerOneData} cameraDisplay={<WebcamDisplay sendVideoData={sendVideoFrame} />} />
+                <WaitingRoomPlayerInfo playerData={playerTwoData} cameraDisplay={<OtherCameraDisplay />} />
             </div>
 
             {/* <div className="startButton">
