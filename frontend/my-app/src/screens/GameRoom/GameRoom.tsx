@@ -177,7 +177,7 @@ function GameRoom() {
 
     useEffect(() => {
         if (ownLaughState === null) return;
-
+        console.log("LAUGH DETECTED - losing life");
         ownLivesRef.current?.loseLife();
         resetOwnLaugh();
     }, [ownLaughState]);
