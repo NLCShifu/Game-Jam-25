@@ -1,5 +1,5 @@
 import { useState, forwardRef, useImperativeHandle, useRef, useEffect } from "react";
-import { Howl } from "howler";
+
 
 type HeartProps = {
     color: string;
