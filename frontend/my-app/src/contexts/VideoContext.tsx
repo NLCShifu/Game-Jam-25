@@ -25,8 +25,8 @@ function VideoProvider({ children }: Readonly<PropsWithChildren>) {
 
     const openConnection = useCallback((roomId: string, sessionId: string) => {
         if (!wsVideoRef.current) {
-            const url = `ws://${baseUrl}:8000/ws/video/${roomId}?session_id=${encodeURIComponent(sessionId)}`;
-            
+            const url = `wss://${baseUrl}/ws/video/${roomId}?session_id=${encodeURIComponent(sessionId)}`;
+
             const ws = new WebSocket(url);
             ws.binaryType = "arraybuffer";
             wsVideoRef.current = ws;

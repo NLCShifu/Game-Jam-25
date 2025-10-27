@@ -28,7 +28,7 @@ function WaitingRoom() {
 
     const { openConnection: openVideoConnection, closeConnection: closeVideoConnection, sendVideoFrame } = useVideo();
     const { openConnection: openAudioConnection, closeConnection: closeAudioConnection, sendAudioFrame } = useAudio();
-    const { openConnection: openMetaConnection, closeConnection: closeMetaConnection, roomState, gameStatus, startGame} = useMeta();
+    const { openConnection: openMetaConnection, closeConnection: closeMetaConnection, roomState, gameStatus, startGame } = useMeta();
     const baseUrl = import.meta.env.VITE_API_URL;
 
     // retrieve players currently in room
@@ -40,10 +40,10 @@ function WaitingRoom() {
         return {
             playerNumber: state.playerNumber,
             hasJoined,
-            displayName: hasJoined ? participants[state.playerNumber-1].display_name : ""
+            displayName: hasJoined ? participants[state.playerNumber - 1].display_name : ""
         }
     }
-    
+
     const [participants, setParticipants] = useState<ParticipantInfo[]>([])
     const [canStart, setCanStart] = useState(false);
     const [isStreaming, setIsStreaming] = useState(false);
@@ -78,7 +78,7 @@ function WaitingRoom() {
 
         const fetchParticipants = async () => {
             try {
-                const resp = await axios.get(`http://${baseUrl}:8000/rooms/${room_id}`, {
+                const resp = await axios.get(`https://${baseUrl}/rooms/${room_id}`, {
                     headers: { "Accept": "application/json" }
                 })
                 // console.log(resp.data);
@@ -165,7 +165,7 @@ function WaitingRoom() {
             <div className="startButton">
                 <ButtonWide color="basic yellow" text="START" size={0.6} onClick={startGame} />
             </div>
-            
+
             {/* <button className="exitButton" onClick={exitRoom}>X</button> */}
             <div className="exitButton">
                 <ButtonSquare iconName="icons cross.png" color="basic red" onClick={exitRoom} size={40} />

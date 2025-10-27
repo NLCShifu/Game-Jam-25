@@ -48,7 +48,7 @@ function MainMenu() {
     let sessionId: string
 
     try {
-      const response = await axios.post(`http://${baseUrl}:8000/rooms`)
+      const response = await axios.post(`https://${baseUrl}/rooms`)
       roomId = response.data.room_id
     } catch (error) {
       console.error('Error creating room', error)
@@ -56,7 +56,7 @@ function MainMenu() {
     }
 
     try {
-      const response = await axios.post(`http://${baseUrl}:8000/rooms/${roomId}/join`)
+      const response = await axios.post(`https://${baseUrl}/rooms/${roomId}/join`)
       sessionId = response.data.session_id
     } catch (error) {
       console.error('Error joining the room', error)

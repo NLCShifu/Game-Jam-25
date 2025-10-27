@@ -27,7 +27,7 @@ function GameRoom() {
     // let { room_id, session_id } = useParams();
 
     // const [currentSound, setCurrentSound] = useState("");
-    
+
     const { roomState, memeState, resetMeme, soundState, resetSound, sendMeme, sendSound, ownLaughState, resetOwnLaugh, otherLaughState, resetOtherLaugh, gameStatus, closeConnection: closeMeta } = useMeta();
     const { sendVideoFrame, closeConnection: closeVideo } = useVideo();
     const { sendAudioFrame, closeConnection: closeAudio } = useAudio();
@@ -37,7 +37,7 @@ function GameRoom() {
     //     closeVideo();
     //     closeAudio();
     // }, [])
-    
+
     const [currentSoundUrl, setCurrentSoundUrl] = useState("");
 
     const audioRef = useRef<HTMLAudioElement>(null);
@@ -58,11 +58,11 @@ function GameRoom() {
     const handleFetchEffects = async () => {
         // Memes
         try {
-            const response = await axios.get<string[]>('http://' + baseUrl + ':8000/images');
+            const response = await axios.get<string[]>('https://' + baseUrl + '/images');
             const imgs = response.data;
             console.log("Fetched images:", imgs);
             const memePromises = imgs.map(async (image_name) => {
-                const imgResponse = await axios.get(`http://${baseUrl}:8000/images/${image_name}`, {
+                const imgResponse = await axios.get(`https://${baseUrl}/images/${image_name}`, {
                     responseType: "blob",
                 });
                 return { name: image_name, url: URL.createObjectURL(imgResponse.data) };
@@ -77,11 +77,11 @@ function GameRoom() {
 
         // Sounds
         try {
-            const response = await axios.get<string[]>('http://' + baseUrl + ':8000/sounds');
+            const response = await axios.get<string[]>('https://' + baseUrl + '/sounds');
             const sounds = response.data;
             console.log("Fetched sounds:", sounds);
             const soundPromises = sounds.map(async (sound_name) => {
-                const soundResponse = await axios.get(`http://${baseUrl}:8000/sounds/${sound_name}`, {
+                const soundResponse = await axios.get(`https://${baseUrl}/sounds/${sound_name}`, {
                     responseType: "blob",
                 });
                 return { name: sound_name, url: URL.createObjectURL(soundResponse.data) };
@@ -115,7 +115,7 @@ function GameRoom() {
             console.log("Meme state changed:", memeState);
 
             const fetchImage = async () => {
-                const imgResponse = await axios.get(`http://${baseUrl}:8000/images/${memeState}`, {
+                const imgResponse = await axios.get(`https://${baseUrl}/images/${memeState}`, {
                     responseType: "blob",
                 });
                 setMeme(URL.createObjectURL(imgResponse.data));
@@ -127,7 +127,7 @@ function GameRoom() {
             setPopupVisible(true);
             resetMeme();
         }
-        
+
         showMeme();
     }, [memeState]);
 
@@ -138,7 +138,7 @@ function GameRoom() {
             console.log("Sound state changed:", soundState);
 
             const fetchSound = async () => {
-                const soundResponse = await axios.get(`http://${baseUrl}:8000/sounds/${soundState}`, {
+                const soundResponse = await axios.get(`https://${baseUrl}/sounds/${soundState}`, {
                     responseType: "blob",
                 });
                 const sound = URL.createObjectURL(soundResponse.data)
@@ -263,12 +263,12 @@ function GameRoom() {
                     </PopupWindow>
                     <div className="container livesContainer">
                         <div className="livesDisplay otherLives">
-                            <Hearts color="basic red" ref={otherLivesRef} size={80} finalSound="/death_fortnite.mp3"/>
+                            <Hearts color="basic red" ref={otherLivesRef} size={80} finalSound="/death_fortnite.mp3" />
                             <span>Their lives</span>
                         </div>
                         <div className="livesDisplay ownLives">
                             <span>Your lives</span>
-                            <Hearts color="basic red" ref={ownLivesRef} size={80} finalSound="/death_fortnite.mp3"/>
+                            <Hearts color="basic red" ref={ownLivesRef} size={80} finalSound="/death_fortnite.mp3" />
                         </div>
                     </div>
                 </div>
