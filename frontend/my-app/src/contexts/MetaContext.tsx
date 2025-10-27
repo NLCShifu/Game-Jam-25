@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useMemo, useRef, useState, type PropsWithChildren } from "react";
 import type { WebsocketContext } from "./AbstractWebsocketContext";
 import type { Room } from "../models/room";
-import { GameStatus } from "../models/GameStatus";
+import type { GameStatus } from "../models/GameStatus";
 
 
 interface MetaContextInterface extends WebsocketContext {
@@ -42,7 +42,7 @@ function MetaProvider({ children }: Readonly<PropsWithChildren>) {
     const [roomState, setRoomState] = useState<Room | null>(null);
     const [memeState, setMemeState] = useState<string | null>(null);
     const [soundState, setSoundState] = useState<string | null>(null);
-    const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.WAITING);
+    const [gameStatus, setGameStatus] = useState<GameStatus>("waiting");
     const [ownLaughState, setOwnLaughState] = useState<boolean | null>(null);
     const [otherLaughState, setOtherLaughState] = useState<boolean | null>(null);
 
@@ -71,7 +71,7 @@ function MetaProvider({ children }: Readonly<PropsWithChildren>) {
 
                 if (data.game_started) {
                     console.log("Game started!");
-                    setGameStatus(GameStatus.PLAYING);
+                    setGameStatus("playing");
                 }
                 if (data.own_laugh) {
                     setOwnLaughState(data.own_laugh as boolean);
@@ -84,9 +84,9 @@ function MetaProvider({ children }: Readonly<PropsWithChildren>) {
                 if (data.game_result) {
                     console.log("Game ended!");
                     if (data.game_result === "won") {
-                        setGameStatus(GameStatus.WON);
+                        setGameStatus("won");
                     } else {
-                        setGameStatus(GameStatus.LOST);
+                        setGameStatus("lost");
                     }
                 }
             }

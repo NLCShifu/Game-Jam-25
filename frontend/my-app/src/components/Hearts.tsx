@@ -1,4 +1,4 @@
-import React, { useRef, forwardRef, useImperativeHandle } from "react";
+import { useRef, forwardRef, useImperativeHandle } from "react";
 import Heart, { type HeartHandle } from "./Heart";
 
 type HeartsProps = {

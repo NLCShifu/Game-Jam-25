@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useVideo } from "../../contexts/VideoContext";
 
 function OtherCameraDisplay() {

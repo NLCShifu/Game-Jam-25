@@ -6,13 +6,13 @@ type PropTypes = {
     sendAudioData: (stream: Int16Array) => void;
 }
 
-function WebcamDisplay({ sendVideoData, sendAudioData }: Readonly<PropTypes>) {
+function WebcamDisplay({ sendVideoData, /*sendAudioData */ }: Readonly<PropTypes>) {
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvas = useMemo<HTMLCanvasElement>(() => document.createElement("canvas"), []);
 
-    const audioContextRef = useRef<AudioContext>(null);
-    const audioSourceRef = useRef<MediaStreamAudioSourceNode>(null);
-    const audioProcessorRef = useRef<ScriptProcessorNode>(null);
+    // const audioContextRef = useRef<AudioContext>(null);
+    // const audioSourceRef = useRef<MediaStreamAudioSourceNode>(null);
+    // const audioProcessorRef = useRef<ScriptProcessorNode>(null);
 
     const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
 
@@ -28,61 +28,61 @@ function WebcamDisplay({ sendVideoData, sendAudioData }: Readonly<PropTypes>) {
         }
     }, [mediaStream]);
 
-    const processAudio = useCallback((e: AudioProcessingEvent) => {
-        console.log("Processing audio");
-        const input = e.inputBuffer.getChannelData(0);
-        const buffer = new Int16Array(input.length);
+    // const processAudio = useCallback((e: AudioProcessingEvent) => {
+    //     console.log("Processing audio");
+    //     const input = e.inputBuffer.getChannelData(0);
+    //     const buffer = new Int16Array(input.length);
 
-        for (let i = 0; i < input.length; i++) {
-            const sample = Math.max(-1, Math.min(1, input[i]));
+    //     for (let i = 0; i < input.length; i++) {
+    //         const sample = Math.max(-1, Math.min(1, input[i]));
 
-            buffer[i] = sample < 0 ? sample * 0x8000 : sample * 0x7fff;
-        }
+    //         buffer[i] = sample < 0 ? sample * 0x8000 : sample * 0x7fff;
+    //     }
 
-        sendAudioData(buffer);
-    }, [sendAudioData])
+    //     sendAudioData(buffer);
+    // }, [sendAudioData])
 
-    const setupAudio = useCallback((stream: MediaStream) => {
-        const audioContext = new AudioContext();
-        audioContextRef.current = audioContext;
-        const src = audioContext.createMediaStreamSource(stream);
-        audioSourceRef.current = src;
-        const processor = audioContext.createScriptProcessor(4096, 1, 1);
-        audioProcessorRef.current = processor;
+    // const setupAudio = useCallback((stream: MediaStream) => {
+    //     const audioContext = new AudioContext();
+    //     audioContextRef.current = audioContext;
+    //     const src = audioContext.createMediaStreamSource(stream);
+    //     audioSourceRef.current = src;
+    //     const processor = audioContext.createScriptProcessor(4096, 1, 1);
+    //     audioProcessorRef.current = processor;
 
-        processor.onaudioprocess = processAudio;
+    //     processor.onaudioprocess = processAudio;
 
-        src.connect(processor);
-        processor.connect(audioContext.destination);
+    //     src.connect(processor);
+    //     processor.connect(audioContext.destination);
 
-        console.log(audioContext.destination);
+    //     console.log(audioContext.destination);
 
-        console.log("Audio set up successfully");
-    }, [processAudio]);
+    //     console.log("Audio set up successfully");
+    // }, [processAudio]);
 
-    const cleanupAudio = useCallback(() => {
-        const src = audioSourceRef.current;
-        const processor = audioProcessorRef.current;
-        const audioContext = audioContextRef.current;
+    // const cleanupAudio = useCallback(() => {
+    //     const src = audioSourceRef.current;
+    //     const processor = audioProcessorRef.current;
+    //     const audioContext = audioContextRef.current;
 
-        if (processor) {
-            processor.disconnect();
-            processor.onaudioprocess = null;
-        }
+    //     if (processor) {
+    //         processor.disconnect();
+    //         processor.onaudioprocess = null;
+    //     }
 
-        src?.disconnect();
+    //     src?.disconnect();
 
-        if (audioContext) {
-            try { audioContext.close(); }
-            catch (err) {
-                console.warn("Failed to close audio context", err)
-            }
-        }
+    //     if (audioContext) {
+    //         try { audioContext.close(); }
+    //         catch (err) {
+    //             console.warn("Failed to close audio context", err)
+    //         }
+    //     }
 
-        audioSourceRef.current = null;
-        audioProcessorRef.current = null;
-        audioContextRef.current = null;
-    }, []);
+    //     audioSourceRef.current = null;
+    //     audioProcessorRef.current = null;
+    //     audioContextRef.current = null;
+    // }, []);
 
     // Startup webcam
     useEffect(() => {

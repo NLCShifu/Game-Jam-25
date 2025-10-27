@@ -1,15 +1,17 @@
-import { useRef, useState } from "react"
+import { useState, useRef } from "react"
 import ButtonSquare from "../../components/Buttons/ButtonSquare"
 import ButtonWide from "../../components/Buttons/ButtonWide"
 import ButtonWider from "../../components/Buttons/ButtonWider"
-import Heart, { type HeartHandle } from "../../components/Heart"
+import { type HeartHandle } from "../../components/Heart"
 import IconPanel from "../../components/IconPanel"
 import PopupWindow from "../../components/PopupWindow"
 import Ribbon from "../../components/Ribbon"
-import Hearts, { type HeartsHandle } from "../../components/Hearts";
+import Hearts from "../../components/Hearts"
+import { type HeartsHandle } from "../../components/Hearts";
 import Confetti from "../../components/Confetti"
 import { Howl } from "howler"
 import ImagePopup from "../../components/ImagePopup"
+import Heart from "../../components/Heart"
 
 
 
@@ -29,7 +31,7 @@ function Test() {
     const resetHearts = () => {
         heartsRef.current?.reset();
     };
-    const [showPopup, setShowPopup] = useState(false);
+
     const imgSrc = "/image.png";
     const [popupVisible, setPopupVisible] = useState(false);
 
@@ -44,7 +46,7 @@ function Test() {
 
                 onClose={() => setPopupVisible(false)}
             />
-            {/* <ButtonWide text="NIGGA" color="basic pink" size={0.5} onClick={() => {
+            <ButtonWide text="NIGGA" color="basic pink" size={0.5} onClick={() => {
                 const sound = new Howl({
                     src: ["/MISTER V-LE POULET.mp3"],
                     volume: 0.5,
@@ -62,7 +64,7 @@ function Test() {
             <Hearts ref={heartsRef} color="basic red" lives={3} size={80} direction="rtl" finalSound="/death_fortnite.mp3" />
             <button onClick={loseLife}>Lose Life</button>
             <button onClick={resetHearts}>Reset Hearts</button>
-            <Confetti /> */}
+            <Confetti />
 
 
         </div>

@@ -3,11 +3,10 @@ import { useNavigate, useParams } from "react-router"
 import axios from "axios"
 
 import "./WaitingRoom.css"
-import WaitingRoomPlayerInfo, { type PlayerData } from "./WaitingRoomPlayerInfo"
-import { useEffect, useReducer, useRef, useState } from "react";
+import WaitingRoomPlayerInfo from "./WaitingRoomPlayerInfo"
+import { useEffect, useRef, useState } from "react";
 import ButtonSquare from "../../components/Buttons/ButtonSquare";
 import ButtonWide from "../../components/Buttons/ButtonWide";
-import PopupWindow from "../../components/PopupWindow";
 import RoomId from "./RoomId";
 import { useVideo } from "../../contexts/VideoContext";
 import WebcamDisplay from "../../components/Webcam/WebcamDisplay";
@@ -34,20 +33,30 @@ function WaitingRoom() {
     // retrieve players currently in room
     // this will use useWebsocket to automatically update when new data is received
 
-    const reducer = (state: PlayerData, participants: ParticipantInfo[]): PlayerData => {
-        const hasJoined = participants.length >= state.playerNumber;
+    // const reducer = (state: PlayerData, participants: ParticipantInfo[]): PlayerData => {
+    //     const hasJoined = participants.length >= state.playerNumber;
 
-        return {
-            playerNumber: state.playerNumber,
-            hasJoined,
-            displayName: hasJoined ? participants[state.playerNumber - 1].display_name : ""
-        }
-    }
+    //     return {
+    //         playerNumber: state.playerNumber,
+    //         hasJoined,
+    //         displayName: hasJoined ? participants[state.playerNumber - 1].display_name : ""
+    //     }
+    // }
 
     const [participants, setParticipants] = useState<ParticipantInfo[]>([])
     const [canStart, setCanStart] = useState(false);
     const [isStreaming, setIsStreaming] = useState(false);
     const autoStartRef = useRef(false);
+
+    const foolFunction = () => {
+        if (isStreaming) {
+            return null;
+        }
+        if (participants)
+            return null;
+
+        return null;
+    }
 
     useEffect(() => {
         openVideoConnection(room_id!, session_id!);
@@ -55,24 +64,26 @@ function WaitingRoom() {
         openAudioConnection(room_id!, session_id!);
 
         openMetaConnection(room_id!, session_id!);
+
+        foolFunction();
     }, []);
 
     useEffect(() => {
         // test participants
-        let participants = {
-            "participants": [
-                {
-                    "session_id": "test_id",
-                    "display_name": "Name",
-                    "joined_at": "never. they aren't real. you have to move on."
-                },
-                // {
-                //     "session_id": "fhjkhf",
-                //     "display_name": "FBWEOFOWF",
-                //     "joined_at": "fnkdon."
-                // }
-            ]
-        };
+        // let participants = {
+        //     "participants": [
+        //         {
+        //             "session_id": "test_id",
+        //             "display_name": "Name",
+        //             "joined_at": "never. they aren't real. you have to move on."
+        //         },
+        //         // {
+        //         //     "session_id": "fhjkhf",
+        //         //     "display_name": "FBWEOFOWF",
+        //         //     "joined_at": "fnkdon."
+        //         // }
+        //     ]
+        // };
 
         let mounted = true;
 

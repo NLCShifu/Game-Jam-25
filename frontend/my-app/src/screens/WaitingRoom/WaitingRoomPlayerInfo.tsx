@@ -1,4 +1,4 @@
-import { useEffect, useState, type PropsWithChildren, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import PopupWindow from "../../components/PopupWindow";
 
 type PlayerData = {

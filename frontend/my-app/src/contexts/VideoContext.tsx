@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type PropsWithChildren } from "react";
+import { createContext, useCallback, useContext, useMemo, useRef, useState, type PropsWithChildren } from "react";
 import type { WebsocketContext } from "./AbstractWebsocketContext";
 
 interface VideoContextInterface extends WebsocketContext {

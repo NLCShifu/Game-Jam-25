@@ -8,15 +8,13 @@ import Hearts, { type HeartsHandle } from "../../components/Hearts";
 import ImagePopup from "../../components/ImagePopup";
 import Ribbon from "../../components/Ribbon";
 import ButtonSquare from "../../components/Buttons/ButtonSquare";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, } from "react-router";
 import Confetti from "../../components/Confetti";
 import { useMeta } from "../../contexts/MetaContext";
-import { Howl } from "howler";
 import OtherCameraDisplay from "../../components/Webcam/OtherCameraDisplay";
 import WebcamDisplay from "../../components/Webcam/WebcamDisplay";
 import { useVideo } from "../../contexts/VideoContext";
 import { useAudio } from "../../contexts/AudioContext";
-import { GameStatus } from "../../models/GameStatus";
 
 function GameRoom() {
     const baseUrl = import.meta.env.VITE_API_URL;
@@ -28,7 +26,7 @@ function GameRoom() {
 
     // const [currentSound, setCurrentSound] = useState("");
 
-    const { roomState, memeState, resetMeme, soundState, resetSound, sendMeme, sendSound, ownLaughState, resetOwnLaugh, otherLaughState, resetOtherLaugh, gameStatus, closeConnection: closeMeta } = useMeta();
+    const { memeState, resetMeme, soundState, resetSound, sendMeme, sendSound, ownLaughState, resetOwnLaugh, otherLaughState, resetOtherLaugh, gameStatus, closeConnection: closeMeta } = useMeta();
     const { sendVideoFrame, closeConnection: closeVideo } = useVideo();
     const { sendAudioFrame, closeConnection: closeAudio } = useAudio();
 
@@ -43,13 +41,13 @@ function GameRoom() {
     const audioRef = useRef<HTMLAudioElement>(null);
 
     const [popupVisible, setPopupVisible] = useState(false);
-    const imgSrc = "/image.png";
+
 
     // Game end popup state
     const [gameEnded, setGameEnded] = useState(false);
     const [gameResult, setGameResult] = useState<"won" | "lost" | null>(null);
 
-    const [fetchError, setFetchError] = useState<string | null>(null);
+    const [, setFetchError] = useState<string | null>(null);
     const [memes, setMemes] = useState<{ name: string; url: string }[]>([]);
     const [sounds, setSounds] = useState<{ name: string; url: string }[]>([]);
     const [meme, setMeme] = useState<string | null>(null);
@@ -202,20 +200,20 @@ function GameRoom() {
     }, [otherLaughState]);
 
     useEffect(() => {
-        if (gameStatus === GameStatus.WON) {
+        if (gameStatus === "won") {
             setGameEnded(true);
             setGameResult("won");
-        } else if (gameStatus === GameStatus.LOST) {
+        } else if (gameStatus === "lost") {
             setGameEnded(true);
             setGameResult("lost");
         }
     }, [gameStatus]);
 
-    const handlePlayAgain = () => {
-        // Reset the game or call API to start again go back to waiting room
-        setGameEnded(false);
-        setGameResult(null);
-    };
+    // const handlePlayAgain = () => {
+    //     // Reset the game or call API to start again go back to waiting room
+    //     setGameEnded(false);
+    //     setGameResult(null);
+    // };
 
     const handleGoHome = () => {
         // Navigate home

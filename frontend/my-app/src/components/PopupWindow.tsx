@@ -13,8 +13,6 @@ interface PopupWindowProps {
 
 const PopupWindow: React.FC<PopupWindowProps> = ({
     color,
-    width = 600,
-    height = 400,
     show = true,
     animated = true,
     className,
@@ -63,7 +61,7 @@ const PopupWindow: React.FC<PopupWindowProps> = ({
                         // alignItems: "center",
                     }}
                 > */}
-                    {children}
+                {children}
                 {/* </div> */}
                 {/* <img src={backgroundSrc} alt="Popup Window" style={{
                     width: "100%",
@@ -96,9 +94,9 @@ const PopupWindow: React.FC<PopupWindowProps> = ({
                     //     // display: "inline-block",
                     // }}
                     style={{
-                    borderImage: `url('${backgroundSrc}') 20 fill / 12px`
-                }}
-                className={className}
+                        borderImage: `url('${backgroundSrc}') 20 fill / 12px`
+                    }}
+                    className={className}
                 >
                     {/* <img
                         src={backgroundSrc}
@@ -118,7 +116,7 @@ const PopupWindow: React.FC<PopupWindowProps> = ({
                             // alignItems: "center",
                         }}
                     > */}
-                        {children}
+                    {children}
                     {/* </div> */}
                 </motion.div>
             )}

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 interface ImagePopupProps {
@@ -8,7 +8,7 @@ interface ImagePopupProps {
     onClose?: () => void;       // callback when popup disappears
 }
 
-const ImagePopup: React.FC<ImagePopupProps> = ({ imageSrc, visible, duration = 3000, onClose }) => {
+const ImagePopup: React.FC<ImagePopupProps> = ({ imageSrc, visible }) => {
     // const [isVisible, setIsVisible] = useState(visible);
     const soundSrc = "/the-rock-sound-effect.mp3";
     const endSoundSrc = "/whoosh-sounds-effects-no-copyright_2vZLPrmm.mp3";
@@ -36,11 +36,11 @@ const ImagePopup: React.FC<ImagePopupProps> = ({ imageSrc, visible, duration = 3
     //         console.log("SHOW POPUP");
 
     //         // Play appearance sound
-            // const startSound = new Howl({
-            //     src: [soundSrc],
-            //     volume: 0.1,
-            // });
-            // startSound.play();
+    // const startSound = new Howl({
+    //     src: [soundSrc],
+    //     volume: 0.1,
+    // });
+    // startSound.play();
 
     //         // Auto-hide after duration
     //         const timer = setTimeout(() => {
