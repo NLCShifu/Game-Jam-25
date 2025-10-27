@@ -1,6 +1,6 @@
 from datetime import datetime
-from models.session import Session
-from models.room import Room
+from src.models.session import Session
+from src.models.room import Room
 
 rooms: dict[str, Room] = {}
 sessions = {}

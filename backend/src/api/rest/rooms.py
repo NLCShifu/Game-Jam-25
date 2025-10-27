@@ -2,10 +2,10 @@ import random
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from datetime import datetime, timedelta
-from services.rooms_service import rooms, sessions
-from services.id_service import generate_unique_id
-from models.room import Room
-from models.session import Session
+from src.services.rooms_service import rooms, sessions
+from src.services.id_service import generate_unique_id
+from src.models.room import Room
+from src.models.session import Session
 
 router = APIRouter(prefix="/rooms", tags=["rooms"])
 

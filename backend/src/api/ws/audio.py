@@ -1,5 +1,5 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from services.rooms_service import validate_session, rooms
+from src.services.rooms_service import validate_session, rooms
 
 router = APIRouter()
 

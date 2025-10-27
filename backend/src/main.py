@@ -1,11 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from api.rest.rooms import router as rooms_router
-from api.rest.images import router as images_router
-from api.rest.sounds import router as sounds_router
-from api.ws.video import router as video_router
-from api.ws.meta import router as meta_router
-from api.ws.audio import router as audio_router
+from src.api.rest.rooms import router as rooms_router
+from src.api.rest.images import router as images_router
+from src.api.rest.sounds import router as sounds_router
+from src.api.ws.video import router as video_router
+from src.api.ws.meta import router as meta_router
+from src.api.ws.audio import router as audio_router
 
 app = FastAPI()
 
