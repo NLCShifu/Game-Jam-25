@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.responses import Response
 from fastapi.middleware.cors import CORSMiddleware
 from src.api.rest.rooms import router as rooms_router
 from src.api.rest.images import router as images_router
@@ -22,6 +23,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.head("/")
+async def root_head():
+    # You can set custom headers if you want
+    headers = {"X-Custom-Header": "Hello"}
+    return Response(status_code=200, headers=headers)
+
+
 # Les REST endpoints sont montés directement à la racine
 app.include_router(rooms_router)
 app.include_router(images_router)
